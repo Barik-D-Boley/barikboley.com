@@ -339,144 +339,144 @@ export default function Home() {
         </section>
 
         <div className="content-grid">
-          <aside className="context-column">
-            <section className="panel about-panel" id="about">
-              <div className="section-kicker">Profile / 001</div>
-              <h2>ABOUT ME</h2>
-              <p className="intro">
-                I’m a mechanical engineering student and software developer who
-                enjoys building systems that move seamlessly between real-world
-                constraints and clean digital logic.
-              </p>
-              <p>
-                As an Eagle Scout, I learned to lead with preparation, service,
-                and accountability. I’m bilingual in English and Spanish,
-                bringing clear communication to every team and technical
-                challenge.
-              </p>
-              <dl className="profile-facts">
-                <div>
-                  <dt>Location</dt>
-                  <dd>Rexburg, Idaho</dd>
-                </div>
-                <div>
-                  <dt>Languages</dt>
-                  <dd>English / Spanish</dd>
-                </div>
-                <div>
-                  <dt>Focus</dt>
-                  <dd>Design + Automation</dd>
-                </div>
-              </dl>
-            </section>
-          </aside>
-
-          <div className="work-column">
-            <section className="panel projects-panel" id="projects">
-              <div className="section-header">
-                <div>
-                  <div className="section-kicker">Selected work / 003</div>
-                  <h2>PROJECT GALLERY</h2>
-                </div>
-                <span className="project-count">
-                  {visibleProjects.length.toString().padStart(2, "0")} PROJECTS
-                </span>
+          {/* 1. ABOUT ME */}
+          <section className="panel about-panel" id="about">
+            <div className="section-kicker">Profile / 001</div>
+            <h2>ABOUT ME</h2>
+            <p className="intro">
+              I’m a mechanical engineering student and software developer who
+              enjoys building systems that move seamlessly between real-world
+              constraints and clean digital logic.
+            </p>
+            <p>
+              As an Eagle Scout, I learned to lead with preparation, service,
+              and accountability. I’m bilingual in English and Spanish,
+              bringing clear communication to every team and technical
+              challenge.
+            </p>
+            <dl className="profile-facts">
+              <div>
+                <dt>Location</dt>
+                <dd>Rexburg, Idaho</dd>
               </div>
-
-              <div
-                className="filter-row"
-                role="group"
-                aria-label="Filter projects"
-              >
-                {filters.map((filter) => (
-                  <button
-                    className={
-                      activeFilter === filter
-                        ? "filter-button active"
-                        : "filter-button"
-                    }
-                    key={filter}
-                    onClick={() => setActiveFilter(filter)}
-                    type="button"
-                    aria-pressed={activeFilter === filter}
-                  >
-                    {filter}
-                  </button>
-                ))}
+              <div>
+                <dt>Languages</dt>
+                <dd>English / Spanish</dd>
               </div>
-
-              <div className="featured-label">
-                <span>Featured work</span>
-                <i />
+              <div>
+                <dt>Focus</dt>
+                <dd>Design + Automation</dd>
               </div>
+            </dl>
+          </section>
 
-              <div className="projects-grid">
-                {visibleProjects.map((project) => (
-                  <article className="project-card" key={project.title}>
-                    <ProjectVisual variant={project.art} />
-                    <div className="project-body">
-                      <div className="project-index">
-                        PRJ / {project.number}
-                      </div>
-                      <h3>{project.title}</h3>
-                      <p>{project.description}</p>
-                      <div className="tag-list">
-                        {project.tags.map((tag) => (
-                          <span key={tag}>{tag}</span>
-                        ))}
-                      </div>
-                    </div>
-                  </article>
-                ))}
-              </div>
-            </section>
+          {/* 2. EXPERIENCE TIMELINE */}
+          <section className="panel timeline-panel" id="experience">
+            <div className="section-kicker">Career / 002</div>
+            <h2>EXPERIENCE TIMELINE</h2>
+            <div className="timeline">
+              {experience.map((item, index) => (
+                <article className="timeline-item" key={item.role}>
+                  <span className="timeline-node">
+                    {String(index + 1).padStart(2, "0")}
+                  </span>
+                  <div>
+                    <h3>{item.role}</h3>
+                    <p>{item.organization}</p>
+                    <time>{item.date}</time>
+                  </div>
+                </article>
+              ))}
+            </div>
+          </section>
 
-            <section className="panel timeline-panel" id="experience">
-              <div className="section-kicker">Career / 002</div>
-              <h2>EXPERIENCE TIMELINE</h2>
-              <div className="timeline">
-                {experience.map((item, index) => (
-                  <article className="timeline-item" key={item.role}>
-                    <span className="timeline-node">
-                      {String(index + 1).padStart(2, "0")}
-                    </span>
-                    <div>
-                      <h3>{item.role}</h3>
-                      <p>{item.organization}</p>
-                      <time>{item.date}</time>
-                    </div>
-                  </article>
-                ))}
+          {/* 3. PROJECT GALLERY */}
+          <section className="panel projects-panel" id="projects">
+            <div className="section-header">
+              <div>
+                <div className="section-kicker">Selected work / 003</div>
+                <h2>PROJECT GALLERY</h2>
               </div>
-            </section>
+              <span className="project-count">
+                {visibleProjects.length.toString().padStart(2, "0")} PROJECTS
+              </span>
+            </div>
 
-            <section className="panel archive-panel">
-              <div className="section-header archive-header">
-                <div>
-                  <div className="section-kicker">Additional builds / 004</div>
-                  <h2>THE ARCHIVE</h2>
-                </div>
-                <span className="archive-note">EXPERIMENTS + ITERATIONS</span>
-              </div>
-              <div className="archive-grid">
-                {archiveProjects.map((project) => (
-                  <article className="archive-card" key={project.title}>
-                    <div className="archive-top">
-                      <span>{project.code}</span>
-                      <Icon name="arrow" size={16} />
-                    </div>
-                    <div className="archive-schematic" aria-hidden="true">
-                      <i />
-                      <i />
-                      <i />
+            <div
+              className="filter-row"
+              role="group"
+              aria-label="Filter projects"
+            >
+              {filters.map((filter) => (
+                <button
+                  className={
+                    activeFilter === filter
+                      ? "filter-button active"
+                      : "filter-button"
+                  }
+                  key={filter}
+                  onClick={() => setActiveFilter(filter)}
+                  type="button"
+                  aria-pressed={activeFilter === filter}
+                >
+                  {filter}
+                </button>
+              ))}
+            </div>
+
+            <div className="featured-label">
+              <span>Featured work</span>
+              <i />
+            </div>
+
+            <div className="projects-grid">
+              {visibleProjects.map((project) => (
+                <article className="project-card" key={project.title}>
+                  <ProjectVisual variant={project.art} />
+                  <div className="project-body">
+                    <div className="project-index">
+                      PRJ / {project.number}
                     </div>
                     <h3>{project.title}</h3>
-                    <p>{project.category}</p>
-                  </article>
-                ))}
+                    <p>{project.description}</p>
+                    <div className="tag-list">
+                      {project.tags.map((tag) => (
+                        <span key={tag}>{tag}</span>
+                      ))}
+                    </div>
+                  </div>
+                </article>
+              ))}
+            </div>
+          </section>
+
+          {/* 4. THE ARCHIVE */}
+          <section className="panel archive-panel">
+            <div className="section-header archive-header">
+              <div>
+                <div className="section-kicker">Additional builds / 004</div>
+                <h2>THE ARCHIVE</h2>
               </div>
-            </section>
-          </div>
+              <span className="archive-note">EXPERIMENTS + ITERATIONS</span>
+            </div>
+            <div className="archive-grid">
+              {archiveProjects.map((project) => (
+                <article className="archive-card" key={project.title}>
+                  <div className="archive-top">
+                    <span>{project.code}</span>
+                    <Icon name="arrow" size={16} />
+                  </div>
+                  <div className="archive-schematic" aria-hidden="true">
+                    <i />
+                    <i />
+                    <i />
+                  </div>
+                  <h3>{project.title}</h3>
+                  <p>{project.category}</p>
+                </article>
+              ))}
+            </div>
+          </section>
         </div>
 
         <section className="contact-panel" id="contact">

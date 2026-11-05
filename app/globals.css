@@ -459,18 +459,18 @@
 }
 
 .content-grid {
-  display: grid;
-  width: min(1440px, 92vw);
-  margin: 56px auto;
-  grid-template-columns: minmax(280px, 0.34fr) minmax(0, 1fr);
-  align-items: start;
-  gap: 22px;
+  display: flex;
+  flex-direction: column;
+  width: min(1100px, 92vw);
+  margin: 40px auto;
+  gap: 28px;
 }
 
 .context-column,
 .work-column {
-  display: grid;
-  gap: 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
 }
 
 .panel {
