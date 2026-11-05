@@ -3,7 +3,6 @@ import Hero from "@/components/sections/Hero"
 import AboutSection from "@/components/sections/AboutSection"
 import ExperienceTimeline from "@/components/sections/ExperienceTimeline"
 import ProjectGallery from "@/components/sections/ProjectGallery"
-import ArchiveSection from "@/components/sections/ArchiveSection"
 import ContactSection from "@/components/sections/ContactSection"
 import Footer from "@/components/sections/Footer"
 

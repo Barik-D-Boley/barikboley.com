@@ -1141,6 +1141,39 @@ footer {
   letter-spacing: 0.08em;
 }
 
+.footer-left {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.legacy-links {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: #475569;
+}
+
+.legacy-label {
+  color: #64748b;
+}
+
+.legacy-links a {
+  color: #64748b;
+  text-decoration: none;
+  transition: color 160ms ease;
+}
+
+.legacy-links a:hover {
+  color: var(--blue-light);
+  text-decoration: underline;
+}
+
+.legacy-divider {
+  color: #334155;
+}
+
 @media (max-width: 1040px) {
   .hero-metric {
     display: none;
