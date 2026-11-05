@@ -1,46 +1,14 @@
 'use client';
 
 import { useMemo, useState } from "react"
+import { projects } from "@/data/projects"
 
-const filters = ["All", "Mechanical/CAD", "Python/Data", "Web Dev", "Hardware"]
-
-const featuredProjects = [
-  {
-    title: "Anti-Theft Package Security System",
-    description:
-      "A mechanically engineered package enclosure combining tamper detection, rapid prototyping, and secure delivery logic.",
-    tags: ["CAD", "Inventor", "Prototyping"],
-    category: "Mechanical/CAD",
-    art: "cad",
-    number: "01",
-  },
-  {
-    title: "Automated Receipt & Expense Parser",
-    description:
-      "A data workflow that extracts, validates, and categorizes transaction records into a clean expense dashboard.",
-    tags: ["Python", "Data Extraction", "Automation"],
-    category: "Python/Data",
-    art: "data",
-    number: "02",
-  },
-  {
-    title: "Desktop Thermal Control System",
-    description:
-      "A sensor-driven airflow model designed to monitor temperature and optimize cooling performance under load.",
-    tags: ["Hardware", "Sensors", "Testing"],
-    category: "Hardware",
-    art: "hardware",
-    number: "03",
-  },
-  {
-    title: "Engineering Portfolio Platform",
-    description:
-      "A responsive project system translating complex engineering work into clear, accessible technical stories.",
-    tags: ["React", "TypeScript", "UI Systems"],
-    category: "Web Dev",
-    art: "web",
-    number: "04",
-  },
+const filters = [
+  "Featured",
+  "FEA & Simulation",
+  "Automation & Tools",
+  "Web & Full-Stack",
+  "Hardware & CAD",
 ]
 
 function ProjectVisual({ variant }: { variant: string }) {
@@ -132,17 +100,18 @@ function ProjectVisual({ variant }: { variant: string }) {
 }
 
 export default function ProjectGallery({ number = "001" }: { number?: string }) {
-  const [activeFilter, setActiveFilter] = useState("All")
+  // Default active filter set to "Featured"
+  const [activeFilter, setActiveFilter] = useState("Featured")
 
-  const visibleProjects = useMemo(
-    () =>
-      activeFilter === "All"
-        ? featuredProjects
-        : featuredProjects.filter(
-            (project) => project.category === activeFilter,
-          ),
-    [activeFilter],
-  )
+  const visibleProjects = useMemo(() => {
+    if (activeFilter === "Featured") {
+      return projects.filter((project) => project.featured)
+    }
+    if (activeFilter === "All") {
+      return projects
+    }
+    return projects.filter((project) => project.category === activeFilter)
+  }, [activeFilter])
 
   return (
     <section className="panel projects-panel" id="projects">
@@ -152,7 +121,7 @@ export default function ProjectGallery({ number = "001" }: { number?: string }) 
           <h2>PROJECT GALLERY</h2>
         </div>
         <span className="project-count">
-          {visibleProjects.length.toString().padStart(2, "0")} PROJECTS
+          {visibleProjects.length.toString().padStart(2, "0")} SHOWING
         </span>
       </div>
 
@@ -179,7 +148,7 @@ export default function ProjectGallery({ number = "001" }: { number?: string }) 
       </div>
 
       <div className="featured-label">
-        <span>Featured work</span>
+        <span>{activeFilter === "Featured" ? "Top Builds" : `${activeFilter} Projects`}</span>
         <i />
       </div>
 

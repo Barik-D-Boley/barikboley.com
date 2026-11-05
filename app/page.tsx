@@ -19,7 +19,6 @@ export default function Home() {
           <ProjectGallery number="001" />
           <AboutSection number="002" />
           <ExperienceTimeline number="003" />
-          <ArchiveSection number="004" />
         </div>
 
         <ContactSection />
