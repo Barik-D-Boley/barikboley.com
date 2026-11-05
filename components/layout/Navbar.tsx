@@ -5,9 +5,7 @@ import Icon from "@/components/Icon"
 
 export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false)
-
   const closeMenu = () => setMenuOpen(false)
-  const exportResume = () => window.print()
 
   return (
     <header className="topbar">
@@ -46,14 +44,16 @@ export default function Navbar() {
         <a href="#contact" onClick={closeMenu}>
           Contact
         </a>
-        <button
+        <a
           className="resume-outline"
-          type="button"
-          onClick={exportResume}
+          href="/Barik_Boley_Resume.pdf"
+          target="_blank"
+          rel="noreferrer"
+          onClick={closeMenu}
         >
           <Icon name="download" size={15} />
-          Download Resume
-        </button>
+          Resume
+        </a>
       </nav>
     </header>
   )

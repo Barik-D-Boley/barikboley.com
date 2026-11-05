@@ -3,8 +3,6 @@
 import Icon from "@/components/Icon"
 
 export default function Hero() {
-  const exportResume = () => window.print()
-
   return (
     <section className="hero" aria-labelledby="hero-title">
       <div className="hero-grid" aria-hidden="true" />
@@ -23,16 +21,17 @@ export default function Hero() {
           Student @ BYU-Idaho <i /> Expected graduation: April 2029
         </p>
         <div className="hero-actions">
-          <button
-            type="button"
-            className="primary-button"
-            onClick={exportResume}
-          >
-            <Icon name="download" /> Resume (PDF)
-          </button>
           <a
             className="primary-button"
-            href="https://github.com/"
+            href="/Barik_Boley_Resume.pdf"
+            target="_blank"
+            rel="noreferrer"
+          >
+            <Icon name="download" /> Resume (PDF)
+          </a>
+          <a
+            className="primary-button"
+            href="https://github.com/Barik-D-Boley"
             target="_blank"
             rel="noreferrer"
           >
@@ -40,7 +39,7 @@ export default function Hero() {
           </a>
           <a
             className="primary-button"
-            href="https://www.linkedin.com/"
+            href="https://www.linkedin.com/in/barik-boley"
             target="_blank"
             rel="noreferrer"
           >
