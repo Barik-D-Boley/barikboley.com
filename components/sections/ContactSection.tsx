@@ -1,0 +1,20 @@
+import Icon from "@/components/Icon"
+
+export default function ContactSection() {
+  return (
+    <section className="contact-panel" id="contact">
+      <div>
+        <div className="section-kicker">Connection / 005</div>
+        <h2>LET’S BUILD SOMETHING THAT WORKS.</h2>
+        <p>
+          Interested in engineering, software, or the space where they meet?
+        </p>
+      </div>
+      <a className="contact-button" href="mailto:barik.boley@example.com">
+        <Icon name="mail" />
+        Start a conversation
+        <Icon name="arrow" />
+      </a>
+    </section>
+  )
+}

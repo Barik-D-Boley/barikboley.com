@@ -461,7 +461,7 @@
 .content-grid {
   display: flex;
   flex-direction: column;
-  width: min(1100px, 92vw);
+  width: min(1180px, 92vw);
   margin: 40px auto;
   gap: 28px;
 }
@@ -1087,7 +1087,7 @@
 
 .contact-panel {
   display: flex;
-  width: min(1440px, 92vw);
+  width: min(1180px, 92vw);
   margin: 0 auto 40px;
   align-items: center;
   justify-content: space-between;
