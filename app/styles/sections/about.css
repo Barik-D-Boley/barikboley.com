@@ -1,0 +1,44 @@
+.about-panel {
+  padding: clamp(22px, 3vw, 38px);
+}
+
+.about-panel .intro {
+  margin-top: 24px;
+  color: #f1f5f9;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.7;
+}
+
+.about-panel > p:not(.intro) {
+  margin-top: 13px;
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.7;
+}
+
+.profile-facts {
+  display: grid;
+  margin-top: 25px;
+  border-top: 1px solid var(--line);
+}
+
+.profile-facts div {
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--line);
+  padding: 12px 0;
+  gap: 14px;
+  font-family: ui-monospace, monospace;
+  font-size: 10px;
+}
+
+.profile-facts dt {
+  color: var(--muted);
+  text-transform: uppercase;
+}
+
+.profile-facts dd {
+  color: #e2e8f0;
+  text-align: right;
+}

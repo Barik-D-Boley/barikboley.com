@@ -1,10 +1,10 @@
 import Navbar from "@/components/layout/Navbar"
 import Hero from "@/components/sections/Hero"
-import AboutSection from "@/components/sections/AboutSection"
-import ExperienceTimeline from "@/components/sections/ExperienceTimeline"
+import AboutSection from "@/components/sections/About"
+import ExperienceTimeline from "@/components/sections/Experience"
 import ProjectGallery from "@/components/sections/ProjectGallery"
-import ContactSection from "@/components/sections/ContactSection"
-import Footer from "@/components/sections/Footer"
+import ContactSection from "@/components/sections/Contact"
+import Footer from "@/components/layout/Footer"
 
 export default function Home() {
   return (
