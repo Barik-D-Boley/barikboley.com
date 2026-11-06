@@ -10,7 +10,7 @@ export default function ContactSection() {
           Interested in engineering, software, or the space where they meet?
         </p>
       </div>
-      <a className="contact-button" href="mailto:barik.boley@example.com">
+      <a className="contact-button" href="mailto:barik.boley@gmail.com">
         <Icon name="mail" />
         Start a conversation
         <Icon name="arrow" />

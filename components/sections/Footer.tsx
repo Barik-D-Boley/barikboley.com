@@ -18,11 +18,30 @@ export default function Footer() {
             target="_blank"
             rel="noreferrer"
           >
-            v2.0  
+            v2.0
           </a>
         </div>
       </div>
-      <span>DESIGNED WITH PRECISION. BUILT WITH LOGIC.</span>
+      <div className="footer-right">
+        <div className="footer-socials">
+          <a
+            href="https://github.com/Barik-D-Boley"
+            target="_blank"
+            rel="noreferrer"
+          >
+            GitHub
+          </a>
+          <span>/</span>
+          <a
+            href="https://www.linkedin.com/in/barik-boley"
+            target="_blank"
+            rel="noreferrer"
+          >
+            LinkedIn
+          </a>
+        </div>
+        <span>DESIGNED WITH PRECISION. BUILT WITH LOGIC.</span>
+      </div>
     </footer>
   )
 }
