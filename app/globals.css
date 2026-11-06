@@ -231,8 +231,20 @@
 }
 
 .nav-links > a:hover::after,
-.nav-links > a:focus-visible::after {
+.nav-links > a:focus-visible::after,
+.nav-links > a.active::after {
   transform: scaleX(1);
+}
+
+.nav-links > a.active {
+  color: var(--blue-light);
+}
+
+#about,
+#experience,
+#projects,
+#contact {
+  scroll-margin-top: 80px;
 }
 
 .resume-outline {
@@ -1439,28 +1451,105 @@ footer {
   color: white;
 }
 
-.footer-right {
+.see-more-row {
   display: flex;
-  align-items: center;
-  gap: 20px;
+  justify-content: center;
+  margin-top: 24px;
 }
 
-.footer-socials {
-  display: flex;
+.see-more-button {
+  display: inline-flex;
   align-items: center;
   gap: 8px;
-}
-
-.footer-socials a {
-  color: #94a3b8;
-  text-decoration: none;
-  transition: color 160ms ease;
-}
-
-.footer-socials a:hover {
+  border: 1px solid var(--blue);
+  border-radius: 4px;
+  background: rgba(14, 165, 233, 0.1);
+  padding: 12px 24px;
   color: var(--blue-light);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  transition: background 180ms ease, color 180ms ease, transform 180ms ease;
 }
 
-.footer-socials span {
-  color: #334155;
+.see-more-button:hover {
+  background: var(--blue);
+  color: #06131f;
+  transform: translateY(-2px);
+}
+
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(15, 23, 42, 0.85);
+  backdrop-filter: blur(12px);
+  padding: 24px 16px;
+}
+
+.modal-container {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: min(1000px, 94vw);
+  max-height: 85vh;
+  border: 1px solid var(--line-strong);
+  border-radius: 8px;
+  background: var(--panel);
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.5);
+  overflow: hidden;
+}
+
+.modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--line);
+  background: var(--panel);
+  padding: 20px 24px;
+  z-index: 10;
+}
+
+.modal-close-button {
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  background: var(--panel-deep);
+  color: var(--muted);
+  transition: border-color 160ms ease, color 160ms ease;
+}
+
+.modal-close-button:hover {
+  border-color: var(--blue);
+  color: white;
+}
+
+.modal-body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 24px;
+}
+
+.modal-filter-row {
+  margin-top: 0;
+  margin-bottom: 20px;
+}
+
+.modal-projects-grid {
+  margin-top: 12px;
+}
+
+.mobile-nav-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 40;
+  background: rgba(15, 23, 42, 0.6);
+  backdrop-filter: blur(4px);
 }

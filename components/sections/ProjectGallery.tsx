@@ -1,6 +1,6 @@
 'use client';
 
-import { useMemo, useState } from "react"
+import { useEffect, useMemo, useState } from "react"
 import { projects } from "@/data/projects"
 
 const filters = [
@@ -100,18 +100,51 @@ function ProjectVisual({ variant }: { variant: string }) {
 }
 
 export default function ProjectGallery({ number = "001" }: { number?: string }) {
-  // Default active filter set to "Featured"
   const [activeFilter, setActiveFilter] = useState("Featured")
+  const [isModalOpen, setIsModalOpen] = useState(false)
 
-  const visibleProjects = useMemo(() => {
+  // Filter projects for main page grid (top 4 limit)
+  const categoryProjects = useMemo(() => {
     if (activeFilter === "Featured") {
       return projects.filter((project) => project.featured)
     }
-    if (activeFilter === "All") {
+    return projects.filter((project) => project.category === activeFilter)
+  }, [activeFilter])
+
+  // Full list to display in the modal view (All projects if Featured, or filtered category)
+  const modalProjects = useMemo(() => {
+    if (activeFilter === "Featured") {
       return projects
     }
     return projects.filter((project) => project.category === activeFilter)
   }, [activeFilter])
+
+  const visibleProjects = useMemo(() => {
+    return categoryProjects.slice(0, 4)
+  }, [categoryProjects])
+
+  const showSeeMore = activeFilter === "Featured" || categoryProjects.length > 4
+
+  const seeMoreLabel =
+    activeFilter === "Featured"
+      ? "View All Projects"
+      : `See More ${activeFilter} Projects`
+
+  useEffect(() => {
+    if (isModalOpen) {
+      document.body.style.overflow = "hidden"
+      const handleKeyDown = (e: KeyboardEvent) => {
+        if (e.key === "Escape") {
+          setIsModalOpen(false)
+        }
+      }
+      window.addEventListener("keydown", handleKeyDown)
+      return () => {
+        document.body.style.overflow = ""
+        window.removeEventListener("keydown", handleKeyDown)
+      }
+    }
+  }, [isModalOpen])
 
   return (
     <section className="panel projects-panel" id="projects">
@@ -121,7 +154,7 @@ export default function ProjectGallery({ number = "001" }: { number?: string }) 
           <h2>PROJECT GALLERY</h2>
         </div>
         <span className="project-count">
-          {visibleProjects.length.toString().padStart(2, "0")} SHOWING
+          {categoryProjects.length.toString().padStart(2, "0")} SHOWING
         </span>
       </div>
 
@@ -171,6 +204,107 @@ export default function ProjectGallery({ number = "001" }: { number?: string }) 
           </article>
         ))}
       </div>
+
+      {showSeeMore && (
+        <div className="see-more-row">
+          <button
+            type="button"
+            className="see-more-button"
+            onClick={() => setIsModalOpen(true)}
+          >
+            {seeMoreLabel}
+          </button>
+        </div>
+      )}
+
+      {isModalOpen && (
+        <div
+          className="modal-backdrop"
+          onClick={(e) => {
+            if (e.target === e.currentTarget) {
+              setIsModalOpen(false)
+            }
+          }}
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="modal-title"
+        >
+          <div className="modal-container">
+            <div className="modal-header">
+              <div>
+                <div className="section-kicker">Catalog / Full View</div>
+                <h2 id="modal-title">
+                  {activeFilter === "Featured" ? "ALL PROJECTS CATALOG" : `${activeFilter.toUpperCase()} PROJECTS`}
+                </h2>
+              </div>
+              <button
+                type="button"
+                className="modal-close-button"
+                onClick={() => setIsModalOpen(false)}
+                aria-label="Close modal"
+              >
+                <svg
+                  width="18"
+                  height="18"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <line x1="18" y1="6" x2="6" y2="18" />
+                  <line x1="6" y1="6" x2="18" y2="18" />
+                </svg>
+              </button>
+            </div>
+
+            <div className="modal-body">
+              <div
+                className="filter-row modal-filter-row"
+                role="group"
+                aria-label="Filter projects in modal"
+              >
+                {filters.map((filter) => (
+                  <button
+                    className={
+                      activeFilter === filter
+                        ? "filter-button active"
+                        : "filter-button"
+                    }
+                    key={filter}
+                    onClick={() => setActiveFilter(filter)}
+                    type="button"
+                    aria-pressed={activeFilter === filter}
+                  >
+                    {filter}
+                  </button>
+                ))}
+              </div>
+
+              <div className="projects-grid modal-projects-grid">
+                {modalProjects.map((project) => (
+                  <article className="project-card" key={project.title}>
+                    <ProjectVisual variant={project.art} />
+                    <div className="project-body">
+                      <div className="project-index">
+                        PRJ / {project.number}
+                      </div>
+                      <h3>{project.title}</h3>
+                      <p>{project.description}</p>
+                      <div className="tag-list">
+                        {project.tags.map((tag) => (
+                          <span key={tag}>{tag}</span>
+                        ))}
+                      </div>
+                    </div>
+                  </article>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </section>
   )
 }

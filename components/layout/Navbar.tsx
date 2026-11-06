@@ -1,60 +1,140 @@
 'use client';
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import Icon from "@/components/Icon"
 
 export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false)
+  const [activeSection, setActiveSection] = useState<string>("")
   const closeMenu = () => setMenuOpen(false)
 
+  useEffect(() => {
+    const sectionIds = ["projects", "about", "experience", "contact"]
+
+    const handleScroll = () => {
+      // Clear active section highlighting when scrolled near the top of Hero section
+      if (window.scrollY < 250) {
+        setActiveSection("")
+      }
+    }
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setActiveSection(entry.target.id)
+          }
+        })
+      },
+      {
+        rootMargin: "-20% 0px -35% 0px",
+        threshold: 0.1,
+      }
+    )
+
+    sectionIds.forEach((id) => {
+      const el = document.getElementById(id)
+      if (el) observer.observe(el)
+    })
+
+    window.addEventListener("scroll", handleScroll, { passive: true })
+
+    return () => {
+      sectionIds.forEach((id) => {
+        const el = document.getElementById(id)
+        if (el) observer.unobserve(el)
+      })
+      window.removeEventListener("scroll", handleScroll)
+    }
+  }, [])
+
+  useEffect(() => {
+    if (menuOpen) {
+      const handleKeyDown = (e: KeyboardEvent) => {
+        if (e.key === "Escape") {
+          setMenuOpen(false)
+        }
+      }
+      window.addEventListener("keydown", handleKeyDown)
+      return () => {
+        window.removeEventListener("keydown", handleKeyDown)
+      }
+    }
+  }, [menuOpen])
+
   return (
-    <header className="topbar">
-      <a
-        className="brand"
-        href="#top"
-        aria-label="Barik David Boley, back to top"
-      >
-        <span className="brand-mark">B</span>
-        <span>BARIK DAVID BOLEY</span>
-      </a>
-
-      <button
-        className="menu-button"
-        type="button"
-        aria-label="Toggle navigation"
-        aria-expanded={menuOpen}
-        onClick={() => setMenuOpen((open) => !open)}
-      >
-        <Icon name="menu" />
-      </button>
-
-      <nav
-        className={menuOpen ? "nav-links nav-open" : "nav-links"}
-        aria-label="Primary navigation"
-      >
-        <a href="#about" onClick={closeMenu}>
-          About
-        </a>
-        <a href="#experience" onClick={closeMenu}>
-          Experience
-        </a>
-        <a href="#projects" onClick={closeMenu}>
-          Projects
-        </a>
-        <a href="#contact" onClick={closeMenu}>
-          Contact
-        </a>
-        <a
-          className="resume-outline"
-          href="/Barik_Boley_Resume.pdf"
-          target="_blank"
-          rel="noreferrer"
+    <>
+      {menuOpen && (
+        <div
+          className="mobile-nav-backdrop"
           onClick={closeMenu}
+          aria-hidden="true"
+        />
+      )}
+      <header className="topbar">
+        <a
+          className="brand"
+          href="#top"
+          aria-label="Barik David Boley, back to top"
         >
-          <Icon name="download" size={15} />
-          Resume
+          <span className="brand-mark">B</span>
+          <span>BARIK DAVID BOLEY</span>
         </a>
-      </nav>
-    </header>
+
+        <button
+          className="menu-button"
+          type="button"
+          aria-label="Toggle navigation"
+          aria-expanded={menuOpen}
+          onClick={() => setMenuOpen((open) => !open)}
+        >
+          <Icon name="menu" />
+        </button>
+
+        <nav
+          className={menuOpen ? "nav-links nav-open" : "nav-links"}
+          aria-label="Primary navigation"
+        >
+          <a
+            href="#projects"
+            onClick={closeMenu}
+            className={activeSection === "projects" ? "active" : ""}
+          >
+            Projects
+          </a>
+          <a
+            href="#about"
+            onClick={closeMenu}
+            className={activeSection === "about" ? "active" : ""}
+          >
+            About
+          </a>
+          <a
+            href="#experience"
+            onClick={closeMenu}
+            className={activeSection === "experience" ? "active" : ""}
+          >
+            Experience
+          </a>
+          <a
+            href="#contact"
+            onClick={closeMenu}
+            className={activeSection === "contact" ? "active" : ""}
+          >
+            Contact
+          </a>
+          <a
+            className="resume-outline"
+            href="/Barik_Boley_Resume.pdf"
+            target="_blank"
+            rel="noreferrer"
+            onClick={closeMenu}
+          >
+            <Icon name="download" size={15} />
+            Resume
+          </a>
+        </nav>
+      </header>
+    </>
   )
 }
