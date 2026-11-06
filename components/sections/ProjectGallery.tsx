@@ -103,7 +103,7 @@ export default function ProjectGallery({ number = "001" }: { number?: string }) 
   const [activeFilter, setActiveFilter] = useState("Featured")
   const [isModalOpen, setIsModalOpen] = useState(false)
 
-  // Filter projects for main page grid (top 4 limit)
+  // Full list of projects belonging to the active filter
   const categoryProjects = useMemo(() => {
     if (activeFilter === "Featured") {
       return projects.filter((project) => project.featured)
@@ -111,18 +111,20 @@ export default function ProjectGallery({ number = "001" }: { number?: string }) 
     return projects.filter((project) => project.category === activeFilter)
   }, [activeFilter])
 
-  // Full list to display in the modal view (All projects if Featured, or filtered category)
-  const modalProjects = useMemo(() => {
-    if (activeFilter === "Featured") {
-      return projects
-    }
-    return projects.filter((project) => project.category === activeFilter)
-  }, [activeFilter])
-
+  // Limit main page view to 4 items maximum
   const visibleProjects = useMemo(() => {
     return categoryProjects.slice(0, 4)
   }, [categoryProjects])
 
+  // Full dataset visible inside the modal
+  const modalProjects = useMemo(() => {
+    if (activeFilter === "Featured") {
+      return projects
+    }
+    return categoryProjects
+  }, [activeFilter, categoryProjects])
+
+  // Show button on "Featured" tab OR whenever a category has more than 4 items
   const showSeeMore = activeFilter === "Featured" || categoryProjects.length > 4
 
   const seeMoreLabel =
