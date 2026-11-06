@@ -12,7 +12,6 @@ export default function Navbar() {
     const sectionIds = ["projects", "about", "experience", "contact"]
 
     const handleScroll = () => {
-      // Clear active section highlighting when scrolled near the top of Hero section
       if (window.scrollY < 250) {
         setActiveSection("")
       }
@@ -72,12 +71,7 @@ export default function Navbar() {
         />
       )}
       <header className="topbar">
-        <a
-          className="brand"
-          href="#top"
-          aria-label="Barik David Boley, back to top"
-        >
-          <span className="brand-mark">B</span>
+        <a className="brand" href="#top" aria-label="Barik David Boley, back to top">
           <span>BARIK DAVID BOLEY</span>
         </a>
 

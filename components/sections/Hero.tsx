@@ -35,7 +35,7 @@ export default function Hero() {
             target="_blank"
             rel="noreferrer"
           >
-            <Icon name="code" /> GitHub
+            <Icon name="github" /> GitHub
           </a>
           <a
             className="primary-button"

@@ -20,7 +20,7 @@ export default function Home() {
           <ExperienceTimeline number="003" />
         </div>
 
-        <ContactSection />
+        <ContactSection number="004"/>
       </main>
 
       <Footer />
