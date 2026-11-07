@@ -27,27 +27,6 @@
   font-size: 13px;
 }
 
-.contact-button {
-  display: flex;
-  min-height: 48px;
-  flex: 0 0 auto;
-  align-items: center;
-  gap: 10px;
-  border-radius: 4px;
-  background: var(--blue);
-  padding: 0 18px;
-  color: #06131f;
-  font-size: 12px;
-  font-weight: 700;
-  text-decoration: none;
-  transition: background 180ms ease, transform 180ms ease;
-}
-
-.contact-button:hover {
-  background: var(--blue-light);
-  transform: translateY(-2px);
-}
-
 .contact-actions {
   display: flex;
   flex-direction: column;

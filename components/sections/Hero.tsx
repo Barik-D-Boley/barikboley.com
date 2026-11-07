@@ -1,6 +1,7 @@
 'use client';
 
 import Icon from "@/components/Icon"
+import Button from '../ui/Buttons';
 
 export default function Hero() {
   return (
@@ -21,30 +22,30 @@ export default function Hero() {
           Student @ BYU-Idaho <i /> Expected graduation: April 2029
         </p>
         <div className="hero-actions">
-          <a
-            className="primary-button"
+          <Button
+            variant="primary"
             href="/Barik_Boley_Resume.pdf"
             target="_blank"
             rel="noreferrer"
           >
             <Icon name="download" /> Resume (PDF)
-          </a>
-          <a
-            className="primary-button"
+          </Button>
+          <Button
+            variant="primary"
             href="https://github.com/Barik-D-Boley"
             target="_blank"
             rel="noreferrer"
           >
             <Icon name="github" /> GitHub
-          </a>
-          <a
-            className="primary-button"
+          </Button>
+          <Button
+            variant="primary"
             href="https://www.linkedin.com/in/barik-boley"
             target="_blank"
             rel="noreferrer"
           >
             <Icon name="linkedin" /> LinkedIn
-          </a>
+          </Button>
         </div>
       </div>
       <div className="hero-metric" aria-hidden="true">

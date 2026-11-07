@@ -15,6 +15,11 @@
 @import "./styles/sections/contact.css";
 @import "./styles/sections/media-queries.css";
 
+/* UI Elements */
+@import "./styles/ui/panel.css";
+@import "./styles/ui/section-header.css";
+@import "./styles/ui/buttons.css";
+
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {

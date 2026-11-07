@@ -1,0 +1,20 @@
+.panel {
+  border: 1px solid var(--line);
+  border-radius: 7px;
+  background:
+    linear-gradient(145deg, rgba(255, 255, 255, 0.018), transparent 50%),
+    var(--panel);
+  box-shadow: 0 18px 55px rgba(2, 8, 23, 0.2);
+}
+
+.projects-panel,
+.archive-panel {
+  padding: clamp(22px, 3vw, 38px);
+}
+
+.panel h2 {
+  margin-top: 7px;
+  font-size: clamp(1.25rem, 2vw, 1.75rem);
+  font-weight: 800;
+  letter-spacing: -0.035em;
+}

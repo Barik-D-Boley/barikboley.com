@@ -1,8 +1,10 @@
+import Panel from '../ui/Panel';
+import SectionHeader from '../ui/SectionHeader';
+
 export default function AboutSection({ number = "001" }: { number?: string }) {
   return (
-    <section className="panel about-panel" id="about">
-      <div className="section-kicker">Profile / {number}</div>
-      <h2>ABOUT ME</h2>
+    <Panel className="about-panel" id="about">
+      <SectionHeader eyebrow={`Profile / ${number}`} title="ABOUT ME" />
       <p className="intro">
         I’m a mechanical engineering student and software developer who
         enjoys building systems that move seamlessly between real-world
@@ -28,6 +30,6 @@ export default function AboutSection({ number = "001" }: { number?: string }) {
           <dd>Design + Automation</dd>
         </div>
       </dl>
-    </section>
+    </Panel>
   )
 }

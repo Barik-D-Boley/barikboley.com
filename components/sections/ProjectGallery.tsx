@@ -2,6 +2,9 @@
 
 import { useEffect, useMemo, useState } from "react"
 import { projects } from "@/data/projects"
+import Panel from '../ui/Panel';
+import SectionHeader from '../ui/SectionHeader';
+import Button from '../ui/Buttons';
 
 const filters = [
   "Featured",
@@ -103,7 +106,6 @@ export default function ProjectGallery({ number = "001" }: { number?: string }) 
   const [activeFilter, setActiveFilter] = useState("Featured")
   const [isModalOpen, setIsModalOpen] = useState(false)
 
-  // Full list of projects belonging to the active filter
   const categoryProjects = useMemo(() => {
     if (activeFilter === "Featured") {
       return projects.filter((project) => project.featured)
@@ -111,12 +113,10 @@ export default function ProjectGallery({ number = "001" }: { number?: string }) 
     return projects.filter((project) => project.category === activeFilter)
   }, [activeFilter])
 
-  // Limit main page view to 4 items maximum
   const visibleProjects = useMemo(() => {
     return categoryProjects.slice(0, 4)
   }, [categoryProjects])
 
-  // Full dataset visible inside the modal
   const modalProjects = useMemo(() => {
     if (activeFilter === "Featured") {
       return projects
@@ -124,13 +124,8 @@ export default function ProjectGallery({ number = "001" }: { number?: string }) 
     return categoryProjects
   }, [activeFilter, categoryProjects])
 
-  // Show button on "Featured" tab OR whenever a category has more than 4 items
   const showSeeMore = activeFilter === "Featured" || categoryProjects.length > 4
-
-  const seeMoreLabel =
-    activeFilter === "Featured"
-      ? "View All Projects"
-      : `See More ${activeFilter} Projects`
+  const seeMoreLabel = activeFilter === "Featured" ? "View All Projects" : `See More ${activeFilter} Projects`
 
   useEffect(() => {
     if (isModalOpen) {
@@ -149,36 +144,24 @@ export default function ProjectGallery({ number = "001" }: { number?: string }) 
   }, [isModalOpen])
 
   return (
-    <section className="panel projects-panel" id="projects">
-      <div className="section-header">
-        <div>
-          <div className="section-kicker">Selected work / {number}</div>
-          <h2>PROJECT GALLERY</h2>
-        </div>
+    <Panel className="projects-panel" id="projects">
+      <SectionHeader eyebrow={`Selected work / ${number}`} title="PROJECT GALLERY">
         <span className="project-count">
           {categoryProjects.length.toString().padStart(2, "0")} SHOWING
         </span>
-      </div>
+      </SectionHeader>
 
-      <div
-        className="filter-row"
-        role="group"
-        aria-label="Filter projects"
-      >
+      <div className="filter-row" role="group" aria-label="Filter projects">
         {filters.map((filter) => (
-          <button
-            className={
-              activeFilter === filter
-                ? "filter-button active"
-                : "filter-button"
-            }
+          <Button
+            variant="filter"
+            className={activeFilter === filter ? "active" : ""}
             key={filter}
             onClick={() => setActiveFilter(filter)}
-            type="button"
             aria-pressed={activeFilter === filter}
           >
             {filter}
-          </button>
+          </Button>
         ))}
       </div>
 
@@ -209,13 +192,9 @@ export default function ProjectGallery({ number = "001" }: { number?: string }) 
 
       {showSeeMore && (
         <div className="see-more-row">
-          <button
-            type="button"
-            className="see-more-button"
-            onClick={() => setIsModalOpen(true)}
-          >
+          <Button variant="see-more" onClick={() => setIsModalOpen(true)}>
             {seeMoreLabel}
-          </button>
+          </Button>
         </div>
       )}
 
@@ -223,9 +202,7 @@ export default function ProjectGallery({ number = "001" }: { number?: string }) 
         <div
           className="modal-backdrop"
           onClick={(e) => {
-            if (e.target === e.currentTarget) {
-              setIsModalOpen(false)
-            }
+            if (e.target === e.currentTarget) setIsModalOpen(false)
           }}
           role="dialog"
           aria-modal="true"
@@ -245,16 +222,7 @@ export default function ProjectGallery({ number = "001" }: { number?: string }) 
                 onClick={() => setIsModalOpen(false)}
                 aria-label="Close modal"
               >
-                <svg
-                  width="18"
-                  height="18"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                >
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                   <line x1="18" y1="6" x2="6" y2="18" />
                   <line x1="6" y1="6" x2="18" y2="18" />
                 </svg>
@@ -262,25 +230,17 @@ export default function ProjectGallery({ number = "001" }: { number?: string }) 
             </div>
 
             <div className="modal-body">
-              <div
-                className="filter-row modal-filter-row"
-                role="group"
-                aria-label="Filter projects in modal"
-              >
+              <div className="filter-row modal-filter-row" role="group">
                 {filters.map((filter) => (
-                  <button
-                    className={
-                      activeFilter === filter
-                        ? "filter-button active"
-                        : "filter-button"
-                    }
+                  <Button
+                    variant="filter"
+                    className={activeFilter === filter ? "active" : ""}
                     key={filter}
                     onClick={() => setActiveFilter(filter)}
-                    type="button"
                     aria-pressed={activeFilter === filter}
                   >
                     {filter}
-                  </button>
+                  </Button>
                 ))}
               </div>
 
@@ -307,6 +267,6 @@ export default function ProjectGallery({ number = "001" }: { number?: string }) 
           </div>
         </div>
       )}
-    </section>
+    </Panel>
   )
 }

@@ -1,3 +1,6 @@
+import Panel from '../ui/Panel';
+import SectionHeader from '../ui/SectionHeader';
+
 const experience = [
   {
     role: "Full-Time Teaching Missionary",
@@ -18,9 +21,9 @@ const experience = [
 
 export default function ExperienceTimeline({ number = "002" }: { number?: string }) {
   return (
-    <section className="panel timeline-panel" id="experience">
-      <div className="section-kicker">Career / {number}</div>
-      <h2>EXPERIENCE TIMELINE</h2>
+    <Panel className="timeline-panel" id="experience">
+      <SectionHeader eyebrow={`Experience / ${number}`} title="EXPERIENCE TIMELINE" />
+      
       <div className="timeline">
         {experience.map((item, index) => (
           <article className="timeline-item" key={item.role}>
@@ -35,6 +38,6 @@ export default function ExperienceTimeline({ number = "002" }: { number?: string
           </article>
         ))}
       </div>
-    </section>
+    </Panel>
   )
 }

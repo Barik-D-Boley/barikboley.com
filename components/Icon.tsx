@@ -2,7 +2,7 @@ type IconName =
   | "arrow"
   | "code"
   | "download"
-  | "gearCode"
+  // | "gearCode"
   | "github"
   | "linkedin"
   | "mail"
