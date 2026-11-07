@@ -3,7 +3,7 @@
   z-index: 50;
   top: 0;
   display: flex;
-  min-height: 72px;
+  min-height: 90px;
   align-items: center;
   justify-content: space-between;
   border-bottom: 1px solid var(--line);
@@ -17,7 +17,7 @@
   align-items: center;
   gap: 12px;
   color: var(--text);
-  font-size: 13px;
+  font-size: 15px;
   font-weight: 800;
   letter-spacing: 0.09em;
   text-decoration: none;
@@ -25,13 +25,13 @@
 
 .brand-mark {
   display: grid;
-  width: 32px;
-  height: 32px;
+  width: 40px;
+  height: 40px;
   place-items: center;
   background: var(--blue);
   box-shadow: 4px 4px 0 rgba(234, 88, 12, 0.8);
   color: #06131f;
-  font-size: 15px;
+  font-size: 18px;
 }
 
 .nav-links {
@@ -43,7 +43,7 @@
 .nav-links > a {
   position: relative;
   color: #cbd5e1;
-  font-size: 12px;
+  font-size: 14px;
   font-weight: 600;
   letter-spacing: 0.06em;
   text-decoration: none;
