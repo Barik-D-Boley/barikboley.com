@@ -247,3 +247,9 @@
   background: rgba(15, 23, 42, 0.6);
   backdrop-filter: blur(4px);
 }
+
+.about-timeline-wrapper {
+  display: grid;
+  grid-template-columns: 1.7fr 1fr;
+  gap: 28px;
+}

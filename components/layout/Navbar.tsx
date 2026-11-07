@@ -5,7 +5,7 @@ import Icon from "@/components/Icon"
 
 export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false)
-  const [activeSection, setActiveSection] = useState<string>("")
+  const [activeSections, setActiveSections] = useState<string[]>([])
   const closeMenu = () => setMenuOpen(false)
 
   useEffect(() => {
@@ -13,16 +13,22 @@ export default function Navbar() {
 
     const handleScroll = () => {
       if (window.scrollY < 250) {
-        setActiveSection("")
+        setActiveSections([]) // Updated to plural and array
       }
     }
 
     const observer = new IntersectionObserver(
       (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            setActiveSection(entry.target.id)
-          }
+        setActiveSections((prev) => {
+          let updated = [...prev]
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              if (!updated.includes(entry.target.id)) updated.push(entry.target.id)
+            } else {
+              updated = updated.filter((id) => id !== entry.target.id)
+            }
+          })
+          return updated
         })
       },
       {
@@ -92,28 +98,28 @@ export default function Navbar() {
           <a
             href="#projects"
             onClick={closeMenu}
-            className={activeSection === "projects" ? "active" : ""}
+            className={activeSections.includes("projects") ? "active" : ""}
           >
             Projects
           </a>
           <a
             href="#about"
             onClick={closeMenu}
-            className={activeSection === "about" ? "active" : ""}
+            className={activeSections.includes("about") ? "active" : ""}
           >
             About
           </a>
           <a
             href="#experience"
             onClick={closeMenu}
-            className={activeSection === "experience" ? "active" : ""}
+            className={activeSections.includes("experience") ? "active" : ""}
           >
             Experience
           </a>
           <a
             href="#contact"
             onClick={closeMenu}
-            className={activeSection === "contact" ? "active" : ""}
+            className={activeSections.includes("contact") ? "active" : ""}
           >
             Contact
           </a>
