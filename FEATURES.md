@@ -1,60 +1,89 @@
-# Technical Specification: Feature 6 & Feature 8
+## Feature Spec: Project Popout Modal & Details Architecture
 
-## Overview
-This specification details the exact implementation requirements for:
-1. **Feature 6**: Project Gallery "See More" modal overlay & filtering system.
-2. **Feature 8**: Navbar scroll-spy active state, scroll-margin offsets, and mobile drawer accessibility.
+### 1. Data Schema Updates (`types/project.ts`)
+Extend the single `projects.ts` data structure to support detailed engineering & software popouts:
 
----
+```typescript
+export interface Metric {
+  label: string;
+  value: string;
+}
 
-## 1. File Modification List
-- `components/sections/ProjectGallery.tsx` (Modify for modal overlay and expanded filter state)
-- `components/layout/Navbar.tsx` (Modify for scroll-spy active link highlighting & accessibility)
-- `data/projects.ts` (Ensure project dataset excludes legacy portfolio sites v1/v2)
-- `app/globals.css` (Add modal backdrop styling & sticky header scroll offsets)
+export interface ProjectMedia {
+  url: string;
+  type: 'image' | 'gif';
+  caption?: string;
+}
 
----
+export interface ProjectDetails {
+  problemStatement: string;
+  keyChallenges: string[];
+  systemArchitecture: string;
+  metrics?: Metric[];
+  toolsUsed: string[];
+  media: ProjectMedia[];
+}
 
-## 2. Feature 6 Specification: "See More" Overlay & Filter Logic
+export interface Project {
+  id: string;
+  title: string;
+  tagline: string;
+  description: string;
+  tags: string[];
+  status?: 'planned' | 'under development' | 'maintenance' | 'complete';
+  githubUrl?: string;
+  liveUrl?: string;
+  details?: ProjectDetails;
+}
+```
 
-### Requirements & Behavior
-1. **Default Grid Limit**: Display a maximum of **4 projects** in the primary `ProjectGallery` view.
-2. **Legacy Project Isolation**:
-   - Keep legacy portfolios (`v1.0` and `v2.0`) **strictly out** of `data/projects.ts`. They exist solely as static links in `Footer.tsx`.
-3. **Category Filtering**:
-   - Filter tabs: `["Featured", "FEA & Simulation", "Automation & Tools", "Web & Full-Stack", "Hardware & CAD"]`.
-   - Default tab: `"Featured"`.
-   - Filtering filters the project dataset dynamically across both the main grid and the expanded modal.
-4. **"See More" Trigger Button**:
-   - Render a button at the bottom of `ProjectGallery.tsx` when `categoryProjects.length > 4` or when on `"Featured"`.
-   - Button label: `"See More [Category] Projects"` (or `"View All Projects"` when on `"Featured"`).
-5. **Modal / Darkened Overlay View**:
-   - Clicking **"See More"** sets `isModalOpen = true` and locks background body scrolling (`document.body.style.overflow = 'hidden'`).
-   - Renders a fixed backdrop (`bg-black/80` or `rgba(15, 23, 42, 0.85)` with `backdrop-filter: blur(12px)` and `z-index: 100`).
-   - Displays a centered, scrollable container showcasing **all** projects belonging to the active filter category.
-   - Filter buttons must remain interactive at the top of the modal view so users can switch categories without closing the modal.
-   - Include a sticky **Close (X)** button at the top-right of the modal and support closing via the `Escape` key or clicking the backdrop outside the container.
+### 2. Unified Data File (`data/projects.ts`)
+All projects exist in one array in `data/projects.ts`. Popout data lives inside the optional details object:
 
----
+```typescript
+import { Project } from '@/types/project';
 
-## 3. Feature 8 Specification: Navbar Fixes & Scroll-Spy Active Links
+export const PROJECTS: Project[] = [
+  {
+    id: 'portfolio-v3',
+    title: 'Personal Portfolio',
+    tagline: 'High-performance developer portfolio built with Next.js & TypeScript',
+    description: 'Custom portfolio featuring asymmetric desktop grid layouts and modular CSS styling.',
+    tags: ['Next.js', 'React', 'TypeScript', 'CSS Modules'],
+    status: 'complete',
+    githubUrl: 'https://github.com/barikboley/portfolio',
+    liveUrl: 'https://barikboley.com',
+    details: {
+      problemStatement: 'Needed a lightweight, pixel-perfect personal showcase without framework bloat.',
+      keyChallenges: [
+        'Configuring multi-active Intersection Observer states for side-by-side desktop grid columns.',
+        'Ensuring zero-layout-shift responsive stacking on mobile viewports.'
+      ],
+      systemArchitecture: 'Next.js App Router architecture utilizing modular layout CSS and custom stateful navbar hooks.',
+      metrics: [
+        { label: 'Lighthouse Score', value: '99/100' },
+        { label: 'Build Time', value: '< 1.5s' }
+      ],
+      toolsUsed: ['Next.js 14', 'TypeScript', 'Vanilla CSS Modules', 'Vercel'],
+      media: [
+        { url: '/images/projects/portfolio-main.png', type: 'image', caption: 'Desktop Layout View' },
+        { url: '/images/projects/portfolio-mobile.png', type: 'image', caption: 'Mobile Responsive Stacking' }
+      ]
+    }
+  }
+];
+```
 
-### Requirements & Behavior
-1. **Active Link Highlighting (Scroll-Spy)**:
-   - Implement an `IntersectionObserver` in `Navbar.tsx` (or a custom hook `useScrollSpy`) tracking section IDs: `['about', 'experience', 'projects', 'contact']`.
-   - Add an `.active` class or styled indicator to the link corresponding to the section currently visible in the middle of the viewport.
-2. **Smooth Scroll & Header Offset**:
-   - Add `scroll-margin-top: 80px` (or `scroll-padding-top: 80px` on `html`) to section containers `#about`, `#experience`, `#projects`, and `#contact` in CSS.
-   - Ensure clicking topbar links smoothly scrolls to the section header without being obscured by the 72px sticky navbar.
-3. **Mobile Menu Enhancements**:
-   - Auto-close the mobile menu drawer whenever any navigation link is clicked.
-   - Add a backdrop click listener and an `Escape` key listener to dismiss the mobile menu.
-
----
-
-## 4. Acceptance Criteria & Self-Verification
-Before completing the task, run the following verification steps:
-1. Run `npm run build` to verify there are zero TypeScript compiler errors or missing props.
-2. Verify that clicking "See More" opens a dark backdrop overlay centered on screen with scrollable cards.
-3. Verify that changing filter tabs inside the modal updates displayed projects without breaking state.
-4. Verify that scrolling down the main page dynamically updates the active link highlight in the top navigation bar.
+### 3. Component Spec (`components/ui/ProjectModal.tsx`)
+Layout & Behavior Guidelines for Coding Agent:
+- **State Management:** Control modal visibility using local parent React state (e.g., `const [selectedProject, setSelectedProject] = useState<Project null |>(null)`).
+- **Triggering:** Entire card click opens modal. Direct GitHub/Demo links on card stay clickable independently via `e.stopPropagation()`.
+- **Keyboard Accessibility:** Modal closes on `Esc` key press or clicking outside container backdrop. Disable background body scroll (`overflow: hidden`) when modal is open.
+- **Hero + Thumbnail Gallery:** Render primary selected image/GIF in main container. Render horizontal thumbnail gallery underneath; clicking thumbnail swaps hero image.
+- **Sub-sections & Data Fallbacks:** Gracefully omit sub-sections if their corresponding field is missing or empty (e.g., if `details`, `metrics`, or `media` are undefined) without throwing runtime errors or rendering blank UI containers. When present, display up to 4 distinct styled sub-sections:
+  1. Problem Statement
+  2. Key Challenges (bulleted list)
+  3. System Architecture
+  4. Relevant Metrics (styled grid of stat cards/badges)
+- **Action CTAs:** Prominent "View Repository on GitHub" and "Live Demo" buttons located in header and footer.
+- **Styling:** Match site theme (`bg-[#131B2E]`, `border-sky-500/20`, dark blurred backdrop, cyan accents, monospace tag badges).

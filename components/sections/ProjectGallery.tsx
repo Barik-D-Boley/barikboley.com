@@ -2,9 +2,12 @@
 
 import { useEffect, useMemo, useState } from "react"
 import { projects } from "@/data/projects"
+import { Project } from "@/types/project"
 import Panel from '../ui/Panel';
 import SectionHeader from '../ui/SectionHeader';
 import Button from '../ui/Buttons';
+import ProjectModal from '../ui/ProjectModal';
+import Icon from '../Icon';
 
 const filters = [
   "Featured",
@@ -104,7 +107,8 @@ function ProjectVisual({ variant }: { variant: string }) {
 
 export default function ProjectGallery({ number = "001" }: { number?: string }) {
   const [activeFilter, setActiveFilter] = useState("Featured")
-  const [isModalOpen, setIsModalOpen] = useState(false)
+  const [isCatalogModalOpen, setIsCatalogModalOpen] = useState(false)
+  const [selectedProject, setSelectedProject] = useState<Project | null>(null)
 
   const categoryProjects = useMemo(() => {
     if (activeFilter === "Featured") {
@@ -128,11 +132,11 @@ export default function ProjectGallery({ number = "001" }: { number?: string }) 
   const seeMoreLabel = activeFilter === "Featured" ? "View All Projects" : `See More ${activeFilter} Projects`
 
   useEffect(() => {
-    if (isModalOpen) {
+    if (isCatalogModalOpen) {
       document.body.style.overflow = "hidden"
       const handleKeyDown = (e: KeyboardEvent) => {
         if (e.key === "Escape") {
-          setIsModalOpen(false)
+          setIsCatalogModalOpen(false)
         }
       }
       window.addEventListener("keydown", handleKeyDown)
@@ -141,7 +145,7 @@ export default function ProjectGallery({ number = "001" }: { number?: string }) 
         window.removeEventListener("keydown", handleKeyDown)
       }
     }
-  }, [isModalOpen])
+  }, [isCatalogModalOpen])
 
   return (
     <Panel className="projects-panel" id="projects">
@@ -172,11 +176,26 @@ export default function ProjectGallery({ number = "001" }: { number?: string }) 
 
       <div className="projects-grid">
         {visibleProjects.map((project) => (
-          <article className="project-card" key={project.title}>
+          <article 
+            className="project-card cursor-pointer group hover:border-sky-500/60 transition-all duration-200"
+            key={project.title}
+            onClick={() => setSelectedProject(project)}
+            tabIndex={0}
+            role="button"
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                setSelectedProject(project);
+              }
+            }}
+          >
             <ProjectVisual variant={project.art} />
             <div className="project-body">
-              <div className="project-index">
-                PRJ / {project.number}
+              <div className="project-index flex items-center justify-between">
+                <span>PRJ / {project.number}</span>
+                <span className="text-[10px] font-mono text-sky-400 group-hover:underline">
+                  View Details →
+                </span>
               </div>
               <h3>{project.title}</h3>
               <p>{project.description}</p>
@@ -185,6 +204,35 @@ export default function ProjectGallery({ number = "001" }: { number?: string }) 
                   <span key={tag}>{tag}</span>
                 ))}
               </div>
+
+              {(project.githubUrl || project.liveUrl || project.demoUrl) && (
+                <div className="flex items-center gap-4 mt-4 pt-3 border-t border-slate-700/40">
+                  {project.githubUrl && (
+                    <a
+                      href={project.githubUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      onClick={(e) => e.stopPropagation()}
+                      className="text-xs font-mono text-slate-400 hover:text-sky-400 flex items-center gap-1.5 transition-colors"
+                    >
+                      <Icon name="github" size={14} />
+                      <span>Code</span>
+                    </a>
+                  )}
+                  {(project.liveUrl || project.demoUrl) && (
+                    <a
+                      href={project.liveUrl || project.demoUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      onClick={(e) => e.stopPropagation()}
+                      className="text-xs font-mono text-slate-400 hover:text-sky-400 flex items-center gap-1.5 transition-colors"
+                    >
+                      <Icon name="arrow" size={14} />
+                      <span>Live</span>
+                    </a>
+                  )}
+                </div>
+              )}
             </div>
           </article>
         ))}
@@ -192,17 +240,18 @@ export default function ProjectGallery({ number = "001" }: { number?: string }) 
 
       {showSeeMore && (
         <div className="see-more-row">
-          <Button variant="see-more" onClick={() => setIsModalOpen(true)}>
+          <Button variant="see-more" onClick={() => setIsCatalogModalOpen(true)}>
             {seeMoreLabel}
           </Button>
         </div>
       )}
 
-      {isModalOpen && (
+      {/* Catalog Modal */}
+      {isCatalogModalOpen && (
         <div
           className="modal-backdrop"
           onClick={(e) => {
-            if (e.target === e.currentTarget) setIsModalOpen(false)
+            if (e.target === e.currentTarget) setIsCatalogModalOpen(false)
           }}
           role="dialog"
           aria-modal="true"
@@ -219,7 +268,7 @@ export default function ProjectGallery({ number = "001" }: { number?: string }) 
               <button
                 type="button"
                 className="modal-close-button"
-                onClick={() => setIsModalOpen(false)}
+                onClick={() => setIsCatalogModalOpen(false)}
                 aria-label="Close modal"
               >
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -246,11 +295,26 @@ export default function ProjectGallery({ number = "001" }: { number?: string }) 
 
               <div className="projects-grid modal-projects-grid">
                 {modalProjects.map((project) => (
-                  <article className="project-card" key={project.title}>
+                  <article 
+                    className="project-card cursor-pointer group hover:border-sky-500/60 transition-all duration-200"
+                    key={project.title}
+                    onClick={() => setSelectedProject(project)}
+                    tabIndex={0}
+                    role="button"
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        setSelectedProject(project);
+                      }
+                    }}
+                  >
                     <ProjectVisual variant={project.art} />
                     <div className="project-body">
-                      <div className="project-index">
-                        PRJ / {project.number}
+                      <div className="project-index flex items-center justify-between">
+                        <span>PRJ / {project.number}</span>
+                        <span className="text-[10px] font-mono text-sky-400 group-hover:underline">
+                          View Details →
+                        </span>
                       </div>
                       <h3>{project.title}</h3>
                       <p>{project.description}</p>
@@ -259,6 +323,35 @@ export default function ProjectGallery({ number = "001" }: { number?: string }) 
                           <span key={tag}>{tag}</span>
                         ))}
                       </div>
+
+                      {(project.githubUrl || project.liveUrl || project.demoUrl) && (
+                        <div className="flex items-center gap-4 mt-4 pt-3 border-t border-slate-700/40">
+                          {project.githubUrl && (
+                            <a
+                              href={project.githubUrl}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              onClick={(e) => e.stopPropagation()}
+                              className="text-xs font-mono text-slate-400 hover:text-sky-400 flex items-center gap-1.5 transition-colors"
+                            >
+                              <Icon name="github" size={14} />
+                              <span>Code</span>
+                            </a>
+                          )}
+                          {(project.liveUrl || project.demoUrl) && (
+                            <a
+                              href={project.liveUrl || project.demoUrl}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              onClick={(e) => e.stopPropagation()}
+                              className="text-xs font-mono text-slate-400 hover:text-sky-400 flex items-center gap-1.5 transition-colors"
+                            >
+                              <Icon name="arrow" size={14} />
+                              <span>Live</span>
+                            </a>
+                          )}
+                        </div>
+                      )}
                     </div>
                   </article>
                 ))}
@@ -267,6 +360,12 @@ export default function ProjectGallery({ number = "001" }: { number?: string }) 
           </div>
         </div>
       )}
+
+      {/* Popout Details Modal */}
+      <ProjectModal
+        project={selectedProject}
+        onClose={() => setSelectedProject(null)}
+      />
     </Panel>
   )
 }
