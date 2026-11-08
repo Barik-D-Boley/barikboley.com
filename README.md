@@ -1,63 +1,195 @@
-# Personal Portfolio Website
+# Barik David Boley — Portfolio
 
-## Purpose of the Project
-This portfolio website bridges the gap between my Mechanical Engineering background and Software Development skills. Its primary purpose is to serve as a high-performance, easily navigable display of my projects tailored for recruiters and hiring managers. 
+![Next.js](https://img.shields.io/badge/Next.js-16-black?style=flat-square&logo=next.js)
+![React](https://img.shields.io/badge/React-19-blue?style=flat-square&logo=react)
+![TypeScript](https://img.shields.io/badge/TypeScript-5.0-3178C6?style=flat-square&logo=typescript)
+![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-4.0-38BDF8?style=flat-square&logo=tailwindcss)
+![Deployed on Vercel](https://img.shields.io/badge/Vercel-Deployment-000000?style=flat-square&logo=vercel)
 
-The site is designed with a "project-first" mentality, immediately presenting my top-tier resume projects to reduce friction for time-crunched visitors, while also providing a robust, filterable archive for my extended technical and hardware projects.
+A project-first portfolio presenting my dual focus in **Mechanical Engineering and Software Development**. It connects physical engineering work—CAD, simulation, and prototyping—with software projects in automation and web development. I am a student at **BYU-Idaho**, expected to graduate in **April 2029**.
 
-## Tech Stack & Tools
-Based on the goal of ensuring maximum reliability when working with AI coding agents (specifically Flash models), this project utilizes an Agent-Optimized Tech Stack:
-* **Frontend Framework:** Next.js (App Router)
-* **Styling:** Tailwind CSS
-* **Data Management:** Centralized JSON Schema (`/data/portfolio.json`) for all text, project details, and links.
-* **Icons:** Lucide React (or similar standard icon library)
-* **Theme Management:** `next-themes` for Dark/Light mode toggling
-* **Contact Form:** Serverless (Web3Forms or Formspree)
+## Live links and contact
 
-## Core Functionality
-* **Project-First Layout:** A home page that immediately highlights "Tier 1" resume projects (e.g., Anti-Theft Security System, Automated Receipt Parser) before the 'About' section.
-* **Hover-to-Play Media:** Static images for project cards by default, switching to looping GIFs (like CAD moving parts) only on mouse hover to keep the UI clean.
-* **Dynamic Archive Filter:** A static grid layout for extended projects with a functional category filter (Mechanical/CAD, Data/Python, Web Dev, Hardware).
-* **Legacy Portfolios:** Easter egg links in the footer pointing to V1/V2 of past portfolio websites to showcase continuous growth.
-* **Optimized Assets:** Utilization of Next.js `<Image>` components for blazing-fast load times.
+- **Live site:** [barikboley.com](https://barikboley.com)
+- **GitHub:** [github.com/Barik-D-Boley](https://github.com/Barik-D-Boley)
+- **LinkedIn:** [linkedin.com/in/barik-boley](https://www.linkedin.com/in/barik-boley)
+- **Resume:** [Download the PDF](./public/Barik_Boley_Resume.pdf)
+- **Email:** [barik.boley@gmail.com](mailto:barik.boley@gmail.com)
 
-## Development Roadmap
+## Core feature architecture
 
-### [1] Planning & Setup
-- [x] Define purpose of project
-- [x] Determine project languages (Next.js, Tailwind)
-- [x] Determine what pages the website will have
-- [x] Figure out other functionality the project will have
-- [x] Set development roadmap
-- [x] Generate README
+The site is a single-page portfolio assembled in `app/page.tsx` from reusable layout, section, and UI components.
 
-### [2] Website Design
-- [ ] Determine color palette (Technical, mechanical aesthetic)
-- [ ] Design project presentation (UI cards, static grid, hover-effects)
-- [ ] Generate/Gather images for all pages and specific features
-- [ ] Add section/links for old portfolio websites (Easter egg in footer)
+- **Hero and status box:** Introduces the Mechanical Engineering and Software Development focus, BYU-Idaho graduation date, resume and social calls to action, and availability status.
+- **Project gallery:** Shows featured work first, with filters for **FEA & Simulation**, **Automation & Tools**, **Web & Full-Stack**, and **Hardware & CAD**. The featured view and category views show up to four cards at a time; the catalog modal provides access to the full list.
+- **Project popout modal:** Selecting a card opens project information, available GitHub/demo links, and a hero-media viewer with thumbnails to switch between images or GIFs. The four narrative sections—**Problem Statement**, **Key Challenges**, **System Architecture**, and **Key Metrics**—are rendered when their data is present. Tools and technologies are also listed when available.
+- **About and experience:** The About profile and numbered experience timeline sit together in a side-by-side content layout on wider screens and adapt for smaller screens.
+- **Contact and footer:** Provides an email call to action, social links, and archive links to earlier portfolio versions.
 
-### [3] Execution
-- [ ] Set up Next.js repository and local environment
-- [ ] Draft the central `data/portfolio.json` schema
-- [ ] Connect ChatGPT / AI coding agents (set up `AGENTS.md` or `.cursorrules`)
-- [ ] Code one page or feature at a time (Hero, Featured Projects, Archive, Contact)
-- [ ] Swap JSON placeholder text with final written content
+## Tech stack and tooling
 
-### [4] Deployment & Testing
-- [ ] Verify responsive mobile-first design
-- [ ] Ensure all Next.js build commands pass without errors
-- [ ] Connect serverless contact form
-- [ ] Deploy via Vercel or GitHub Pages
+- **Next.js 16** with the App Router
+- **React 19** (React 18+ compatible component patterns)
+- **TypeScript**
+- **Tailwind CSS 4** for utility styling, alongside the site's section-specific CSS
+- **Vercel** for hosting and deployment
+- **Lucide React** for icons
+- **ESLint** with the Next.js Core Web Vitals and TypeScript configurations
 
-## How to Run Locally
-To run this project on your local machine for development:
+The installed versions are defined in `package.json`. The project currently uses React 19; React 18+ describes the requested compatibility level, not the version pinned in this repository.
+
+## Repository structure
+
+```text
+.
+├── app/
+│   ├── layout.tsx                 # Root layout, document metadata, and fonts
+│   ├── page.tsx                   # Home page composition and section order
+│   ├── globals.css                # Tailwind imports, theme tokens, and CSS imports
+│   └── styles/
+│       ├── layout/                # Navigation and footer styles
+│       ├── sections/              # Hero, profile, timeline, gallery, contact styles
+│       │   └── project-gallery/   # Gallery layout and project illustration styles
+│       └── ui/                    # Shared panel, button, and section-heading styles
+├── components/
+│   ├── layout/                    # Navbar and Footer
+│   ├── sections/                  # Hero, ProjectGallery, About, Experience, Contact
+│   ├── ui/                        # Buttons, panels, headings, and project modal
+│   └── Icon.tsx                   # Shared icon wrapper
+├── data/
+│   └── projects.ts                # Portfolio project content and details
+├── types/
+│   └── project.ts                 # Category, Project, ProjectDetails, and media types
+├── lib/
+│   └── utils.ts                   # Shared utility helpers
+├── public/
+│   └── Barik_Boley_Resume.pdf     # Downloadable resume; add project media here
+├── package.json                   # Dependencies and npm scripts
+├── eslint.config.mjs              # ESLint configuration
+├── next.config.ts                 # Next.js configuration
+├── postcss.config.mjs             # PostCSS configuration
+└── tsconfig.json                  # TypeScript configuration and path aliases
+```
+
+## Local setup and build commands
+
+Use a supported Node.js LTS release and npm. From the repository root, install dependencies, start the development server, and create a production build:
 
 ```bash
-# Install dependencies
 npm install
-
-# Run the development server
 npm run dev
 ```
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+
+Open [http://localhost:3000](http://localhost:3000). Stop the development server with `Ctrl+C`, then run:
+
+```bash
+npm run build
+```
+
+To run the ESLint checks:
+
+```bash
+npm run lint
+```
+
+To smoke-test the production build locally after it succeeds:
+
+```bash
+npm run start
+```
+
+The production server is available at [http://localhost:3000](http://localhost:3000). Stop it with `Ctrl+C`.
+
+## Data schema and content guide
+
+Project content lives in `data/projects.ts` as an exported `Project[]`, with its shape defined by the `Project` and `ProjectDetails` interfaces in `types/project.ts`. Update the data rather than duplicating project copy in the gallery or modal components.
+
+### Project fields
+
+| Field | Required | Description |
+| --- | --- | --- |
+| `id` | No | Optional stable project identifier. |
+| `title` | Yes | Project name. |
+| `tagline` | No | Short summary used in project detail views; falls back to `description`. |
+| `description` | Yes | Card description and fallback project summary. |
+| `tags` | Yes | Short labels shown on project cards and used as a fallback technology list. |
+| `category` | Yes | One of the `Category` values below; drives category filtering. |
+| `art` | Yes | Card illustration variant: `"cad"`, `"data"`, `"hardware"`, or `"web"`. |
+| `number` | Yes | Display index, typically a zero-padded string such as `"01"`. |
+| `featured` | No | Set to `true` to include the project in the default Featured view. |
+| `status` | No | `"planned"`, `"under development"`, `"maintenance"`, or `"complete"`. |
+| `githubUrl`, `liveUrl`, `demoUrl` | No | Optional repository, live-site, or demo links. |
+| `details` | No | Additional content for the project popout modal. |
+
+`Category` is defined as:
+
+```ts
+type Category =
+  | "FEA & Simulation"
+  | "Automation & Tools"
+  | "Web & Full-Stack"
+  | "Hardware & CAD";
+```
+
+**Featured** is a gallery view, not a project category. Set `featured: true` to include a project there.
+
+### Project details
+
+`ProjectDetails` supports the following fields:
+
+- `problemStatement`: project motivation or problem being addressed.
+- `keyChallenges`: an array of implementation challenges.
+- `systemArchitecture`: a concise explanation of the system or workflow.
+- `metrics`: optional array of `{ label, value }` objects for measurable results.
+- `toolsUsed`: technologies and tools used; when present, these populate the modal's tools section instead of the card tags.
+- `media`: an array of `{ url, type, caption? }` objects. `type` is `"image"` or `"gif"`. The first item is initially displayed; additional items appear as selectable thumbnails.
+
+Place local assets in `public/` and reference them with a URL from the public root, such as `"/images/projects/example.png"`. The modal omits empty optional detail sections. Keep content accurate and ensure each local media URL resolves to an existing asset.
+
+### Example project entry
+
+```ts
+{
+  id: "sample-project",
+  title: "Sample Project",
+  tagline: "A one-line summary of the work.",
+  description: "What the project does and why it matters.",
+  tags: ["TypeScript", "Automation"],
+  category: "Automation & Tools",
+  art: "data",
+  number: "05",
+  featured: false,
+  status: "complete",
+  githubUrl: "https://github.com/your-account/sample-project",
+  details: {
+    problemStatement: "Describe the problem this project solves.",
+    keyChallenges: ["Describe a key engineering or implementation challenge."],
+    systemArchitecture: "Summarize the main components and how they work together.",
+    metrics: [{ label: "Processing time", value: "< 2s" }],
+    toolsUsed: ["TypeScript", "Node.js"],
+    media: [
+      {
+        url: "/images/projects/sample-project.png",
+        type: "image",
+        caption: "Sample project overview",
+      },
+    ],
+  },
+}
+```
+
+Add the entry to the `projects` array in `data/projects.ts`. Keep required fields populated, use only the declared category/art/status values, and use unique project identifiers and display numbers where practical.
+
+## Roadmap and verification
+
+Use this checklist when developing or preparing a change for release:
+
+- [ ] Keep project content and its types in sync in `data/projects.ts` and `types/project.ts`.
+- [ ] Verify category filters, Featured selection, and full catalog behavior after changing project entries.
+- [ ] Verify project cards open the correct details, media thumbnails swap the hero media, and optional detail sections handle missing data.
+- [ ] Check navigation, contact and social links, resume download, and legacy portfolio links.
+- [ ] Review the page at desktop and mobile widths, including the side-by-side About/timeline layout.
+- [ ] Run `npm run lint` and `npm run build`; resolve failures before merging or deploying.
+- [ ] After a successful production build, smoke-test with `npm run start` and confirm key page sections and links work.
+
+`npm run build` is the production build and TypeScript/Next.js integration check. `npm run lint` runs ESLint. There is currently no dedicated test script in `package.json`; verify interactive behavior in the browser as part of the release checklist.
