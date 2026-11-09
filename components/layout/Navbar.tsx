@@ -13,7 +13,7 @@ export default function Navbar() {
 
     const handleScroll = () => {
       if (window.scrollY < 250) {
-        setActiveSections([]) // Updated to plural and array
+        setActiveSections([])
       }
     }
 
@@ -69,13 +69,11 @@ export default function Navbar() {
 
   return (
     <>
-      {menuOpen && (
-        <div
-          className="mobile-nav-backdrop"
-          onClick={closeMenu}
-          aria-hidden="true"
-        />
-      )}
+      <div
+        className={`mobile-nav-backdrop${menuOpen ? " is-open" : ""}`}
+        onClick={closeMenu}
+        aria-hidden="true"
+      />
       <header className="topbar">
         <a className="brand" href="#top" aria-label="Barik David Boley, back to top">
           <span>BARIK DAVID BOLEY</span>
@@ -84,7 +82,7 @@ export default function Navbar() {
         <button
           className="menu-button"
           type="button"
-          aria-label="Toggle navigation"
+          aria-label={menuOpen ? "Close navigation" : "Open navigation"}
           aria-expanded={menuOpen}
           onClick={() => setMenuOpen((open) => !open)}
         >

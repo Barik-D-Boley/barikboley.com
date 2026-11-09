@@ -128,12 +128,20 @@ The modal conditionally renders Problem Statement, Key Challenges, System Archit
 
 The details modal has no viewport-height limit or separately scrolling body. The overlay contents flow in one vertical scroll area, with the page behind it locked while the modal is open. The overlay's normal browser scrollbar may be visible; there is no nested modal-body scrollbar or horizontal thumbnail scrollbar.
 
+#### Project gallery and detail media
+
+The gallery renders local project stills as card covers and supports still images and GIFs in the project details modal. Cover selection is shared between cards and the modal: the last marked still image takes precedence, otherwise the first still image is used. Projects without media or with failed card images use a neutral fallback; failed modal media has an explicit unavailable state.
+
+The modal supports thumbnails, previous/next controls, and Left/Right and 1–9 keyboard navigation when multiple media items are available. The project catalog and details modal preserve their existing Escape ordering and scrolling behavior.
+
+Available media for Walmart Receipt Parser and MHTGR Thermal-Mechanical FEA is wired from `public/project-visuals/`. The remaining projects have no matching assets in the repository; adding their visuals is deferred until those assets are available and does not block this implementation.
+
 #### About, experience, contact, and footer
 
 - `components/sections/About.tsx` exports `AboutSection` and renders a profile summary, Eagle Scout background, English/Spanish language statement, and facts for Rexburg, Idaho; English / Spanish; and Design + Automation. It does not show an education fact or a Spanish proficiency level.
 - `components/sections/Experience.tsx` exports `ExperienceTimeline` and renders three numbered entries: Full-Time Teaching Missionary / Community Service (Aug 2023 — Aug 2025); Customer Support Representative / Intern, Venafi (June 2022 — Aug 2023); and Sales Associate / Go Paddle AZ (Apr 2021 — July 2021).
 - `components/sections/Contact.tsx` exports `ContactSection` and renders “LET’S BUILD SOMETHING THAT WORKS.”, supporting copy, and a mailto button for `barik.boley@gmail.com`. GitHub and LinkedIn are not rendered in this section; they are linked from the hero and footer.
-- `components/layout/Footer.tsx` renders “BARIK DAVID BOLEY / PORTFOLIO 2026,” GitHub and LinkedIn links, “DESIGNED WITH PRECISION. BUILT WITH LOGIC.”, and archive links to `/portfolio_1/contact` and `/portfolio_2/home` on `barikboley.com`. The archive links open in new tabs.
+- `components/layout/Footer.tsx` renders the portfolio identity, GitHub and LinkedIn links, and archive links to `/portfolio_1/contact` and `/portfolio_2/home` on `barikboley.com`. The archive links open in new tabs.
 
 ## Data model and current records
 
@@ -229,57 +237,33 @@ npm run start
 
 ## Active work
 
-### Project gallery and detail media
+### Mobile responsiveness and layout polish
 
-**Goal:** Replace the CSS-generated project-card illustrations with real project imagery, and use the same project visuals in the project details modal.
+**Goal:** Improve usability and visual consistency on phones and small tablets while preserving the existing desktop design.
 
 #### Agreed behavior
 
-- Gallery cards use a still cover image; GIFs do not animate in the scrolling gallery.
-- Set `isCover: true` on the chosen still item in `details.media`; it is used for both the card cover and the modal's initial hero visual. When none is marked, the first still image is used. Do not add a separate project-level cover URL.
-- Additional media items appear in the modal thumbnail strip. Previous/next buttons and Left/Right keyboard keys navigate the gallery, wrapping at either end. GIFs may animate in the modal; playback controls are not part of this feature.
-- If a project has no media, or its image fails to load, retain the card layout and show a neutral branded fallback instead of a generated project-specific illustration. The details modal continues to omit its media viewer when there is no media.
-- Store assets locally under `public/` and reference them with root-relative URLs.
-- Support media for all projects, but prioritize adding available visuals to the four featured projects.
+- Audit responsive layouts across the hero, project gallery and filters, project catalog and details modal, About, Experience, Contact, navigation, and footer.
+- Animate the mobile navigation with a fade and slide on open and close. Preserve Escape, backdrop-click, and link-activation closing behavior, keep `aria-expanded` accurate, and respect reduced-motion preferences.
+- Redesign the footer to be minimal and well-aligned. Keep the portfolio identity and GitHub/LinkedIn links; retain the old portfolio links as a small, unobtrusive archive Easter egg. Adapt layout for phones without hiding content by device.
+- Check for clipping, overlap, horizontal overflow, awkward wrapping, cramped spacing, and touch targets that are difficult to use.
+- Preserve the desktop layout and existing interactions unless a responsive fix requires a deliberate change.
 
-#### Existing assets to wire up
+#### Implemented responsive fixes
 
-The following project visuals have been added to `public/project-visuals/`:
-
-- Walmart Receipt Parser: `walmart-receipt-parser/sheets-output.png` and `walmart-receipt-parser/extension-demo.gif`.
-- MHTGR Thermal-Mechanical FEA: `htgr-monlith/monolith_cad_drawing.png`, `htgr-monlith/monolith_cubit_mesh.png`, `htgr-monlith/monolith_cubit_mesh_zoomed.png`, `htgr-monlith/monolith_paraview_disp.png`, `htgr-monlith/monolith_paraview_hydro.png`, `htgr-monlith/monolith_paraview_temp.png`, and `htgr-monlith/monolith_paraview_vonmises.png`.
-
-`data/projects.ts` now references these assets. The directory spelling `htgr-monlith` is the existing spelling and is used by those paths.
+- The mobile menu now animates with a visible opacity, slide, and height transition; keyboard Escape, backdrop clicks, and link activation continue to close it.
+- Section headers stack and stay left-aligned on phones. Gallery filters use a consistent two-column layout, with Featured spanning the first row.
+- Mobile menu, filter, modal-close, media-arrow, social, and footer links have larger touch targets. Timeline, project, and archive text has improved small-screen sizing.
+- The footer keeps the identity and socials in a clean layout and presents archive links as secondary content on both phone and desktop.
+- Removed the body's fixed minimum width after testing found horizontal overflow at a 320px viewport.
 
 #### Implementation checklist
 
-- [x] Add optional descriptive alternative text to `ProjectMedia`, use it for the hero image, and give thumbnail buttons accessible names.
-- [x] Add optional `isCover` to `ProjectMedia` and share the cover-selection rule between project cards and the initial modal image.
-- [x] Update `data/projects.ts` to remove stale `/images/projects/...` URLs and reference the available local project assets.
-- [x] Wire available assets for Walmart Receipt Parser and MHTGR Thermal-Mechanical FEA. Keep the receipt-parser GIF after its still cover for modal viewing only.
-- [ ] Add matching visuals for the other three featured projects when those assets are available; do not invent or reuse unrelated images.
-- [ ] After featured coverage is addressed, add matching visuals for the remaining non-featured projects when assets are available.
-- [x] Keep media support in place for all seven projects; projects without media use the branded card fallback.
-- [x] Update `components/sections/ProjectGallery.tsx` to render the selected still cover and remove the project-specific generated artwork.
-- [x] Add image-load failure handling so a broken card asset falls back without leaving a broken-image icon or disrupting the card.
-- [x] Add the neutral fallback visual and card image sizing styles under `app/styles/sections/project-gallery/`.
-- [x] Preserve the modal hero-and-clickable-thumbnail behavior and support both still images and GIFs.
-- [x] Add clickable previous/next arrows and keep keyboard arrow navigation; both wrap around the media list.
-- [x] Add `isCover` so project data can choose a still cover independently of gallery order; default to the first still image if none is marked.
-- [x] Ensure Escape closes an open project modal before closing its parent catalog.
-- [x] Show an explicit unavailable state for failed modal media and thumbnail images.
+- [x] Review each page section and interactive surface at phone and small-tablet widths; address confirmed layout issues.
+- [x] Add open/close animation to the mobile navigation and ensure reduced-motion settings minimize or disable it.
+- [x] Redesign footer hierarchy and spacing; keep archive links available but visually secondary on every device.
+- [x] Verify keyboard, touch, and existing navigation behavior remain usable.
+- [x] Check 320px, common phone widths, tablet width, and desktop; verify there is no unintended horizontal scrolling.
+- [x] Run `npm run lint` and `npm run build`, and visually check responsive layouts.
 
-#### Acceptance and verification
-
-- A project's marked still image appears as its card cover and initial modal hero; without a marked item, the first still image is used.
-- Card covers remain still; GIFs are not rendered as card covers and may display in the modal.
-- Clicking modal thumbnails, previous/next arrows, or pressing Left/Right switches the hero image, wrapping at either end; thumbnails wrap without a horizontal scrollbar.
-- In the catalog, Escape closes the selected project modal first and closes the catalog only after the project modal is already closed.
-- A GIF displays in the modal without extra playback controls.
-- Projects without media and media URLs that fail to load show a neutral card fallback; failed modal media displays an explicit unavailable state.
-- Gallery cards have no View Details label or GitHub Code link; any Live link still opens without opening the project modal.
-- Previous/next media arrows use subtle translucent white styling and become more prominent on hover or keyboard focus.
-- The existing project card visuals, filters, catalog, and keyboard activation continue to work.
-- Verify the supplied local asset URLs and responsive card/modal layouts, then run `npm run lint` and `npm run build`.
-
-No separate image host, new image dependency, gallery hover animation, or modal redesign is included in this feature.
+**Files likely involved:** `components/layout/Navbar.tsx`, `components/layout/Footer.tsx`, `app/styles/layout/navbar.css`, `app/styles/layout/footer.css`, `app/styles/sections/media-queries.css`, and any section styles where the audit finds issues.
