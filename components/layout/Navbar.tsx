@@ -76,7 +76,7 @@ export default function Navbar() {
         aria-hidden="true"
       />
       <header className="topbar">
-        <a className="brand" href="#top" aria-label="Barik David Boley, back to top">
+        <a className="brand" href="#top" aria-label="Barik Boley, back to top">
           <Image
             className="brand-logo"
             src="/icon.svg"
@@ -85,7 +85,7 @@ export default function Navbar() {
             height={28}
             priority
           />
-          <span>BARIK DAVID BOLEY</span>
+          <span>BARIK BOLEY</span>
         </a>
 
         <button
