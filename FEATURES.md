@@ -56,8 +56,14 @@ data/
   skills.ts                            # Skill groups and related project IDs
 types/
   project.ts                           # Project and project-detail types
+archive/
+  portfolio-v1/                        # Original legacy v1 source
+  portfolio-v2/                        # Original legacy v2 source
 public/
   Barik_Boley_Resume.pdf
+  legacy/
+    v1/                                # Runtime files for the static legacy site
+    v2/                                # Production build of the legacy React site
   project-visuals/
     walmart-receipt-parser/
       sheets-output.png
@@ -239,6 +245,15 @@ npm run start
 
 ## Completed work
 
+### Legacy portfolio archive
+
+- Kept the original v1 and v2 source trees under `archive/`, outside the publicly served directory.
+- Published the required v1 static runtime files and v2 production build at `/legacy/v1/` and `/legacy/v2/`.
+- Published the original v1 pages (homepage, resume, qualifications, and project gallery) and added only the base-path adjustment needed to host them under `/legacy/v1/`.
+- Configured the v2 production build with the correct asset prefix and router basename; added fallback routing for its client-side pages.
+- Updated the footer archive links and redirects for the non-trailing-slash paths.
+- Disabled v2 source maps in the production build.
+
 ### Skills section
 
 - Added a compact Technical Skills section with Simulation & CAD and Programming & Tools groups, sized to be comparable to the About panel.
@@ -275,16 +290,6 @@ npm run start
 **Files involved:** `components/layout/Navbar.tsx`, `components/layout/Footer.tsx`, `app/styles/layout/navbar.css`, `app/styles/layout/footer.css`, `app/styles/sections/media-queries.css`, and section styles updated during the audit.
 
 ## Active work
-
-### Legacy portfolio archive
-
-**Goal:** Keep the legacy sites available from the footer archive at the requested URLs.
-
-#### Agreed behavior
-
-- Keep the archive links in the footer; do not add a separate homepage section.
-- Link to `https://barikboley.com/legacy/v1` and `https://barikboley.com/legacy/v2`.
-- Inspect available legacy source before deciding how to serve the sites. Keep original source outside `public/`; publish built files under the corresponding public paths or implement routes if needed to serve the requested URLs.
 
 ### Hero opportunity callout and visual
 
@@ -342,7 +347,6 @@ npm run start
 
 ### Implementation checklist
 
-- [ ] Update footer archive links and verify the requested legacy URLs resolve; inspect source and settle the serving approach before publishing legacy files.
 - [ ] Finalize the recruiter callout copy and implement the static icon visual for desktop and mobile.
 - [ ] Assign and display the agreed status on every active project card in both gallery and catalog views.
 - [ ] Update navigation logic so no more than one section can be active at a time.
