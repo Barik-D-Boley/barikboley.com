@@ -2,7 +2,7 @@ export default function Footer() {
   return (
     <footer>
       <div className="footer-left">
-        <span className="footer-brand">BARIK DAVID BOLEY / PORTFOLIO</span>
+        <span className="footer-brand">BARIK BOLEY / PORTFOLIO</span>
         <nav className="legacy-links" aria-label="Previous portfolio versions">
           <span className="legacy-label">ARCHIVE</span>
           <a
