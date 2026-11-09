@@ -13,6 +13,8 @@ export interface ProjectMedia {
   url: string;
   type: 'image' | 'gif';
   caption?: string;
+  alt?: string;
+  isCover?: boolean;
 }
 
 export interface ProjectDetails {
@@ -31,7 +33,6 @@ export interface Project {
   description: string;
   tags: string[];
   category: Category;
-  art: "cad" | "data" | "hardware" | "web";
   number: string;
   featured?: boolean;
   status?: 'planned' | 'under development' | 'maintenance' | 'complete';

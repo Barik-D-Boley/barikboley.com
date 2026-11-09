@@ -10,9 +10,8 @@ export const projects: Project[] = [
       "A mechanically engineered package enclosure combining tamper detection, rapid prototyping, and secure delivery logic.",
     tags: ["CAD", "Inventor", "Prototyping"],
     category: "Hardware & CAD",
-    art: "cad",
     number: "01",
-    featured: true,
+    featured: false,
     status: "complete",
     githubUrl: "https://github.com/barikboley/anti-theft-system",
     details: {
@@ -29,9 +28,7 @@ export const projects: Project[] = [
         { label: "Battery Standby", value: "72+ hours" }
       ],
       toolsUsed: ["Autodesk Inventor", "3D Printing / FDM", "C++", "Arduino / ESP32", "Microcontrollers"],
-      media: [
-        { url: "/images/projects/portfolio-main.png", type: "image", caption: "CAD Enclosure & Assembly View" }
-      ]
+      media: []
     }
   },
   {
@@ -42,7 +39,6 @@ export const projects: Project[] = [
       "2-step coupled OpenMC–MOOSE thermo-mechanical simulation of an HTGR microreactor TRISO unit cell.",
     tags: ["MOOSE Framework", "Python", "Multiphysics", "FEA"],
     category: "FEA & Simulation",
-    art: "data",
     number: "02",
     featured: true,
     status: "complete",
@@ -61,9 +57,7 @@ export const projects: Project[] = [
         { label: "Max Stress", value: "185 MPa" }
       ],
       toolsUsed: ["MOOSE Framework", "OpenMC", "Python", "Coreform Cubit", "Paraview", "FEA"],
-      media: [
-        { url: "/images/projects/portfolio-main.png", type: "image", caption: "Thermal Stress Map Visualization" }
-      ]
+      media: []
     }
   },
   {
@@ -74,7 +68,6 @@ export const projects: Project[] = [
       "Full-stack Chrome Extension (MV3) and Node.js API that extracts itemized receipts into Google Sheets.",
     tags: ["Chrome API", "Node.js", "Express", "Automation"],
     category: "Web & Full-Stack",
-    art: "web",
     number: "03",
     featured: true,
     status: "complete",
@@ -95,7 +88,19 @@ export const projects: Project[] = [
       ],
       toolsUsed: ["Chrome Extension API (MV3)", "Node.js", "Express", "TypeScript", "Google Sheets API"],
       media: [
-        { url: "/images/projects/portfolio-main.png", type: "image", caption: "Chrome Extension Interface & Sync Status" }
+        {
+          url: "/project-visuals/walmart-receipt-parser/sheets-output.png",
+          type: "image",
+          caption: "Parsed receipt data in Google Sheets",
+          alt: "Google Sheets showing parsed receipt line items",
+          isCover: true,
+        },
+        {
+          url: "/project-visuals/walmart-receipt-parser/extension-demo.gif",
+          type: "gif",
+          caption: "Receipt parser browser extension demonstration",
+          alt: "Animated demonstration of the receipt parser extension",
+        },
       ]
     }
   },
@@ -107,7 +112,6 @@ export const projects: Project[] = [
       "A collection of local Python utilities built to replace paid web tools. Self-contained and privacy-focused.",
     tags: ["Python", "CLI", "Automation"],
     category: "Automation & Tools",
-    art: "data",
     number: "04",
     featured: true,
     status: "complete",
@@ -139,9 +143,8 @@ export const projects: Project[] = [
       "Coupled thermo-mechanical FEA of an IG-110 nuclear graphite fuel monolith using MOOSE Framework and Coreform Cubit.",
     tags: ["MOOSE Framework", "Coreform Cubit", "FEA"],
     category: "FEA & Simulation",
-    art: "cad",
     number: "05",
-    featured: false,
+    featured: true,
     status: "complete",
     githubUrl: "https://github.com/barikboley/mhtgr-fea",
     details: {
@@ -156,7 +159,52 @@ export const projects: Project[] = [
         { label: "Mesh Quality", value: "0.92 Jacobian" }
       ],
       toolsUsed: ["MOOSE Framework", "Coreform Cubit", "Python", "FEA"],
-      media: []
+      media: [
+        {
+          url: "/project-visuals/htgr-monlith/monolith_cad_drawing.png",
+          type: "image",
+          caption: "Nuclear graphite fuel monolith CAD drawing",
+          alt: "CAD drawing of the nuclear graphite fuel monolith",
+          isCover: true,
+        },
+        {
+          url: "/project-visuals/htgr-monlith/monolith_cubit_mesh.png",
+          type: "image",
+          caption: "Finite element mesh of the fuel monolith",
+          alt: "Finite element mesh of the nuclear graphite fuel monolith",
+        },
+        {
+          url: "/project-visuals/htgr-monlith/monolith_cubit_mesh_zoomed.png",
+          type: "image",
+          caption: "Zoomed view of the finite element mesh",
+          alt: "Zoomed-in view of the fuel monolith finite element mesh",
+        },
+        {
+          url: "/project-visuals/htgr-monlith/monolith_paraview_disp.png",
+          type: "image",
+          caption: "Monolith displacement simulation",
+          alt: "ParaView visualization of simulated monolith displacement",
+        },
+        {
+          url: "/project-visuals/htgr-monlith/monolith_paraview_hydro.png",
+          type: "image",
+          caption: "Monolith hydrostatic stress simulation",
+          alt: "ParaView visualization of simulated hydrostatic stress",
+        },
+        {
+          url: "/project-visuals/htgr-monlith/monolith_paraview_temp.png",
+          type: "image",
+          caption: "Monolith temperature simulation",
+          alt: "ParaView visualization of the monolith temperature distribution",
+          isCover: true,
+        },
+        {
+          url: "/project-visuals/htgr-monlith/monolith_paraview_vonmises.png",
+          type: "image",
+          caption: "Monolith von Mises stress simulation",
+          alt: "ParaView visualization of von Mises stress in the monolith",
+        },
+      ]
     }
   },
   {
@@ -167,7 +215,6 @@ export const projects: Project[] = [
       "Workout logging, automated progression logic, and performance analytics platform.",
     tags: ["JavaScript", "Automation", "Analytics"],
     category: "Automation & Tools",
-    art: "data",
     number: "06",
     featured: false,
     status: "complete",
@@ -194,7 +241,6 @@ export const projects: Project[] = [
     description: "Custom portfolio featuring asymmetric desktop grid layouts and modular CSS styling.",
     tags: ["Next.js", "React", "TypeScript", "CSS Modules"],
     category: "Web & Full-Stack",
-    art: "web",
     number: "07",
     featured: false,
     status: "complete",
@@ -212,10 +258,7 @@ export const projects: Project[] = [
         { label: "Build Time", value: "< 1.5s" }
       ],
       toolsUsed: ["Next.js 14", "TypeScript", "Vanilla CSS Modules", "Vercel"],
-      media: [
-        { url: "/images/projects/portfolio-main.png", type: "image", caption: "Desktop Layout View" },
-        { url: "/images/projects/portfolio-mobile.png", type: "image", caption: "Mobile Responsive Stacking" }
-      ]
+      media: []
     }
   }
 ];

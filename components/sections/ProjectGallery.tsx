@@ -1,8 +1,9 @@
 'use client';
 
-import { useEffect, useMemo, useState } from "react"
+import { useEffect, useMemo, useRef, useState } from "react"
 import { projects } from "@/data/projects"
 import { Project } from "@/types/project"
+import { getProjectCoverMediaIndex } from "@/lib/project-media"
 import Panel from '../ui/Panel';
 import SectionHeader from '../ui/SectionHeader';
 import Button from '../ui/Buttons';
@@ -17,90 +18,31 @@ const filters = [
   "Hardware & CAD",
 ]
 
-function ProjectVisual({ variant }: { variant: string }) {
-  if (variant === "cad") {
-    return (
-      <div className="project-visual visual-cad" aria-hidden="true">
-        <div className="cad-grid" />
-        <div className="cad-cube">
-          <span />
-          <span />
-          <span />
-        </div>
-        <div className="dimension-line dimension-x">240 mm</div>
-        <div className="dimension-line dimension-y">180</div>
-        <div className="visual-label">ASSEMBLY / REV.03</div>
-      </div>
-    )
-  }
+function ProjectCardMedia({ project }: { project: Project }) {
+  const mediaList = project.details?.media
+  const coverIndex = getProjectCoverMediaIndex(mediaList)
+  const media = coverIndex === -1 ? undefined : mediaList?.[coverIndex]
+  const [failedUrl, setFailedUrl] = useState<string | null>(null)
 
-  if (variant === "data") {
+  if (!media || media.type !== "image" || failedUrl === media.url) {
     return (
-      <div className="project-visual visual-data" aria-hidden="true">
-        <div className="code-window">
-          <i />
-          <i />
-          <i />
-          <span className="code-line line-long" />
-          <span className="code-line line-med" />
-          <span className="code-line line-short" />
-          <span className="code-line line-med" />
-        </div>
-        <div className="data-card">
-          <b>$4,218</b>
-          <span>EXPENSES PARSED</span>
-          <div className="bars">
-            <i />
-            <i />
-            <i />
-            <i />
-            <i />
-          </div>
-        </div>
-        <div className="visual-label">96.4% MATCH CONFIDENCE</div>
-      </div>
-    )
-  }
-
-  if (variant === "hardware") {
-    return (
-      <div className="project-visual visual-hardware" aria-hidden="true">
-        <div className="board">
-          <span className="chip" />
-          <span className="chip chip-small" />
-          <i />
-          <i />
-          <i />
-          <i />
-        </div>
-        <div className="signal">
-          <span />
-          <span />
-          <span />
-        </div>
-        <div className="visual-label">SENSOR ARRAY / ONLINE</div>
+      <div className="project-visual project-visual-fallback" aria-hidden="true">
+        <span>PROJECT VISUAL</span>
+        <strong>{failedUrl === media?.url ? "IMAGE UNAVAILABLE" : "COMING SOON"}</strong>
       </div>
     )
   }
 
   return (
-    <div className="project-visual visual-web" aria-hidden="true">
-      <div className="browser-shell">
-        <div className="browser-bar">
-          <i />
-          <i />
-          <i />
-        </div>
-        <div className="browser-content">
-          <span className="web-sidebar" />
-          <div>
-            <span />
-            <span />
-            <span />
-          </div>
-        </div>
-      </div>
-      <div className="visual-label">RESPONSIVE / ACCESSIBLE</div>
+    <div className="project-visual">
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img
+        src={media.url}
+        alt={media.alt || media.caption || project.title}
+        loading="lazy"
+        decoding="async"
+        onError={() => setFailedUrl(media.url)}
+      />
     </div>
   )
 }
@@ -109,6 +51,11 @@ export default function ProjectGallery({ number = "001" }: { number?: string }) 
   const [activeFilter, setActiveFilter] = useState("Featured")
   const [isCatalogModalOpen, setIsCatalogModalOpen] = useState(false)
   const [selectedProject, setSelectedProject] = useState<Project | null>(null)
+  const selectedProjectRef = useRef(selectedProject)
+
+  useEffect(() => {
+    selectedProjectRef.current = selectedProject
+  }, [selectedProject])
 
   const categoryProjects = useMemo(() => {
     if (activeFilter === "Featured") {
@@ -136,6 +83,7 @@ export default function ProjectGallery({ number = "001" }: { number?: string }) 
       document.body.style.overflow = "hidden"
       const handleKeyDown = (e: KeyboardEvent) => {
         if (e.key === "Escape") {
+          if (selectedProjectRef.current) return
           setIsCatalogModalOpen(false)
         }
       }
@@ -189,13 +137,10 @@ export default function ProjectGallery({ number = "001" }: { number?: string }) 
               }
             }}
           >
-            <ProjectVisual variant={project.art} />
+            <ProjectCardMedia project={project} />
             <div className="project-body">
               <div className="project-index flex items-center justify-between">
                 <span>PRJ / {project.number}</span>
-                <span className="text-[10px] font-mono text-sky-400 group-hover:underline">
-                  View Details →
-                </span>
               </div>
               <h3>{project.title}</h3>
               <p>{project.description}</p>
@@ -205,32 +150,18 @@ export default function ProjectGallery({ number = "001" }: { number?: string }) 
                 ))}
               </div>
 
-              {(project.githubUrl || project.liveUrl || project.demoUrl) && (
+              {(project.liveUrl || project.demoUrl) && (
                 <div className="flex items-center gap-4 mt-4 pt-3 border-t border-slate-700/40">
-                  {project.githubUrl && (
-                    <a
-                      href={project.githubUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      onClick={(e) => e.stopPropagation()}
-                      className="text-xs font-mono text-slate-400 hover:text-sky-400 flex items-center gap-1.5 transition-colors"
-                    >
-                      <Icon name="github" size={14} />
-                      <span>Code</span>
-                    </a>
-                  )}
-                  {(project.liveUrl || project.demoUrl) && (
-                    <a
-                      href={project.liveUrl || project.demoUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      onClick={(e) => e.stopPropagation()}
-                      className="text-xs font-mono text-slate-400 hover:text-sky-400 flex items-center gap-1.5 transition-colors"
-                    >
-                      <Icon name="arrow" size={14} />
-                      <span>Live</span>
-                    </a>
-                  )}
+                  <a
+                    href={project.liveUrl || project.demoUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    onClick={(e) => e.stopPropagation()}
+                    className="text-xs font-mono text-slate-400 hover:text-sky-400 flex items-center gap-1.5 transition-colors"
+                  >
+                    <Icon name="arrow" size={14} />
+                    <span>Live</span>
+                  </a>
                 </div>
               )}
             </div>
@@ -308,13 +239,10 @@ export default function ProjectGallery({ number = "001" }: { number?: string }) 
                       }
                     }}
                   >
-                    <ProjectVisual variant={project.art} />
+                    <ProjectCardMedia project={project} />
                     <div className="project-body">
                       <div className="project-index flex items-center justify-between">
                         <span>PRJ / {project.number}</span>
-                        <span className="text-[10px] font-mono text-sky-400 group-hover:underline">
-                          View Details →
-                        </span>
                       </div>
                       <h3>{project.title}</h3>
                       <p>{project.description}</p>
@@ -324,32 +252,18 @@ export default function ProjectGallery({ number = "001" }: { number?: string }) 
                         ))}
                       </div>
 
-                      {(project.githubUrl || project.liveUrl || project.demoUrl) && (
+                      {(project.liveUrl || project.demoUrl) && (
                         <div className="flex items-center gap-4 mt-4 pt-3 border-t border-slate-700/40">
-                          {project.githubUrl && (
-                            <a
-                              href={project.githubUrl}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              onClick={(e) => e.stopPropagation()}
-                              className="text-xs font-mono text-slate-400 hover:text-sky-400 flex items-center gap-1.5 transition-colors"
-                            >
-                              <Icon name="github" size={14} />
-                              <span>Code</span>
-                            </a>
-                          )}
-                          {(project.liveUrl || project.demoUrl) && (
-                            <a
-                              href={project.liveUrl || project.demoUrl}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              onClick={(e) => e.stopPropagation()}
-                              className="text-xs font-mono text-slate-400 hover:text-sky-400 flex items-center gap-1.5 transition-colors"
-                            >
-                              <Icon name="arrow" size={14} />
-                              <span>Live</span>
-                            </a>
-                          )}
+                          <a
+                            href={project.liveUrl || project.demoUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            onClick={(e) => e.stopPropagation()}
+                            className="text-xs font-mono text-slate-400 hover:text-sky-400 flex items-center gap-1.5 transition-colors"
+                          >
+                            <Icon name="arrow" size={14} />
+                            <span>Live</span>
+                          </a>
                         </div>
                       )}
                     </div>
@@ -363,6 +277,7 @@ export default function ProjectGallery({ number = "001" }: { number?: string }) 
 
       {/* Popout Details Modal */}
       <ProjectModal
+        key={selectedProject?.id ?? selectedProject?.title ?? "closed"}
         project={selectedProject}
         onClose={() => setSelectedProject(null)}
       />
