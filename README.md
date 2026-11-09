@@ -25,6 +25,7 @@ The site is a single-page portfolio assembled in `app/page.tsx` from reusable la
 - **Project popout modal:** Selecting a card opens project information, available GitHub/demo links, and a hero-media viewer with thumbnails to switch between images or GIFs. The four narrative sections—**Problem Statement**, **Key Challenges**, **System Architecture**, and **Key Metrics**—are rendered when their data is present. Tools and technologies are also listed when available.
 - **About and experience:** The About profile and numbered experience timeline sit together in a side-by-side content layout on wider screens and adapt for smaller screens.
 - **Technical skills:** A compact skills section groups Simulation & CAD and Programming & Tools, with supported skills linking to related project details on the portfolio.
+- **Legacy portfolios:** The footer links to v1 and v2 at `/legacy/v1/` and `/legacy/v2/`; original source is kept in `archive/`, outside the public directory.
 - **Contact and footer:** Provides an email call to action, social links, and archive links to earlier portfolio versions.
 
 ## Tech stack and tooling
@@ -64,8 +65,13 @@ The installed versions are defined in `package.json`. The project currently uses
 │   └── project.ts                 # Category, Project, ProjectDetails, and media types
 ├── lib/
 │   └── utils.ts                   # Shared utility helpers
+├── archive/                       # Original legacy portfolio source trees
 ├── public/
-│   └── Barik_Boley_Resume.pdf     # Downloadable resume; add project media here
+│   ├── Barik_Boley_Resume.pdf     # Downloadable resume
+│   ├── legacy/                    # Deployable legacy site files
+│   │   ├── v1/
+│   │   └── v2/
+│   └── project-visuals/           # Project gallery media
 ├── package.json                   # Dependencies and npm scripts
 ├── eslint.config.mjs              # ESLint configuration
 ├── next.config.ts                 # Next.js configuration
