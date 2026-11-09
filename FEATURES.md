@@ -29,7 +29,6 @@ app/
       media-queries.css                # Responsive, reduced-motion, and print rules
       project-gallery.css
       project-gallery/
-        illustrations.css
         layout.css                     # Gallery, modal, and content layout rules
     ui/
       buttons.css
@@ -57,6 +56,18 @@ types/
   project.ts                           # Project and project-detail types
 public/
   Barik_Boley_Resume.pdf
+  project-visuals/
+    walmart-receipt-parser/
+      sheets-output.png
+      extension-demo.gif
+    htgr-monlith/
+      monolith_cad_drawing.png
+      monolith_cubit_mesh.png
+      monolith_cubit_mesh_zoomed.png
+      monolith_paraview_disp.png
+      monolith_paraview_hydro.png
+      monolith_paraview_temp.png
+      monolith_paraview_vonmises.png
 package.json
 next.config.ts
 postcss.config.mjs
@@ -66,7 +77,7 @@ tsconfig.json
 
 `app/page.tsx` renders `Navbar`, `Hero`, `ProjectGallery`, `About`, `Experience`, `Contact`, and `Footer`, in that order. The gallery precedes the About/Experience wrapper. `About.tsx`, `Experience.tsx`, and `Contact.tsx` are the actual filenames; there are no `AboutSection.tsx`, `ExperienceTimeline.tsx`, or `ContactSection.tsx` files.
 
-The content grid is a vertical flex layout. The About and Experience panels share a two-column wrapper (`1.7fr 1fr`) at wider widths and stack at widths up to 1040px. The project cards use CSS-generated illustrations based on the `art` field; they do not load images or play GIFs on hover.
+The content grid is a vertical flex layout. The About and Experience panels share a two-column wrapper (`1.7fr 1fr`) at wider widths and stack at widths up to 1040px. Project cards lazy-load the first project media item when it is a still image; otherwise they show a neutral branded fallback. GIFs are reserved for the project details modal.
 
 ## Implementation status
 
@@ -100,21 +111,22 @@ At widths up to 780px, the navigation becomes a menu with a backdrop. The menu c
 - Web & Full-Stack
 - Hardware & CAD
 
-Featured is selected by default and includes records where `featured` is `true`. The main grid shows at most four matching projects. Cards open the project details modal by mouse or keyboard (Enter/Space); Code and Live links stop click propagation so they do not open the modal.
+Featured is selected by default and includes records where `featured` is `true`. The main grid shows at most four matching projects. Cards open the project details modal by mouse or keyboard (Enter/Space). The cards do not show a View Details label or a GitHub Code link; a Live link is shown only when the project has a live or demo URL, and it stops click propagation.
 
 The “View All Projects” button is always available on Featured. A category view shows a “See More [Category] Projects” button only when that category has more than four records. The catalog opened by this button lists all projects on Featured, or the matching category projects after a category is selected. Its filter buttons update the active filter used by both the page and catalog. The count badge displays the total matching records, even though the main grid is capped at four.
 
 The catalog closes on Escape or a click on the backdrop, and locks body scrolling while open. Its backdrop scrolls vertically; its header (including the close button) is sticky. The filter row itself is not sticky. The catalog container has no maximum-height rule in its CSS.
+When a project is opened from the catalog, the first Escape closes only the project details modal; a subsequent Escape closes the catalog.
 
 #### Project details modal
 
 `components/ui/ProjectModal.tsx` receives a `Project | null` and an `onClose` callback from the gallery. Selecting a card opens it; it closes on Escape, a backdrop click, or the close button. While it is open, body scrolling is disabled and the previous inline body overflow value is restored when it closes.
 
-When `details.media` contains items, the first item is shown as the hero image and a thumbnail strip appears when there is more than one. Selecting a thumbnail changes the active image. The declared media type (`"image"` or `"gif"`) is not used to select a renderer; both are rendered with an `<img>` element.
+When `details.media` contains items, the selected cover image is shown first in the hero viewer. Set `isCover: true` on the intended still image; if multiple still images are marked, the last marked item in the media array takes precedence. If no image is marked, the first still image is used. A thumbnail group and clickable previous/next arrows appear when there is more than one media item. Selecting a thumbnail, clicking an arrow, or pressing the Left/Right arrow keys changes the active image; navigation wraps at either end. Number keys 1–9 select the corresponding image when it exists. Thumbnails wrap onto multiple rows rather than scrolling horizontally. Images and GIFs use an `<img>` element, so GIFs animate naturally.
 
-The modal conditionally renders Problem Statement, Key Challenges, System Architecture, Key Metrics, and Tools & Technologies. Empty challenge and metric arrays are omitted; blank text sections are omitted. GitHub and live/demo links are shown in the header (on wider screens) and footer when the corresponding URLs exist. `liveUrl` takes precedence over `demoUrl` for the Live Demo link.
+The modal conditionally renders Problem Statement, Key Challenges, System Architecture, Key Metrics, and Tools & Technologies. Section headings have no decorative bullets; Key Challenges retains semantic list bullets. Empty challenge and metric arrays are omitted; blank text sections are omitted. A single GitHub CTA appears after the project details when `githubUrl` exists. Modal Live Demo links are not rendered.
 
-The details modal has a viewport-height-limited container and a separately scrollable body. Its layout shares the modal backdrop styles with the catalog, but its own container has `max-height: 90vh`.
+The details modal has no viewport-height limit or separately scrolling body. The overlay contents flow in one vertical scroll area, with the page behind it locked while the modal is open. The overlay's normal browser scrollbar may be visible; there is no nested modal-body scrollbar or horizontal thumbnail scrollbar.
 
 #### About, experience, contact, and footer
 
@@ -143,6 +155,8 @@ export interface ProjectMedia {
   url: string;
   type: "image" | "gif";
   caption?: string;
+  alt?: string;
+  isCover?: boolean;
 }
 
 export interface ProjectDetails {
@@ -161,7 +175,6 @@ export interface Project {
   description: string;
   tags: string[];
   category: Category;
-  art: "cad" | "data" | "hardware" | "web";
   number: string;
   featured?: boolean;
   status?: "planned" | "under development" | "maintenance" | "complete";
@@ -186,9 +199,9 @@ export interface Project {
 | 06 | Progressive Overload Analytics | Automation & Tools | No |
 | 07 | Personal Portfolio | Web & Full-Stack | No |
 
-Legacy portfolio versions are not project records; they are links in the footer. The current details data includes media URLs under `/images/projects/`, but the repository's `public/` directory currently contains only the resume PDF. Those referenced project images therefore need to be supplied for the modal media to resolve.
+Legacy portfolio versions are not project records; they are links in the footer. Project media is stored under `public/project-visuals/` and referenced by root-relative URLs. The data currently has visuals for Walmart Receipt Parser and MHTGR Thermal-Mechanical FEA; the other projects have empty media arrays and use the gallery fallback.
 
-When adding or editing a project, update `data/projects.ts` and follow the required fields and union values in `types/project.ts`. Put local media under `public/` and use root-relative URLs (for example, `/images/projects/example.png`). Set `featured: true` to include an item in the default view. `art` controls the generated card illustration; it is not a media URL.
+When adding or editing a project, update `data/projects.ts` and follow the required fields and union values in `types/project.ts`. Put local media under `public/` and use root-relative URLs (for example, `/project-visuals/project-id/cover.png`). Set `featured: true` to include an item in the default view. Set `isCover: true` on the intended still image to choose the card cover and initial modal image; keep only one marked image to avoid ambiguity. If multiple still images are marked, the last one in the media array takes precedence. If no item is marked, the first still image is used. Keep GIFs as additional modal media.
 
 ## Styling and responsive behavior
 
@@ -216,6 +229,57 @@ npm run start
 
 ## Active work
 
-- Add the project media files referenced by `data/projects.ts` under `public/images/projects/` (or update the records to valid assets). Until then, the data-driven modal images will resolve to missing files.
+### Project gallery and detail media
 
-All other features documented above are present in the current implementation; no other active roadmap items are recorded in the repository.
+**Goal:** Replace the CSS-generated project-card illustrations with real project imagery, and use the same project visuals in the project details modal.
+
+#### Agreed behavior
+
+- Gallery cards use a still cover image; GIFs do not animate in the scrolling gallery.
+- Set `isCover: true` on the chosen still item in `details.media`; it is used for both the card cover and the modal's initial hero visual. When none is marked, the first still image is used. Do not add a separate project-level cover URL.
+- Additional media items appear in the modal thumbnail strip. Previous/next buttons and Left/Right keyboard keys navigate the gallery, wrapping at either end. GIFs may animate in the modal; playback controls are not part of this feature.
+- If a project has no media, or its image fails to load, retain the card layout and show a neutral branded fallback instead of a generated project-specific illustration. The details modal continues to omit its media viewer when there is no media.
+- Store assets locally under `public/` and reference them with root-relative URLs.
+- Support media for all projects, but prioritize adding available visuals to the four featured projects.
+
+#### Existing assets to wire up
+
+The following project visuals have been added to `public/project-visuals/`:
+
+- Walmart Receipt Parser: `walmart-receipt-parser/sheets-output.png` and `walmart-receipt-parser/extension-demo.gif`.
+- MHTGR Thermal-Mechanical FEA: `htgr-monlith/monolith_cad_drawing.png`, `htgr-monlith/monolith_cubit_mesh.png`, `htgr-monlith/monolith_cubit_mesh_zoomed.png`, `htgr-monlith/monolith_paraview_disp.png`, `htgr-monlith/monolith_paraview_hydro.png`, `htgr-monlith/monolith_paraview_temp.png`, and `htgr-monlith/monolith_paraview_vonmises.png`.
+
+`data/projects.ts` now references these assets. The directory spelling `htgr-monlith` is the existing spelling and is used by those paths.
+
+#### Implementation checklist
+
+- [x] Add optional descriptive alternative text to `ProjectMedia`, use it for the hero image, and give thumbnail buttons accessible names.
+- [x] Add optional `isCover` to `ProjectMedia` and share the cover-selection rule between project cards and the initial modal image.
+- [x] Update `data/projects.ts` to remove stale `/images/projects/...` URLs and reference the available local project assets.
+- [x] Wire available assets for Walmart Receipt Parser and MHTGR Thermal-Mechanical FEA. Keep the receipt-parser GIF after its still cover for modal viewing only.
+- [ ] Add matching visuals for the other three featured projects when those assets are available; do not invent or reuse unrelated images.
+- [ ] After featured coverage is addressed, add matching visuals for the remaining non-featured projects when assets are available.
+- [x] Keep media support in place for all seven projects; projects without media use the branded card fallback.
+- [x] Update `components/sections/ProjectGallery.tsx` to render the selected still cover and remove the project-specific generated artwork.
+- [x] Add image-load failure handling so a broken card asset falls back without leaving a broken-image icon or disrupting the card.
+- [x] Add the neutral fallback visual and card image sizing styles under `app/styles/sections/project-gallery/`.
+- [x] Preserve the modal hero-and-clickable-thumbnail behavior and support both still images and GIFs.
+- [x] Add clickable previous/next arrows and keep keyboard arrow navigation; both wrap around the media list.
+- [x] Add `isCover` so project data can choose a still cover independently of gallery order; default to the first still image if none is marked.
+- [x] Ensure Escape closes an open project modal before closing its parent catalog.
+- [x] Show an explicit unavailable state for failed modal media and thumbnail images.
+
+#### Acceptance and verification
+
+- A project's marked still image appears as its card cover and initial modal hero; without a marked item, the first still image is used.
+- Card covers remain still; GIFs are not rendered as card covers and may display in the modal.
+- Clicking modal thumbnails, previous/next arrows, or pressing Left/Right switches the hero image, wrapping at either end; thumbnails wrap without a horizontal scrollbar.
+- In the catalog, Escape closes the selected project modal first and closes the catalog only after the project modal is already closed.
+- A GIF displays in the modal without extra playback controls.
+- Projects without media and media URLs that fail to load show a neutral card fallback; failed modal media displays an explicit unavailable state.
+- Gallery cards have no View Details label or GitHub Code link; any Live link still opens without opening the project modal.
+- Previous/next media arrows use subtle translucent white styling and become more prominent on hover or keyboard focus.
+- The existing project card visuals, filters, catalog, and keyboard activation continue to work.
+- Verify the supplied local asset URLs and responsive card/modal layouts, then run `npm run lint` and `npm run build`.
+
+No separate image host, new image dependency, gallery hover animation, or modal redesign is included in this feature.

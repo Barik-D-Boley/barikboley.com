@@ -73,6 +73,42 @@
   transform: translateY(-3px);
 }
 
+.project-visual {
+  position: relative;
+  display: grid;
+  height: 190px;
+  overflow: hidden;
+  place-items: center;
+  border-bottom: 1px solid var(--line);
+  background: #0d1829;
+}
+
+.project-visual img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.project-visual-fallback {
+  align-content: center;
+  justify-items: center;
+  gap: 8px;
+  background:
+    linear-gradient(rgba(56, 189, 248, 0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(56, 189, 248, 0.035) 1px, transparent 1px),
+    #0d1829;
+  background-size: 24px 24px;
+  color: #64748b;
+  font-family: ui-monospace, monospace;
+  font-size: 8px;
+  letter-spacing: 0.12em;
+}
+
+.project-visual-fallback strong {
+  color: #94a3b8;
+  font-size: 10px;
+}
+
 .project-body {
   padding: 18px;
 }
@@ -198,6 +234,16 @@
   overflow: hidden;
 }
 
+.project-modal-backdrop {
+  display: block;
+}
+
+.project-modal-container {
+  max-height: none;
+  margin: 0 auto;
+  overflow: visible;
+}
+
 .modal-header {
   position: sticky;
   top: 0;
@@ -208,6 +254,12 @@
   border-bottom: 1px solid var(--line);
   background: #1e293b;
   padding: 20px 24px;
+}
+
+.project-modal-header {
+  position: relative;
+  top: auto;
+  z-index: auto;
 }
 
 .modal-close-button {
@@ -229,6 +281,44 @@
 
 .modal-body {
   padding: 24px;
+}
+
+.project-modal-body {
+  flex: none;
+  overflow: visible;
+}
+
+.project-media-arrow {
+  position: absolute;
+  top: 50%;
+  z-index: 1;
+  display: grid;
+  width: 32px;
+  height: 32px;
+  place-items: center;
+  transform: translateY(-50%);
+  border: 0;
+  border-radius: 9999px;
+  background: rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 0.78);
+  opacity: 0.5;
+  backdrop-filter: blur(3px);
+  transition: background 160ms ease, opacity 160ms ease, color 160ms ease;
+}
+
+.project-media-arrow:hover,
+.project-media-arrow:focus-visible {
+  background: rgba(255, 255, 255, 0.22);
+  color: #fff;
+  opacity: 0.9;
+}
+
+.project-media-arrow-previous {
+  left: 12px;
+}
+
+.project-media-arrow-next {
+  right: 12px;
 }
 
 .modal-filter-row {

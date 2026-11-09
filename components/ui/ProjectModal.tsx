@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react';
 import { Project } from '@/types/project';
 import Icon from '@/components/Icon';
 import Button from '@/components/ui/Buttons';
+import { getProjectCoverMediaIndex } from '@/lib/project-media';
 
 interface ProjectModalProps {
   project: Project | null;
@@ -11,12 +12,11 @@ interface ProjectModalProps {
 }
 
 export default function ProjectModal({ project, onClose }: ProjectModalProps) {
-  const [selectedMediaIndex, setSelectedMediaIndex] = useState(0);
-
-  // Reset image index when project changes
-  useEffect(() => {
-    setSelectedMediaIndex(0);
-  }, [project]);
+  const [selectedMediaIndex, setSelectedMediaIndex] = useState(() => {
+    const coverIndex = getProjectCoverMediaIndex(project?.details?.media);
+    return coverIndex === -1 ? 0 : coverIndex;
+  });
+  const [failedMediaUrls, setFailedMediaUrls] = useState<Set<string>>(() => new Set());
 
   // Handle keyboard ESC and body scroll lock
   useEffect(() => {
@@ -28,6 +28,36 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
         onClose();
+        return;
+      }
+
+      const mediaCount = project.details?.media.length ?? 0;
+      const target = e.target;
+      if (
+        target instanceof HTMLElement &&
+        (target.isContentEditable || ['INPUT', 'SELECT', 'TEXTAREA'].includes(target.tagName))
+      ) {
+        return;
+      }
+
+      if (mediaCount < 2) return;
+
+      if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') {
+        e.preventDefault();
+        setSelectedMediaIndex((currentIndex) =>
+          e.key === 'ArrowRight'
+            ? (currentIndex + 1) % mediaCount
+            : (currentIndex - 1 + mediaCount) % mediaCount
+        );
+        return;
+      }
+
+      if (/^[1-9]$/.test(e.key)) {
+        const imageIndex = Number(e.key) - 1;
+        if (imageIndex < mediaCount) {
+          e.preventDefault();
+          setSelectedMediaIndex(imageIndex);
+        }
       }
     };
 
@@ -50,18 +80,15 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
     number,
     status,
     githubUrl,
-    liveUrl,
-    demoUrl,
     details,
   } = project;
 
-  const activeLiveUrl = liveUrl || demoUrl;
   const mediaList = details?.media || [];
   const currentMedia = mediaList[selectedMediaIndex];
 
   return (
     <div
-      className="modal-backdrop"
+      className="modal-backdrop project-modal-backdrop"
       onClick={(e) => {
         if (e.target === e.currentTarget) onClose();
       }}
@@ -69,9 +96,9 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
       aria-modal="true"
       aria-labelledby="project-modal-title"
     >
-      <div className="modal-container bg-[#131B2E] border border-sky-500/20 rounded-xl max-w-4xl w-[94vw] max-h-[90vh] flex flex-col overflow-hidden shadow-2xl">
+      <div className="modal-container project-modal-container bg-[#131B2E] border border-sky-500/20 rounded-xl max-w-4xl w-[94vw] flex flex-col shadow-2xl">
         {/* Header */}
-        <div className="modal-header sticky top-0 z-30 flex items-center justify-between border-b border-slate-700/60 bg-[#131B2E]/95 backdrop-blur-md px-6 py-4">
+        <div className="modal-header project-modal-header flex items-center justify-between border-b border-slate-700/60 bg-[#131B2E]/95 px-6 py-4">
           <div className="flex flex-col gap-1">
             <div className="flex items-center gap-3">
               <span className="font-mono text-xs text-amber-500 tracking-wider uppercase">
@@ -94,29 +121,6 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
           </div>
 
           <div className="flex items-center gap-3">
-            {/* Header CTAs */}
-            {githubUrl && (
-              <a
-                href={githubUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="hidden sm:inline-flex items-center gap-2 px-3 py-1.5 text-xs font-mono text-slate-200 bg-slate-800/80 hover:bg-slate-700 border border-slate-600/50 rounded transition-colors"
-              >
-                <Icon name="github" size={14} />
-                <span>GitHub</span>
-              </a>
-            )}
-            {activeLiveUrl && (
-              <a
-                href={activeLiveUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="hidden sm:inline-flex items-center gap-2 px-3 py-1.5 text-xs font-mono text-sky-300 bg-sky-500/20 hover:bg-sky-500/30 border border-sky-500/40 rounded transition-colors"
-              >
-                <Icon name="arrow" size={14} />
-                <span>Live Demo</span>
-              </a>
-            )}
             <button
               type="button"
               className="modal-close-button p-2 text-slate-400 hover:text-white rounded border border-slate-700 bg-slate-800/50 hover:bg-slate-800 transition-colors"
@@ -131,8 +135,8 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
           </div>
         </div>
 
-        {/* Scrollable Body */}
-        <div className="modal-body overflow-y-auto p-6 space-y-6 flex-1 text-slate-300">
+        {/* Project details */}
+        <div className="modal-body project-modal-body p-6 space-y-6 text-slate-300">
           {/* Tagline / Main Description */}
           <div>
             <p className="text-base text-slate-200 leading-relaxed font-normal">
@@ -143,13 +147,50 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
           {/* Hero Media + Thumbnail Gallery */}
           {mediaList.length > 0 && (
             <div className="space-y-3 bg-slate-900/60 p-4 rounded-lg border border-slate-800">
-              <div className="relative overflow-hidden rounded-md bg-slate-950 flex items-center justify-center min-h-[220px] max-h-[420px]">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src={currentMedia.url}
-                  alt={currentMedia.caption || title}
-                  className="w-full h-full object-contain max-h-[400px]"
-                />
+              <div className="project-media-viewer relative overflow-hidden rounded-md bg-slate-950 flex items-center justify-center min-h-[220px] max-h-[420px]">
+                {failedMediaUrls.has(currentMedia.url) ? (
+                  <p className="p-6 text-center font-mono text-sm text-slate-400" role="status">
+                    Project media could not be loaded.
+                  </p>
+                ) : (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img
+                    src={currentMedia.url}
+                    alt={currentMedia.alt || currentMedia.caption || title}
+                    className="w-full h-full object-contain max-h-[400px]"
+                    onError={() => {
+                      setFailedMediaUrls((failedUrls) => new Set(failedUrls).add(currentMedia.url));
+                    }}
+                  />
+                )}
+                {mediaList.length > 1 && (
+                  <>
+                    <button
+                      type="button"
+                      className="project-media-arrow project-media-arrow-previous"
+                      onClick={() =>
+                        setSelectedMediaIndex((index) => (index - 1 + mediaList.length) % mediaList.length)
+                      }
+                      aria-label="Show previous image"
+                    >
+                      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                        <path d="m15 18-6-6 6-6" />
+                      </svg>
+                    </button>
+                    <button
+                      type="button"
+                      className="project-media-arrow project-media-arrow-next"
+                      onClick={() =>
+                        setSelectedMediaIndex((index) => (index + 1) % mediaList.length)
+                      }
+                      aria-label="Show next image"
+                    >
+                      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                        <path d="m9 18 6-6-6-6" />
+                      </svg>
+                    </button>
+                  </>
+                )}
               </div>
               {currentMedia.caption && (
                 <p className="text-xs font-mono text-slate-400 text-center">
@@ -157,23 +198,37 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
                 </p>
               )}
               {mediaList.length > 1 && (
-                <div className="flex gap-2 overflow-x-auto pt-2">
+                <div className="flex flex-wrap gap-2 pt-2">
                   {mediaList.map((item, idx) => (
                     <button
                       key={idx}
+                      type="button"
                       onClick={() => setSelectedMediaIndex(idx)}
+                      aria-label={`Show ${item.alt || item.caption || `${title} image ${idx + 1}`}`}
+                      aria-pressed={selectedMediaIndex === idx}
                       className={`relative flex-shrink-0 w-16 h-12 rounded overflow-hidden border-2 transition-all ${
                         selectedMediaIndex === idx
                           ? 'border-sky-400 opacity-100 scale-105'
                           : 'border-transparent opacity-60 hover:opacity-100'
                       }`}
                     >
-                      {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img
-                        src={item.url}
-                        alt={item.caption || `Thumbnail ${idx + 1}`}
-                        className="w-full h-full object-cover"
-                      />
+                      {failedMediaUrls.has(item.url) ? (
+                        <span className="flex h-full w-full items-center justify-center bg-slate-900 text-[8px] text-slate-400">
+                          Unavailable
+                        </span>
+                      ) : (
+                        // eslint-disable-next-line @next/next/no-img-element
+                        <img
+                          src={item.url}
+                          alt=""
+                          className="w-full h-full object-cover"
+                          loading="lazy"
+                          decoding="async"
+                          onError={() => {
+                            setFailedMediaUrls((failedUrls) => new Set(failedUrls).add(item.url));
+                          }}
+                        />
+                      )}
                     </button>
                   ))}
                 </div>
@@ -185,8 +240,7 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
           {/* 1. Problem Statement */}
           {details?.problemStatement && (
             <div className="space-y-2 border-t border-slate-800/80 pt-4">
-              <h3 className="text-sm font-mono uppercase tracking-wider text-sky-400 flex items-center gap-2">
-                <span className="w-1.5 h-1.5 rounded-full bg-sky-400" />
+              <h3 className="text-sm font-mono uppercase tracking-wider text-sky-400">
                 Problem Statement
               </h3>
               <p className="text-sm text-slate-300 leading-relaxed">
@@ -198,8 +252,7 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
           {/* 2. Key Challenges */}
           {details?.keyChallenges && details.keyChallenges.length > 0 && (
             <div className="space-y-2 border-t border-slate-800/80 pt-4">
-              <h3 className="text-sm font-mono uppercase tracking-wider text-sky-400 flex items-center gap-2">
-                <span className="w-1.5 h-1.5 rounded-full bg-sky-400" />
+              <h3 className="text-sm font-mono uppercase tracking-wider text-sky-400">
                 Key Challenges
               </h3>
               <ul className="list-disc list-inside space-y-1.5 text-sm text-slate-300">
@@ -215,8 +268,7 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
           {/* 3. System Architecture */}
           {details?.systemArchitecture && (
             <div className="space-y-2 border-t border-slate-800/80 pt-4">
-              <h3 className="text-sm font-mono uppercase tracking-wider text-sky-400 flex items-center gap-2">
-                <span className="w-1.5 h-1.5 rounded-full bg-sky-400" />
+              <h3 className="text-sm font-mono uppercase tracking-wider text-sky-400">
                 System Architecture
               </h3>
               <p className="text-sm text-slate-300 leading-relaxed">
@@ -228,8 +280,7 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
           {/* 4. Relevant Metrics */}
           {details?.metrics && details.metrics.length > 0 && (
             <div className="space-y-3 border-t border-slate-800/80 pt-4">
-              <h3 className="text-sm font-mono uppercase tracking-wider text-sky-400 flex items-center gap-2">
-                <span className="w-1.5 h-1.5 rounded-full bg-sky-400" />
+              <h3 className="text-sm font-mono uppercase tracking-wider text-sky-400">
                 Key Metrics
               </h3>
               <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
@@ -253,8 +304,7 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
           {/* Tools & Tech Stack */}
           {((details?.toolsUsed && details.toolsUsed.length > 0) || (tags && tags.length > 0)) && (
             <div className="space-y-2 border-t border-slate-800/80 pt-4">
-              <h3 className="text-sm font-mono uppercase tracking-wider text-sky-400 flex items-center gap-2">
-                <span className="w-1.5 h-1.5 rounded-full bg-sky-400" />
+              <h3 className="text-sm font-mono uppercase tracking-wider text-sky-400">
                 Tools & Technologies
               </h3>
               <div className="flex flex-wrap gap-2 pt-1">
@@ -269,37 +319,22 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
               </div>
             </div>
           )}
-        </div>
 
-        {/* Footer CTAs */}
-        {(githubUrl || activeLiveUrl) && (
-          <div className="modal-footer border-t border-slate-700/60 bg-[#131B2E]/95 backdrop-blur-md px-6 py-4 flex flex-wrap items-center justify-end gap-3">
-            {githubUrl && (
+          {githubUrl && (
+            <div className="border-t border-slate-800/80 pt-5">
               <Button
                 variant="primary"
                 href={githubUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center gap-2 font-mono text-xs"
+                className="inline-flex items-center gap-2 font-mono text-xs"
               >
                 <Icon name="github" size={14} />
                 <span>View Repository on GitHub</span>
               </Button>
-            )}
-            {activeLiveUrl && (
-              <Button
-                variant="see-more"
-                href={activeLiveUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center gap-2 font-mono text-xs"
-              >
-                <Icon name="arrow" size={14} />
-                <span>Live Demo</span>
-              </Button>
-            )}
-          </div>
-        )}
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );
