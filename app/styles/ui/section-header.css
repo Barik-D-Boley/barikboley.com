@@ -5,6 +5,23 @@
   gap: 20px;
 }
 
+@media (max-width: 780px) {
+  .section-header {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 9px;
+  }
+
+  .section-header > div {
+    width: 100%;
+    text-align: left;
+  }
+
+  .section-header .eyebrow {
+    justify-content: flex-start;
+  }
+}
+
 .eyebrow,
 .section-kicker {
   color: var(--blue-light);

@@ -23,6 +23,8 @@
 
   .menu-button {
     display: block;
+    min-width: 44px;
+    min-height: 44px;
   }
 
   .nav-links {
@@ -30,17 +32,35 @@
     top: 64px;
     right: 0;
     left: 0;
-    display: none;
+    display: grid;
     align-items: stretch;
     border-bottom: 1px solid var(--line);
     background: #111c2e;
-    padding: 20px 5vw 24px;
+    overflow: hidden;
+    max-height: 0;
+    padding: 0 5vw;
     box-shadow: 0 20px 35px rgba(0, 0, 0, 0.35);
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(-16px) scaleY(0.97);
+    visibility: hidden;
+    transition:
+      max-height 280ms ease,
+      opacity 220ms ease,
+      padding 220ms ease,
+      transform 280ms ease,
+      visibility 0s linear 280ms;
   }
 
   .nav-links.nav-open {
-    display: grid;
     gap: 0;
+    max-height: 420px;
+    padding: 20px 5vw 24px;
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateY(0) scaleY(1);
+    visibility: visible;
+    transition-delay: 0s;
   }
 
   .nav-links > a {
@@ -51,6 +71,88 @@
   .resume-outline {
     margin-top: 14px;
     justify-content: center;
+    min-height: 44px;
+  }
+
+  .modal-close-button {
+    width: 44px;
+    height: 44px;
+  }
+
+  .contact-social-link {
+    min-height: 44px;
+    justify-content: center;
+  }
+
+  .filter-button {
+    display: flex;
+    width: 100%;
+    min-height: 48px;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+    font-size: 10px;
+    line-height: 1.35;
+    text-align: center;
+  }
+
+  .filter-row {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+  }
+
+  .filter-row > .filter-button:first-child {
+    grid-column: 1 / -1;
+  }
+
+  .timeline-item h3 {
+    max-width: none;
+    font-size: 13px;
+  }
+
+  .timeline-item p,
+  .timeline-item time {
+    font-size: 10px;
+  }
+
+  .project-body p {
+    font-size: 13px;
+  }
+
+  .tag-list span {
+    font-size: 9px;
+  }
+
+  .archive-card {
+    min-height: 160px;
+  }
+
+  .archive-card h3 {
+    font-size: 12px;
+  }
+
+  .archive-card p {
+    font-size: 10px;
+  }
+
+  .modal-backdrop {
+    padding: 20px 12px;
+  }
+
+  .modal-header {
+    gap: 12px;
+    padding: 16px;
+  }
+
+  .modal-body,
+  .project-modal-body {
+    padding: 16px;
+  }
+
+  .project-media-arrow {
+    width: 44px;
+    height: 44px;
   }
 
   .hero {
@@ -147,19 +249,18 @@
   .contact-panel {
     width: 94vw;
   }
-
-  footer {
-    align-items: flex-start;
-    flex-direction: column;
-    justify-content: center;
-    gap: 6px;
-  }
 }
 
 @media (prefers-reduced-motion: reduce) {
   * {
     scroll-behavior: auto !important;
     transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+  }
+
+  .nav-links {
+    transition-delay: 0s !important;
   }
 }
 
