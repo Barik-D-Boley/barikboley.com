@@ -6,7 +6,7 @@ export default function Footer() {
         <nav className="legacy-links" aria-label="Previous portfolio versions">
           <span className="legacy-label">ARCHIVE</span>
           <a
-            href="https://barikboley.com/portfolio_1/contact"
+            href="/legacy/v1"
             target="_blank"
             rel="noopener noreferrer"
             aria-label="View the first portfolio version"
@@ -15,7 +15,7 @@ export default function Footer() {
           </a>
           <span className="legacy-divider">/</span>
           <a
-            href="https://barikboley.com/portfolio_2/home"
+            href="/legacy/v2"
             target="_blank"
             rel="noopener noreferrer"
             aria-label="View the second portfolio version"
