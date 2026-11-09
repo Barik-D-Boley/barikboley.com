@@ -1,62 +1,139 @@
-# Feature Specifications: Personal Portfolio Website
+# Portfolio Features & Repository Ground Truth
 
-## Overview
-This specification document outlines the architecture, data schemas, UI components, and behavioral requirements for Barik David Boley's personal portfolio website. Built with **Next.js (App Router)**, **TypeScript**, and **Tailwind CSS**, the site highlights a dual identity in **Mechanical Engineering** and **Software Development**.
+This document describes the portfolio as implemented in the repository. It distinguishes completed behavior from outstanding work and follows the current source, component names, types, data, styles, and npm scripts.
 
----
+## Project overview
 
-## 1. Project Overview & Purpose
-* **Target Audience:** Time-crunched technical recruiters, engineering managers, and software team leads.
-* **Core Objective:** Bridge physical mechanical engineering (CAD, FEA, physical prototyping) with software development (Python CLI tools, full-stack web apps, automation).
-* **Key Design Aesthetic:** "Precision meets logic"—dark slate navy background (`bg-[#0F172A]` / `bg-[#131B2E]`), sky blue interactive accents (`text-sky-400`), industrial orange metric kickers (`text-amber-500` / `text-orange-500`), monospace indices, and crisp technical borders.
+The site is a single-page portfolio for Barik David Boley, presenting a dual focus in Mechanical Engineering and Software Development. The page introduces the work, provides a filterable project catalog and project details, and includes profile, experience, contact, and legacy portfolio links.
 
----
+The visual language is technical and dark: the base background is `#0f172a`, panels use `#1e293b` and `#162234`, blue accents use `#0ea5e9` and `#38bdf8`, and orange accents use `#ea580c` (with `#fb923c` in some section styles). Monospace type is used for indices and labels. These colors are implemented through CSS variables and component classes; they are not all Tailwind theme tokens.
 
-## 2. Hero Section (`components/sections/Hero.tsx`)
-* **Headline & Subtitle:** Prominently displays `MECHANICAL ENGINEERING & SOFTWARE DEVELOPMENT.` with the subtitle `Bridging physical and digital systems.`
-* **Student Status Badge:** Highlights `Student @ BYU-Idaho | Expected graduation: April 2029`.
-* **Primary Action CTAs:** Direct call-to-action buttons for:
-  1. `Resume (PDF)` (links to static file `/Barik_Boley_Resume.pdf` opening in a new tab)
-  2. `GitHub` (links to `https://github.com/Barik-D-Boley`)
-  3. `LinkedIn` (links to `https://www.linkedin.com/in/barik-boley`)
-* **System Metric Box:** Displays an engineering-style status widget (`SYS.STATUS: AVAILABLE` / `Open to opportunities`).
+## Repository map
 
----
+```text
+app/
+  globals.css                          # Tailwind imports, theme variables, CSS imports
+  layout.tsx                           # Root layout, fonts, and metadata
+  page.tsx                             # Home-page composition and section order
+  icon.png
+  icon1.png
+  styles/
+    layout/
+      footer.css
+      navbar.css                       # Sticky header and section scroll offsets
+    sections/
+      about.css
+      contact.css
+      experience.css
+      hero.css
+      media-queries.css                # Responsive, reduced-motion, and print rules
+      project-gallery.css
+      project-gallery/
+        illustrations.css
+        layout.css                     # Gallery, modal, and content layout rules
+    ui/
+      buttons.css
+      panel.css
+      section-header.css
+components/
+  Icon.tsx
+  layout/
+    Footer.tsx
+    Navbar.tsx
+  sections/
+    About.tsx                          # Default export AboutSection
+    Contact.tsx                        # Default export ContactSection
+    Experience.tsx                     # Default export ExperienceTimeline
+    Hero.tsx
+    ProjectGallery.tsx
+  ui/
+    Buttons.tsx
+    Panel.tsx
+    ProjectModal.tsx
+    SectionHeader.tsx
+data/
+  projects.ts                          # Project records
+types/
+  project.ts                           # Project and project-detail types
+public/
+  Barik_Boley_Resume.pdf
+package.json
+next.config.ts
+postcss.config.mjs
+eslint.config.mjs
+tsconfig.json
+```
 
-## 3. About Me Section (`components/sections/AboutSection.tsx`)
-* **Profile Overview:** Concise summary emphasizing physical systems, digital logic, leadership as an Eagle Scout, and bilingual fluency (English & Spanish).
-* **Profile Fact Grid:** Quick-reference definition list detailing:
-  - **Location:** Rexburg, Idaho
-  - **Languages:** English / Spanish (C1 Advanced)
-  - **Focus:** Design + Automation
+`app/page.tsx` renders `Navbar`, `Hero`, `ProjectGallery`, `About`, `Experience`, `Contact`, and `Footer`, in that order. The gallery precedes the About/Experience wrapper. `About.tsx`, `Experience.tsx`, and `Contact.tsx` are the actual filenames; there are no `AboutSection.tsx`, `ExperienceTimeline.tsx`, or `ContactSection.tsx` files.
 
----
+The content grid is a vertical flex layout. The About and Experience panels share a two-column wrapper (`1.7fr 1fr`) at wider widths and stack at widths up to 1040px. The project cards use CSS-generated illustrations based on the `art` field; they do not load images or play GIFs on hover.
 
-## 4. Experience Timeline (`components/sections/ExperienceTimeline.tsx`)
-* **Vertical Node Timeline:** Chronological career nodes featuring numbered indicators (`01`, `02`, `03`).
-* **Career History:**
-  1. **Full-Time Teaching Missionary** | Community Service | *Aug 2023 — Aug 2025*
-  2. **Customer Support Representative** | Intern, Venafi | *June 2022 — Aug 2023*
-  3. **Sales Associate** | Go Paddle AZ | *Apr 2021 — July 2021*
+## Implementation status
 
----
+### Completed
 
-## 5. Project Gallery & Dynamic Filtering (`components/sections/ProjectGallery.tsx`)
-* **Category Taxonomy (4 Core Filters):**
-  - `Featured` (Default tab showing top resume builds)
-  - `FEA & Simulation` (MOOSE Framework, OpenMC, thermo-mechanical analysis)
-  - `Automation & Tools` (Python CLI tools, Google Sheets automation)
-  - `Web & Full-Stack` (Chrome extensions, Next.js web applications)
-  - `Hardware & CAD` (SolidWorks CSWA designs, physical enclosures)
-* **Grid & Card Limits:** Displays a default grid limit of 4 featured projects.
-* **"See More" Expansion Logic:** Provides an inline toggle button on the `Featured` tab (`"See All Projects"` / `"Show Featured Only"`) that expands the grid in place without navigating away or breaking scroll position.
+#### Hero
 
----
+`components/sections/Hero.tsx` renders:
 
-## 6. Project Popout Modal & Details Architecture (`components/ui/ProjectModal.tsx`)
+- The heading “MECHANICAL ENGINEERING & SOFTWARE DEVELOPMENT.”
+- The subtitle “Bridging physical and digital systems.”
+- BYU-Idaho student status and expected graduation in April 2029.
+- Resume PDF, GitHub, and LinkedIn links.
+- A `SYS.STATUS: AVAILABLE` status box with “Open to opportunities.”
 
-### Data Schema Definitions (`types/project.ts`)
+The status box is hidden at viewport widths of 1040px or less. The resume file is `public/Barik_Boley_Resume.pdf`.
+
+#### Navigation
+
+`components/layout/Navbar.tsx` renders a sticky header and links to Projects, About, Experience, Contact, and the resume. An `IntersectionObserver` watches the `projects`, `about`, `experience`, and `contact` IDs with `rootMargin: "-20% 0px -35% 0px"` and `threshold: 0.1`. It allows multiple links to be active when multiple sections intersect and clears active links when `window.scrollY < 250`.
+
+At widths up to 780px, the navigation becomes a menu with a backdrop. The menu closes on backdrop click, Escape, or link activation. Section anchors have `scroll-margin-top: 80px` in `app/styles/layout/navbar.css`; smooth scrolling is enabled in the global styles.
+
+#### Project gallery and catalog
+
+`components/sections/ProjectGallery.tsx` reads project records from `data/projects.ts` and provides these filters:
+
+- Featured
+- FEA & Simulation
+- Automation & Tools
+- Web & Full-Stack
+- Hardware & CAD
+
+Featured is selected by default and includes records where `featured` is `true`. The main grid shows at most four matching projects. Cards open the project details modal by mouse or keyboard (Enter/Space); Code and Live links stop click propagation so they do not open the modal.
+
+The “View All Projects” button is always available on Featured. A category view shows a “See More [Category] Projects” button only when that category has more than four records. The catalog opened by this button lists all projects on Featured, or the matching category projects after a category is selected. Its filter buttons update the active filter used by both the page and catalog. The count badge displays the total matching records, even though the main grid is capped at four.
+
+The catalog closes on Escape or a click on the backdrop, and locks body scrolling while open. Its backdrop scrolls vertically; its header (including the close button) is sticky. The filter row itself is not sticky. The catalog container has no maximum-height rule in its CSS.
+
+#### Project details modal
+
+`components/ui/ProjectModal.tsx` receives a `Project | null` and an `onClose` callback from the gallery. Selecting a card opens it; it closes on Escape, a backdrop click, or the close button. While it is open, body scrolling is disabled and the previous inline body overflow value is restored when it closes.
+
+When `details.media` contains items, the first item is shown as the hero image and a thumbnail strip appears when there is more than one. Selecting a thumbnail changes the active image. The declared media type (`"image"` or `"gif"`) is not used to select a renderer; both are rendered with an `<img>` element.
+
+The modal conditionally renders Problem Statement, Key Challenges, System Architecture, Key Metrics, and Tools & Technologies. Empty challenge and metric arrays are omitted; blank text sections are omitted. GitHub and live/demo links are shown in the header (on wider screens) and footer when the corresponding URLs exist. `liveUrl` takes precedence over `demoUrl` for the Live Demo link.
+
+The details modal has a viewport-height-limited container and a separately scrollable body. Its layout shares the modal backdrop styles with the catalog, but its own container has `max-height: 90vh`.
+
+#### About, experience, contact, and footer
+
+- `components/sections/About.tsx` exports `AboutSection` and renders a profile summary, Eagle Scout background, English/Spanish language statement, and facts for Rexburg, Idaho; English / Spanish; and Design + Automation. It does not show an education fact or a Spanish proficiency level.
+- `components/sections/Experience.tsx` exports `ExperienceTimeline` and renders three numbered entries: Full-Time Teaching Missionary / Community Service (Aug 2023 — Aug 2025); Customer Support Representative / Intern, Venafi (June 2022 — Aug 2023); and Sales Associate / Go Paddle AZ (Apr 2021 — July 2021).
+- `components/sections/Contact.tsx` exports `ContactSection` and renders “LET’S BUILD SOMETHING THAT WORKS.”, supporting copy, and a mailto button for `barik.boley@gmail.com`. GitHub and LinkedIn are not rendered in this section; they are linked from the hero and footer.
+- `components/layout/Footer.tsx` renders “BARIK DAVID BOLEY / PORTFOLIO 2026,” GitHub and LinkedIn links, “DESIGNED WITH PRECISION. BUILT WITH LOGIC.”, and archive links to `/portfolio_1/contact` and `/portfolio_2/home` on `barikboley.com`. The archive links open in new tabs.
+
+## Data model and current records
+
+The following definitions match `types/project.ts`:
+
 ```typescript
+export type Category =
+  | "FEA & Simulation"
+  | "Automation & Tools"
+  | "Web & Full-Stack"
+  | "Hardware & CAD";
+
 export interface Metric {
   label: string;
   value: string;
@@ -64,7 +141,7 @@ export interface Metric {
 
 export interface ProjectMedia {
   url: string;
-  type: 'image' | 'gif';
+  type: "image" | "gif";
   caption?: string;
 }
 
@@ -78,12 +155,16 @@ export interface ProjectDetails {
 }
 
 export interface Project {
-  id: string;
+  id?: string;
   title: string;
-  tagline: string;
+  tagline?: string;
   description: string;
   tags: string[];
-  status?: 'planned' | 'under development' | 'maintenance' | 'complete';
+  category: Category;
+  art: "cad" | "data" | "hardware" | "web";
+  number: string;
+  featured?: boolean;
+  status?: "planned" | "under development" | "maintenance" | "complete";
   githubUrl?: string;
   liveUrl?: string;
   demoUrl?: string;
@@ -91,37 +172,50 @@ export interface Project {
 }
 ```
 
-### Component Guidelines & Interaction Spec
-* **State Management:** Controlled via local React parent state (`const [selectedProject, setSelectedProject] = useState<Project | null>(null)`).
-* **Triggering & Event Isolation:** Clicking a project card opens the detailed modal. Direct GitHub/Demo links on card prevent event bubble via `e.stopPropagation()`.
-* **Accessibility:** Modal closes on `Esc` key press or clicking backdrop. Disables background body scroll (`overflow: hidden`) when active.
-* **Hero Visual & Media Gallery:** Displays primary hero visual (image or GIF) with a horizontal thumbnail strip underneath that swaps the active hero view when clicked.
-* **Sub-sections & Data Fallbacks:** Gracefully omits sub-sections if their corresponding data field is missing or empty. Renders up to 4 styled sub-sections:
-  1. **Problem Statement**
-  2. **Key Challenges** (bulleted list)
-  3. **System Architecture**
-  4. **Relevant Metrics** (styled stat badges)
-* **Action CTAs:** Prominent "View Repository on GitHub" and "Live Demo" CTAs in top header and bottom footer.
+`ProjectDetails` fields other than `metrics` are required by the type whenever a `details` object is supplied. `id`, `tagline`, `featured`, `status`, links, `details`, and `metrics` are optional.
 
----
+`data/projects.ts` exports a lowercase `projects: Project[]` array and a compatibility alias `PROJECTS = projects`. The current array contains seven records, with four featured:
 
-## 7. Contact Section (`components/sections/ContactSection.tsx`)
-* **Primary Call-to-Action:** High-contrast panel featuring the heading `LET’S BUILD SOMETHING THAT WORKS.`
-* **Email Direct Link:** Direct button linking to `mailto:barik.boley@gmail.com` with mail icon.
-* **Social Connections:** Companion links for GitHub and LinkedIn profiles.
+| Number | Project | Category | Featured |
+| --- | --- | --- | --- |
+| 01 | Anti-Theft Package Security System | Hardware & CAD | Yes |
+| 02 | Pele HTGR MOOSE Simulation | FEA & Simulation | Yes |
+| 03 | Walmart Receipt Parser | Web & Full-Stack | Yes |
+| 04 | Python Utility Belt | Automation & Tools | Yes |
+| 05 | MHTGR Thermal-Mechanical FEA | FEA & Simulation | No |
+| 06 | Progressive Overload Analytics | Automation & Tools | No |
+| 07 | Personal Portfolio | Web & Full-Stack | No |
 
----
+Legacy portfolio versions are not project records; they are links in the footer. The current details data includes media URLs under `/images/projects/`, but the repository's `public/` directory currently contains only the resume PDF. Those referenced project images therefore need to be supplied for the modal media to resolve.
 
-## 8. Legacy Portfolios & Footer (`components/layout/Footer.tsx`)
-* **Easter Egg Archive Links:** Subtle footer links for version history opening in new tabs (`target="_blank" rel="noreferrer"`):
-  - `v1.0 (Contact)` -> `https://barikboley.com/portfolio_1/contact`
-  - `v2.0 (Home)` -> `https://barikboley.com/portfolio_2/home`
-* **Brand Tagline:** `BARIK DAVID BOLEY / PORTFOLIO 2026 | DESIGNED WITH PRECISION. BUILT WITH LOGIC.`
+When adding or editing a project, update `data/projects.ts` and follow the required fields and union values in `types/project.ts`. Put local media under `public/` and use root-relative URLs (for example, `/images/projects/example.png`). Set `featured: true` to include an item in the default view. `art` controls the generated card illustration; it is not a media URL.
 
----
+## Styling and responsive behavior
 
-## Execution & Verification Command
-To verify TypeScript compilation and Next.js build integrity after implementing these features:
+`app/globals.css` imports Tailwind CSS, `tw-animate-css`, shadcn's Tailwind stylesheet, Google-hosted Inter, and the site's CSS files. The root variables define the dark background, panel, line, text, blue, and orange colors. The root layout also loads Geist, Geist Mono, and Playfair Display through `next/font`.
+
+Styles are split across `app/styles/layout/`, `app/styles/sections/`, `app/styles/sections/project-gallery/`, and `app/styles/ui/`. The sticky navbar and 80px section offsets are in `app/styles/layout/navbar.css`; gallery card/modal rules are in `app/styles/sections/project-gallery/layout.css`.
+
+Responsive rules are in `app/styles/sections/media-queries.css`: the hero status box is hidden at 1040px; the About/Experience wrapper stacks at that breakpoint; the navigation becomes a menu and the project grid becomes one column at 780px; narrower layouts also adjust the hero, actions, and footer. Reduced-motion preferences shorten transitions and disable smooth scrolling. Print styles hide navigation, hero actions, contact, and footer and use a light page background.
+
+## Runtime and verification
+
+`package.json` defines Next.js `16.3.2`, React/React DOM `19.2.8`, TypeScript `^5`, Tailwind CSS `^4`, and `lucide-react` among the dependencies. The repository has no dedicated Vercel configuration in `next.config.ts` and no test script in `package.json`; the presence of the live domain or Vercel in project content does not establish deployment configuration in this repository.
+
+Available commands:
+
 ```bash
+npm install
+npm run dev
+npm run lint
 npm run build
+npm run start
 ```
+
+`npm run lint` runs ESLint. `npm run build` runs the Next.js production build. Visual and interaction checks should cover responsive navigation, category filtering, catalog and details modal interactions, media links, section navigation, and external/contact links. No automated test command is currently defined.
+
+## Active work
+
+- Add the project media files referenced by `data/projects.ts` under `public/images/projects/` (or update the records to valid assets). Until then, the data-driven modal images will resolve to missing files.
+
+All other features documented above are present in the current implementation; no other active roadmap items are recorded in the repository.
