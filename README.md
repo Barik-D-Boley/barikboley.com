@@ -24,6 +24,7 @@ The site is a single-page portfolio assembled in `app/page.tsx` from reusable la
 - **Project gallery:** Shows featured work first, with filters for **FEA & Simulation**, **Automation & Tools**, **Web & Full-Stack**, and **Hardware & CAD**. The featured view and category views show up to four cards at a time; the catalog modal provides access to the full list.
 - **Project popout modal:** Selecting a card opens project information, available GitHub/demo links, and a hero-media viewer with thumbnails to switch between images or GIFs. The four narrative sections—**Problem Statement**, **Key Challenges**, **System Architecture**, and **Key Metrics**—are rendered when their data is present. Tools and technologies are also listed when available.
 - **About and experience:** The About profile and numbered experience timeline sit together in a side-by-side content layout on wider screens and adapt for smaller screens.
+- **Technical skills:** A compact skills section groups Simulation & CAD and Programming & Tools, with supported skills linking to related project details on the portfolio.
 - **Contact and footer:** Provides an email call to action, social links, and archive links to earlier portfolio versions.
 
 ## Tech stack and tooling
@@ -53,11 +54,12 @@ The installed versions are defined in `package.json`. The project currently uses
 │       └── ui/                    # Shared panel, button, and section-heading styles
 ├── components/
 │   ├── layout/                    # Navbar and Footer
-│   ├── sections/                  # Hero, ProjectGallery, About, Experience, Contact
+│   ├── sections/                  # Hero, ProjectGallery, About, Experience, Skills, Contact
 │   ├── ui/                        # Buttons, panels, headings, and project modal
 │   └── Icon.tsx                   # Shared icon wrapper
 ├── data/
-│   └── projects.ts                # Portfolio project content and details
+│   ├── projects.ts                # Portfolio project content and details
+│   └── skills.ts                  # Skill groups and related project IDs
 ├── types/
 │   └── project.ts                 # Category, Project, ProjectDetails, and media types
 ├── lib/
