@@ -10,7 +10,7 @@ export default function Navbar() {
   const closeMenu = () => setMenuOpen(false)
 
   useEffect(() => {
-    const sectionIds = ["projects", "about", "experience", "contact"]
+    const sectionIds = ["projects", "about", "experience", "skills", "contact"]
 
     const handleScroll = () => {
       if (window.scrollY < 250) {
@@ -122,6 +122,13 @@ export default function Navbar() {
             className={activeSections.includes("experience") ? "active" : ""}
           >
             Experience
+          </a>
+          <a
+            href="#skills"
+            onClick={closeMenu}
+            className={activeSections.includes("skills") ? "active" : ""}
+          >
+            Skills
           </a>
           <a
             href="#contact"

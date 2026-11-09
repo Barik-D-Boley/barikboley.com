@@ -45,6 +45,7 @@ components/
     Experience.tsx                     # Default export ExperienceTimeline
     Hero.tsx
     ProjectGallery.tsx
+    Skills.tsx                          # Skills grouped with related project links
   ui/
     Buttons.tsx
     Panel.tsx
@@ -52,6 +53,7 @@ components/
     SectionHeader.tsx
 data/
   projects.ts                          # Project records
+  skills.ts                            # Skill groups and related project IDs
 types/
   project.ts                           # Project and project-detail types
 public/
@@ -75,7 +77,7 @@ eslint.config.mjs
 tsconfig.json
 ```
 
-`app/page.tsx` renders `Navbar`, `Hero`, `ProjectGallery`, `About`, `Experience`, `Contact`, and `Footer`, in that order. The gallery precedes the About/Experience wrapper. `About.tsx`, `Experience.tsx`, and `Contact.tsx` are the actual filenames; there are no `AboutSection.tsx`, `ExperienceTimeline.tsx`, or `ContactSection.tsx` files.
+`app/page.tsx` renders `Navbar`, `Hero`, `ProjectGallery`, `About`, `Experience`, `Skills`, `Contact`, and `Footer`, in that order. The gallery precedes the About/Experience wrapper, and Skills follows that wrapper. `About.tsx`, `Experience.tsx`, and `Contact.tsx` are the actual filenames; there are no `AboutSection.tsx`, `ExperienceTimeline.tsx`, or `ContactSection.tsx` files.
 
 The content grid is a vertical flex layout. The About and Experience panels share a two-column wrapper (`1.7fr 1fr`) at wider widths and stack at widths up to 1040px. Project cards lazy-load the first project media item when it is a still image; otherwise they show a neutral branded fallback. GIFs are reserved for the project details modal.
 
@@ -235,35 +237,116 @@ npm run start
 
 `npm run lint` runs ESLint. `npm run build` runs the Next.js production build. Visual and interaction checks should cover responsive navigation, category filtering, catalog and details modal interactions, media links, section navigation, and external/contact links. No automated test command is currently defined.
 
-## Active work
+## Completed work
+
+### Skills section
+
+- Added a compact Technical Skills section with Simulation & CAD and Programming & Tools groups, sized to be comparable to the About panel.
+- Displayed the provided skills and linked supported associations to the corresponding project details on the portfolio.
+- Added Skills to the primary navigation and section scroll offsets.
 
 ### Mobile responsiveness and layout polish
 
 **Goal:** Improve usability and visual consistency on phones and small tablets while preserving the existing desktop design.
 
-#### Agreed behavior
+#### Completed behavior
 
-- Audit responsive layouts across the hero, project gallery and filters, project catalog and details modal, About, Experience, Contact, navigation, and footer.
-- Animate the mobile navigation with a fade and slide on open and close. Preserve Escape, backdrop-click, and link-activation closing behavior, keep `aria-expanded` accurate, and respect reduced-motion preferences.
-- Redesign the footer to be minimal and well-aligned. Keep the portfolio identity and GitHub/LinkedIn links; retain the old portfolio links as a small, unobtrusive archive Easter egg. Adapt layout for phones without hiding content by device.
-- Check for clipping, overlap, horizontal overflow, awkward wrapping, cramped spacing, and touch targets that are difficult to use.
-- Preserve the desktop layout and existing interactions unless a responsive fix requires a deliberate change.
+- Audited responsive layouts across the hero, project gallery and filters, project catalog and details modal, About, Experience, Contact, navigation, and footer.
+- Added a fade, slide, and height transition to the mobile navigation. Escape, backdrop clicks, and link activation close the menu; `aria-expanded` stays accurate and reduced-motion preferences are respected.
+- Redesigned the footer to be minimal and well-aligned. The portfolio identity and GitHub/LinkedIn links remain visible, and the archive links are secondary content on phones and desktop.
+- Addressed clipping, horizontal overflow, awkward wrapping, cramped spacing, and touch-target size issues found during the responsive review.
+- Preserved the desktop layout and existing interactions.
 
 #### Implemented responsive fixes
 
-- The mobile menu now animates with a visible opacity, slide, and height transition; keyboard Escape, backdrop clicks, and link activation continue to close it.
 - Section headers stack and stay left-aligned on phones. Gallery filters use a consistent two-column layout, with Featured spanning the first row.
 - Mobile menu, filter, modal-close, media-arrow, social, and footer links have larger touch targets. Timeline, project, and archive text has improved small-screen sizing.
-- The footer keeps the identity and socials in a clean layout and presents archive links as secondary content on both phone and desktop.
 - Removed the body's fixed minimum width after testing found horizontal overflow at a 320px viewport.
 
-#### Implementation checklist
+#### Verification completed
 
-- [x] Review each page section and interactive surface at phone and small-tablet widths; address confirmed layout issues.
-- [x] Add open/close animation to the mobile navigation and ensure reduced-motion settings minimize or disable it.
-- [x] Redesign footer hierarchy and spacing; keep archive links available but visually secondary on every device.
-- [x] Verify keyboard, touch, and existing navigation behavior remain usable.
-- [x] Check 320px, common phone widths, tablet width, and desktop; verify there is no unintended horizontal scrolling.
-- [x] Run `npm run lint` and `npm run build`, and visually check responsive layouts.
+- [x] Reviewed each page section and interactive surface at phone and small-tablet widths; addressed confirmed layout issues.
+- [x] Added open/close animation to the mobile navigation and ensured reduced-motion settings minimize or disable it.
+- [x] Redesigned footer hierarchy and spacing; kept archive links available but visually secondary on every device.
+- [x] Verified keyboard, touch, and existing navigation behavior remain usable.
+- [x] Checked 320px, common phone widths, tablet width, and desktop; verified there is no unintended horizontal scrolling.
+- [x] Ran `npm run lint` and `npm run build`, and visually checked responsive layouts.
 
-**Files likely involved:** `components/layout/Navbar.tsx`, `components/layout/Footer.tsx`, `app/styles/layout/navbar.css`, `app/styles/layout/footer.css`, `app/styles/sections/media-queries.css`, and any section styles where the audit finds issues.
+**Files involved:** `components/layout/Navbar.tsx`, `components/layout/Footer.tsx`, `app/styles/layout/navbar.css`, `app/styles/layout/footer.css`, `app/styles/sections/media-queries.css`, and section styles updated during the audit.
+
+## Active work
+
+### Legacy portfolio archive
+
+**Goal:** Keep the legacy sites available from the footer archive at the requested URLs.
+
+#### Agreed behavior
+
+- Keep the archive links in the footer; do not add a separate homepage section.
+- Link to `https://barikboley.com/legacy/v1` and `https://barikboley.com/legacy/v2`.
+- Inspect available legacy source before deciding how to serve the sites. Keep original source outside `public/`; publish built files under the corresponding public paths or implement routes if needed to serve the requested URLs.
+
+### Hero opportunity callout and visual
+
+**Goal:** Make the hero's status and visual useful to recruiters without losing the existing technical design.
+
+#### Agreed behavior
+
+- Retain a compact, recruiter-focused opportunity callout, with final copy still to be approved.
+- The callout should convey interest in mechanical or nuclear engineering internships and openness to software development internships.
+- Keep the callout available at mobile widths rather than hiding it.
+- Replace the CSS rings and diagonal line with the portfolio icon in a static circular treatment. Preserve the circle-only appearance on mobile; do not add an auto-rotating carousel.
+
+### Project status badges
+
+**Goal:** Make project lifecycle status visible at a glance throughout the gallery.
+
+#### Agreed behavior
+
+- Show a status badge on every project card in both the main gallery and full catalog.
+- Assign statuses to active projects:
+  - Progressive Overload Analytics: `planned`.
+  - Personal Portfolio and Pele HTGR MOOSE Simulation: `under development`.
+  - Python Utility Belt: `maintenance`, displayed as **Ongoing**.
+  - Other active projects: `complete`.
+- Keep supported status values in sync with `types/project.ts`; do not reactivate the commented-out Anti-Theft project as part of this work.
+
+### Navigation highlighting
+
+**Goal:** Make the current location clear without highlighting multiple navigation links simultaneously.
+
+#### Agreed behavior
+
+- Ensure no more than one section link is highlighted at a time.
+- Select the active link from the current scroll position and preserve the existing behavior of clearing the highlight near the top of the page.
+
+### Tailwind migration
+
+**Goal:** Consolidate the site styling around Tailwind while preserving the current design and behavior.
+
+#### Agreed behavior
+
+- Migrate component, section, layout, and responsive styling from traditional CSS files to Tailwind utilities as far as practical.
+- Keep only necessary global styles, theme tokens, and rules that are not reasonably represented with Tailwind utilities.
+- Preserve the existing visual design, responsive behavior, accessibility, and interactions during migration.
+
+### Naming consistency and text readability
+
+**Goal:** Make naming consistent throughout the repository and improve legibility of small text.
+
+#### Agreed behavior
+
+- Audit naming conventions across source files, style files, assets, imports, and documentation. Rename only where it improves consistency, and update every reference when renaming.
+- Correct the apparent `htgr-monlith` spelling inconsistency in the asset folder and all media URLs.
+- Audit small informational text, labels, and captions for legibility. Improve text size and contrast while preserving visual hierarchy and responsive layouts.
+
+### Implementation checklist
+
+- [ ] Update footer archive links and verify the requested legacy URLs resolve; inspect source and settle the serving approach before publishing legacy files.
+- [ ] Finalize the recruiter callout copy and implement the static icon visual for desktop and mobile.
+- [ ] Assign and display the agreed status on every active project card in both gallery and catalog views.
+- [ ] Update navigation logic so no more than one section can be active at a time.
+- [ ] Migrate styling to Tailwind utilities as far as practical, retaining only necessary global/theme CSS.
+- [ ] Complete the repository-wide naming audit and verify renamed assets still load.
+- [ ] Improve small-text readability and check desktop and mobile layouts.
+- [ ] Run `npm run lint` and `npm run build`, then verify affected sections, links, and interactions in the browser.
