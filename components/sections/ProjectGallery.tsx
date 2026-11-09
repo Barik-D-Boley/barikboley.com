@@ -57,6 +57,23 @@ export default function ProjectGallery({ number = "001" }: { number?: string }) 
     selectedProjectRef.current = selectedProject
   }, [selectedProject])
 
+  useEffect(() => {
+    const openProjectFromHash = () => {
+      const projectId = window.location.hash.match(/^#project-(.+)$/)?.[1]
+      if (!projectId) {
+        setSelectedProject(null)
+        return
+      }
+
+      const project = projects.find((item) => item.id === projectId)
+      if (project) setSelectedProject(project)
+    }
+
+    openProjectFromHash()
+    window.addEventListener("hashchange", openProjectFromHash)
+    return () => window.removeEventListener("hashchange", openProjectFromHash)
+  }, [])
+
   const categoryProjects = useMemo(() => {
     if (activeFilter === "Featured") {
       return projects.filter((project) => project.featured)
@@ -279,7 +296,12 @@ export default function ProjectGallery({ number = "001" }: { number?: string }) 
       <ProjectModal
         key={selectedProject?.id ?? selectedProject?.title ?? "closed"}
         project={selectedProject}
-        onClose={() => setSelectedProject(null)}
+        onClose={() => {
+          setSelectedProject(null)
+          if (window.location.hash.startsWith("#project-")) {
+            window.history.replaceState(null, "", `${window.location.pathname}${window.location.search}`)
+          }
+        }}
       />
     </Panel>
   )
