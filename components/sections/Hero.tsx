@@ -1,5 +1,6 @@
 'use client';
 
+import Image from "next/image";
 import Icon from "@/components/Icon"
 import Button from '../ui/Buttons';
 
@@ -13,7 +14,7 @@ export default function Hero() {
         </div>
         <h1 id="hero-title">
           MECHANICAL ENGINEERING
-          <span>& SOFTWARE DEVELOPMENT.</span>
+          <span>& SOFTWARE DEVELOPMENT</span>
         </h1>
         <p className="hero-subtitle">
           Bridging physical and digital systems.
@@ -48,11 +49,16 @@ export default function Hero() {
           </Button>
         </div>
       </div>
-      <div className="hero-metric" aria-hidden="true">
+      <div className="hero-visual" aria-hidden="true">
+        <div className="hero-visual-ring">
+          <Image src="/icon.svg" alt="" width={220} height={220} priority />
+        </div>
+      </div>
+      <div className="hero-metric" role="status" aria-live="polite">
         <span>SYS.STATUS</span>
-        <strong>AVAILABLE</strong>
-        <div>
-          <i /> Open to opportunities
+        <strong>SEEKING INTERNSHIPS</strong>
+        <div className="hero-metric-subline">
+          Mechanical • Nuclear • Software
         </div>
       </div>
     </section>

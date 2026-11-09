@@ -1,6 +1,24 @@
 @media (max-width: 1040px) {
+  .hero {
+    min-height: 620px;
+  }
+
+  .hero-visual {
+    top: 22px;
+    right: 4vw;
+  }
+
+  .hero-visual-ring {
+    width: min(22vw, 210px);
+    height: min(22vw, 210px);
+    min-width: 150px;
+    min-height: 150px;
+  }
+
   .hero-metric {
-    display: none;
+    position: static;
+    width: min(100%, 360px);
+    margin-top: 22px;
   }
 
   .content-grid {
