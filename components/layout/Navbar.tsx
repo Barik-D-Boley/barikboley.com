@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from "react"
+import Image from "next/image"
 import Icon from "@/components/Icon"
 
 export default function Navbar() {
@@ -76,6 +77,14 @@ export default function Navbar() {
       />
       <header className="topbar">
         <a className="brand" href="#top" aria-label="Barik David Boley, back to top">
+          <Image
+            className="brand-logo"
+            src="/icon.svg"
+            alt=""
+            width={44}
+            height={28}
+            priority
+          />
           <span>BARIK DAVID BOLEY</span>
         </a>
 
