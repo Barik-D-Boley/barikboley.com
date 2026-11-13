@@ -41,7 +41,7 @@ export const projects: Project[] = [
     category: "FEA & Simulation",
     number: "02",
     featured: true,
-    status: "complete",
+    status: "under development",
     githubUrl: "https://github.com/Barik-D-Boley/pele-htgr-moose-simulation",
     details: {
       problemStatement: "High-Temperature Gas-Cooled Reactors require high-fidelity multi-physics modeling to evaluate thermal stress and fission product containment inside TRISO fuel particles.",
@@ -113,7 +113,7 @@ export const projects: Project[] = [
     category: "Automation & Tools",
     number: "04",
     featured: true,
-    status: "complete",
+    status: "maintenance",
     githubUrl: "https://github.com/Barik-D-Boley/python-utility-belt",
     details: {
       problemStatement: "Uploading sensitive documents and images to third-party web converters presents privacy risks and rate-limiting friction.",
@@ -216,7 +216,7 @@ export const projects: Project[] = [
     category: "Automation & Tools",
     number: "06",
     featured: false,
-    status: "complete",
+    status: "planned",
     githubUrl: "https://github.com/Barik-D-Boley/sheets-progressive-overload-analytics",
     details: {
       problemStatement: "Athletes require accurate progressive overload calculations based on volume, RPE, and historical lift trends.",
@@ -242,7 +242,7 @@ export const projects: Project[] = [
     category: "Web & Full-Stack",
     number: "07",
     featured: false,
-    status: "complete",
+    status: "under development",
     githubUrl: "https://github.com/Barik-D-Boley/barikboley.com",
     liveUrl: "https://barikboley.com",
     details: {

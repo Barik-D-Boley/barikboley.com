@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react';
 import { Project } from '@/types/project';
 import Icon from '@/components/Icon';
 import Button from '@/components/ui/Buttons';
+import ProjectStatusBadge from '@/components/ui/ProjectStatusBadge';
 import { getProjectCoverMediaIndex } from '@/lib/project-media';
 
 interface ProjectModalProps {
@@ -78,7 +79,6 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
     tags,
     category,
     number,
-    status,
     githubUrl,
     details,
   } = project;
@@ -109,11 +109,7 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
                   • {category}
                 </span>
               )}
-              {status && (
-                <span className="px-2 py-0.5 text-[10px] font-mono rounded bg-sky-500/10 text-sky-400 border border-sky-500/20 uppercase">
-                  {status}
-                </span>
-              )}
+              <ProjectStatusBadge status={project.status} />
             </div>
             <h2 id="project-modal-title" className="text-xl md:text-2xl font-bold text-white tracking-tight">
               {title}
