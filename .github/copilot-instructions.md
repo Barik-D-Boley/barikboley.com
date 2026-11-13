@@ -15,3 +15,4 @@ Whenever the user starts a message with "Act as an architect", "Architect mode:"
 - **Design Token Palette:** Navy base (`#0f172a`, `#131B2E`), Slate surface (`#1e293b`), Sky Blue accents (`#0ea5e9`, `#38bdf8`), Orange metrics (`#ea580c`).
 - **Data Model:** Centralized project structures in `data/projects.ts` adhering strictly to `types/project.ts`.
 - **Component Rules:** Keep UI components modular under `components/`, maintaining strict accessibility (keyboard navigation, Escape listeners, body scroll locks).
+- **Dev Server & Localhost:** Before running `npm run dev`, always check if `http://localhost:3000` is already responding. If it is active, reuse it directly and **do not** start a new dev server. Only run `npm run dev` if nothing is currently listening on port 3000.
