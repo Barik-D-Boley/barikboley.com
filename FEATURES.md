@@ -291,7 +291,7 @@ npm run start
 
 ## Active work
 
-### Hero opportunity callout and visual
+### 1. Hero opportunity callout and visual
 
 **Goal:** Make the hero's status and visual useful to recruiters without losing the existing technical design.
 
@@ -305,7 +305,7 @@ npm run start
 - Make the mobile logo-circle, centered text column, and below-content status-box layout switch together at the existing 780px mobile breakpoint.
 - The requested mobile refinement is pending; do not treat the current mobile layout as complete until verified against the reference.
 
-### Project status badges
+### 2. Project status badges
 
 **Goal:** Make project lifecycle status visible at a glance throughout the gallery.
 
@@ -319,7 +319,7 @@ npm run start
   - Other active projects: `complete`.
 - Keep supported status values in sync with `types/project.ts`; do not reactivate the commented-out Anti-Theft project as part of this work.
 
-### Navigation highlighting
+### 3. Navigation highlighting
 
 **Goal:** Make the current location clear without highlighting multiple navigation links simultaneously.
 
@@ -329,7 +329,7 @@ npm run start
 - When multiple sections are visible, select the section nearest the top of the viewport.
 - Preserve the behavior of clearing the highlight near the top of the page (`window.scrollY < 250`).
 
-### Tailwind migration
+### 4. Tailwind migration
 
 **Goal:** Consolidate the site styling around Tailwind while preserving the current design and behavior.
 
@@ -339,7 +339,7 @@ npm run start
 - Keep only necessary global styles, theme tokens, and rules that are not reasonably represented with Tailwind utilities.
 - Preserve the existing visual design, responsive behavior, accessibility, and interactions during migration.
 
-### Naming consistency and text readability
+### 5. Naming consistency and text readability
 
 **Goal:** Make naming consistent throughout the repository and improve legibility of small text.
 
@@ -351,11 +351,11 @@ npm run start
 
 ### Implementation checklist
 
-- [ ] Finalize recruiter callout copy to distinguish engineering internship interest from openness to software development internships.
-- [ ] Implement and visually verify the mobile hero reference: logo inside a circle aligned beside/behind the centered text column, no orange diagonal line, and the status box below copy and actions. Keep the desktop composition unchanged.
-- [ ] Assign and display the agreed status on every active project card in both gallery and catalog views.
-- [x] Update navigation highlighting to select only the visible section nearest the top of the viewport and clear it near the top of the page.
-- [ ] Migrate styling to Tailwind utilities as far as practical, retaining only necessary global/theme CSS.
-- [ ] Complete the repository-wide naming audit and verify renamed assets still load.
-- [ ] Improve small-text readability and check desktop and mobile layouts.
-- [ ] Run `npm run lint` and `npm run build`, then verify affected sections, links, and interactions in the browser.
+1. [ ] Finalize recruiter callout copy to distinguish engineering internship interest from openness to software development internships.
+2. [ ] Implement and visually verify the mobile hero reference: logo inside a circle aligned beside/behind the centered text column, no orange diagonal line, and the status box below copy and actions. Keep the desktop composition unchanged.
+3. [ ] Assign and display the agreed status on every active project card in both gallery and catalog views.
+4. [x] Update navigation highlighting to select only the visible section nearest the top of the viewport and clear it near the top of the page.
+5. [ ] Migrate styling to Tailwind utilities as far as practical, retaining only necessary global/theme CSS.
+6. [ ] Complete the repository-wide naming audit and verify renamed assets still load.
+7. [ ] Improve small-text readability and check desktop and mobile layouts.
+8. [ ] Run `npm run lint` and `npm run build`, then verify affected sections, links, and interactions in the browser.
