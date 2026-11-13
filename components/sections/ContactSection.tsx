@@ -1,7 +1,7 @@
 import Icon from "@/components/Icon"
-import Button from '../ui/Buttons'
+import Button from "@/components/ui/Button"
 
-export default function ContactSection({ number = "004" }: { number?: string }) {
+export default function ContactSection({ number }: { number: string }) {
   return (
     <section className="mx-auto mb-10 flex w-[min(1180px,92vw)] scroll-mt-20 items-center justify-between gap-[30px] rounded-[5px] border border-sky-500/30 border-l-4 border-l-orange-600 bg-[image:linear-gradient(90deg,rgba(14,165,233,0.08),transparent_45%)] bg-[color:var(--panel)] p-[clamp(26px,4vw,48px)] max-[780px]:w-[94vw] max-[780px]:items-stretch max-[780px]:flex-col print:hidden" id="contact">
       <div>

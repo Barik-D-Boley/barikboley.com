@@ -1,5 +1,5 @@
-import Panel from '../ui/Panel';
-import SectionHeader from '../ui/SectionHeader';
+import Panel from "@/components/ui/Panel"
+import SectionHeader from "@/components/ui/SectionHeader"
 
 const experience = [
   {
@@ -19,7 +19,7 @@ const experience = [
   },
 ]
 
-export default function ExperienceTimeline({ number = "002" }: { number?: string }) {
+export default function ExperienceTimeline({ number }: { number: string }) {
   return (
     <Panel className="p-[clamp(22px,3vw,38px)]" id="experience">
       <SectionHeader eyebrow={`Experience / ${number}`} title="EXPERIENCE TIMELINE" />
@@ -31,9 +31,9 @@ export default function ExperienceTimeline({ number = "002" }: { number?: string
               {String(index + 1).padStart(2, "0")}
             </span>
             <div>
-              <h3 className="max-w-[220px] text-xs leading-[1.35] font-bold text-slate-50 uppercase max-[780px]:max-w-none max-[780px]:text-[13px]">{item.role}</h3>
-              <p className="mt-1 text-[9px] font-bold tracking-[0.07em] text-sky-400 uppercase max-[780px]:text-[10px]">{item.organization}</p>
-              <time className="mt-[5px] block font-mono text-[9px] text-[var(--muted)] max-[780px]:text-[10px]">{item.date}</time>
+              <h3 className="max-w-[220px] text-sm leading-[1.35] font-bold text-slate-50 uppercase max-[780px]:max-w-none">{item.role}</h3>
+              <p className="mt-1 text-xs font-bold tracking-[0.07em] text-sky-300 uppercase">{item.organization}</p>
+              <time className="mt-[5px] block font-mono text-xs text-slate-300">{item.date}</time>
             </div>
           </article>
         ))}

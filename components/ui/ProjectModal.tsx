@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from 'react';
 import { Project } from '@/types/project';
 import Icon from '@/components/Icon';
-import Button from '@/components/ui/Buttons';
+import Button from '@/components/ui/Button';
 import ProjectStatusBadge from '@/components/ui/ProjectStatusBadge';
 import { getProjectCoverMediaIndex } from '@/lib/project-media';
 

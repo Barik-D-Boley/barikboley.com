@@ -25,13 +25,6 @@ Use the source files as the authority for current implementation details. Avoid 
 - Prefer Tailwind utilities for component styling where practical; retain CSS for global tokens and rules better expressed in stylesheets.
 - Do not reactivate archived or commented-out projects unless a feature explicitly requires it.
 
-### Validation (User Pre-Push Checklist)
-
-Run manually before pushing to Vercel (agents do not need to run these automatically):
-- `npm run lint`
-- `npm run build`
-- Manually verify affected responsive layouts, keyboard interactions, navigation, and links.
-
 ## Feature workflow
 
 Give each feature a stable ID so it can be referenced without relying on list position. Keep one status per feature; do not maintain a second checklist elsewhere in this document.
@@ -91,12 +84,12 @@ When implementing a feature, inspect the relevant source first. Treat feature sp
 **Out of scope:** Reactivating the commented-out Anti-Theft project.
 
 **Acceptance criteria**
-- [ ] Every active project has the agreed lifecycle status, using the values in `types/project.ts`.
-- [ ] Every project card displays its status in both the main gallery and catalog.
-- [ ] The `maintenance` status displays as **Ongoing**.
+- [x] Every active project has the agreed lifecycle status, using the values in `types/project.ts`.
+- [x] Every project card displays its status in both the main gallery and catalog.
+- [x] The `maintenance` status displays as **Ongoing**.
 
 **Validation**
-- [ ] Check each active project in both gallery and catalog views.
+- [x] Check each active project in both gallery and catalog views.
 
 ### NAV-01: Single active section highlight
 **Status:** Done
@@ -128,15 +121,15 @@ When implementing a feature, inspect the relevant source first. Treat feature sp
 - [x] Visually check the page at mobile, tablet, and desktop widths; verify navigation and modal interactions.
 
 ### CONSISTENCY-01: Naming and small-text readability
-**Status:** Ready
+**Status:** In progress
 
 **Goal:** Improve naming consistency and legibility without broad, unnecessary renames.
 **Scope:** Audit source, styles, assets, imports, and user-facing small text.
 
 **Acceptance criteria**
-- [ ] Fix the `htgr-monlith` asset-folder spelling and update every reference.
-- [ ] Rename other items only when the inconsistency is clear and all references can be updated safely.
-- [ ] Improve small-text size or contrast where needed while preserving hierarchy and responsive layouts.
+- [x] Use the correctly spelled `htgr-monolith` asset-folder name and update every reference.
+- [x] Rename other items only when the inconsistency is clear and all references can be updated safely.
+- [x] Improve small-text size or contrast where needed while preserving hierarchy and responsive layouts.
 
 **Validation**
-- [ ] Verify renamed assets load and check affected text at phone and desktop widths.
+- [x] Verify renamed assets load and check affected text at phone and desktop widths.

@@ -39,7 +39,7 @@ export default function ProjectStatusBadge({ status }: { status: Project["status
 
   return (
     <span
-      className={`inline-flex items-center gap-[5px] whitespace-nowrap rounded-full border px-[7px] py-1 font-mono text-[7px] font-bold tracking-[0.08em] uppercase ${badge.className}`}
+      className={`inline-flex items-center gap-[5px] whitespace-nowrap rounded-full border px-[7px] py-1 font-mono text-[9px] font-bold tracking-[0.08em] uppercase ${badge.className}`}
     >
       <StatusIcon size={11} strokeWidth={2.2} aria-hidden="true" />
       {badge.label}

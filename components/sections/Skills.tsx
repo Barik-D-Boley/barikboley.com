@@ -1,7 +1,7 @@
 import { skillGroups } from "@/data/skills";
 import { projects } from "@/data/projects";
-import Panel from "../ui/Panel";
-import SectionHeader from "../ui/SectionHeader";
+import Panel from "@/components/ui/Panel";
+import SectionHeader from "@/components/ui/SectionHeader";
 
 export default function Skills({ number = "004" }: { number?: string }) {
   return (
@@ -17,7 +17,7 @@ export default function Skills({ number = "004" }: { number?: string }) {
               className="rounded-xl border border-slate-400/15 bg-slate-500/5 p-3 sm:p-4"
             >
               <h3
-                className="border-b border-sky-300/20 pb-2 text-[0.68rem] font-bold uppercase tracking-[0.12em] text-sky-300 sm:text-xs"
+                className="border-b border-sky-300/20 pb-2 text-xs font-bold uppercase tracking-[0.12em] text-sky-300"
                 id={`skill-group-${group.name.toLowerCase().replace(/[^a-z0-9]+/g, "-")}`}
               >
                 {group.name}
@@ -50,7 +50,7 @@ export default function Skills({ number = "004" }: { number?: string }) {
                                 )}
                                 <a
                                   aria-label={`View ${project.title} project details`}
-                                  className="inline-flex items-center rounded-full border border-sky-400/30 bg-sky-500/5 px-2 py-1 text-[8px] font-bold uppercase tracking-[0.08em] text-sky-300 transition-colors hover:border-sky-300 hover:bg-sky-500/10"
+                                  className="inline-flex items-center rounded-full border border-sky-400/30 bg-sky-500/5 px-2 py-1 text-[10px] font-bold uppercase tracking-[0.08em] text-sky-300 transition-colors hover:border-sky-300 hover:bg-sky-500/10"
                                   href={`#project-${project.id}`}
                                 >
                                   {relatedProject.label}

@@ -11,7 +11,7 @@ export default function SectionHeader({ title, eyebrow, children }: SectionHeade
     <div className="flex items-end justify-between gap-5 max-[780px]:flex-col max-[780px]:items-start max-[780px]:gap-[9px]">
       <div className="max-[780px]:w-full max-[780px]:text-left">
         {eyebrow && (
-          <span className="mb-[22px] flex items-center gap-2.5 text-[10px] font-extrabold tracking-[0.16em] text-sky-400 uppercase">
+          <span className="mb-[22px] flex items-center gap-2.5 text-xs font-extrabold tracking-[0.16em] text-sky-400 uppercase">
             {eyebrow}
           </span>
         )}

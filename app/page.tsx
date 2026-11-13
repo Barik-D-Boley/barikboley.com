@@ -1,10 +1,10 @@
 import Navbar from "@/components/layout/Navbar"
 import Hero from "@/components/sections/Hero"
-import About from "@/components/sections/About"
-import Experience from "@/components/sections/Experience"
+import AboutSection from "@/components/sections/AboutSection"
+import ExperienceTimeline from "@/components/sections/ExperienceTimeline"
 import ProjectGallery from "@/components/sections/ProjectGallery"
 import Skills from "@/components/sections/Skills"
-import Contact from "@/components/sections/Contact"
+import ContactSection from "@/components/sections/ContactSection"
 import Footer from "@/components/layout/Footer"
 
 export default function Home() {
@@ -19,16 +19,16 @@ export default function Home() {
           <ProjectGallery number="001" />
           <div className="grid grid-cols-[1.7fr_1fr] gap-7 max-[1040px]:grid-cols-1">
             <div id="about" className="scroll-mt-20">
-              <About number="002" />
+              <AboutSection number="002" />
             </div>
             <div id="experience" className="scroll-mt-20">
-              <Experience number="003" />
+              <ExperienceTimeline number="003" />
             </div>
           </div>
           <Skills number="004" />
         </div>
 
-        <Contact number="005"/>
+        <ContactSection number="005" />
       </main>
 
       <Footer />

@@ -4,12 +4,12 @@ import { useEffect, useMemo, useRef, useState } from "react"
 import { projects } from "@/data/projects"
 import { Project } from "@/types/project"
 import { getProjectCoverMediaIndex } from "@/lib/project-media"
-import Panel from '../ui/Panel';
-import SectionHeader from '../ui/SectionHeader';
-import Button from '../ui/Buttons';
-import ProjectModal from '../ui/ProjectModal';
-import ProjectStatusBadge from '../ui/ProjectStatusBadge';
-import Icon from '../Icon';
+import Panel from "@/components/ui/Panel"
+import SectionHeader from "@/components/ui/SectionHeader"
+import Button from "@/components/ui/Button"
+import ProjectModal from "@/components/ui/ProjectModal"
+import ProjectStatusBadge from "@/components/ui/ProjectStatusBadge"
+import Icon from "@/components/Icon"
 
 const filters = [
   "Featured",
@@ -28,7 +28,7 @@ const projectTitleClass =
   "mt-[7px] text-base leading-[1.25] font-bold tracking-[-0.02em] text-white"
 
 const projectDescriptionClass =
-  "mt-2 text-[11px] leading-[1.55] text-[var(--muted)] max-[780px]:text-[13px]"
+  "mt-2 text-[13px] leading-[1.55] text-[var(--muted)]"
 
 const projectTagsClass =
   "mt-4 flex flex-wrap gap-1.5"
@@ -134,7 +134,7 @@ export default function ProjectGallery({ number = "001" }: { number?: string }) 
   return (
     <Panel className="scroll-mt-20 p-[clamp(22px,3vw,38px)] print:break-inside-avoid print:border-slate-300 print:bg-white print:shadow-none" id="projects">
       <SectionHeader eyebrow={`Selected work / ${number}`} title="PROJECT GALLERY">
-        <span className="font-mono text-[9px] tracking-[0.1em] text-[var(--muted)]">
+        <span className="font-mono text-[11px] tracking-[0.1em] text-[var(--muted)]">
           {categoryProjects.length.toString().padStart(2, "0")} SHOWING
         </span>
       </SectionHeader>
@@ -177,7 +177,7 @@ export default function ProjectGallery({ number = "001" }: { number?: string }) 
           >
             <ProjectCardMedia project={project} />
             <div className={projectBodyClass}>
-              <div className="flex items-center justify-between gap-2 font-mono text-[8px] tracking-[0.1em] text-orange-600">
+              <div className="flex items-center justify-between gap-2 font-mono text-[11px] tracking-[0.1em] text-orange-400">
                 <span>PRJ / {project.number}</span>
                 <ProjectStatusBadge status={project.status} />
               </div>
@@ -186,7 +186,7 @@ export default function ProjectGallery({ number = "001" }: { number?: string }) 
               <div className={projectTagsClass}>
                 {project.tags.map((tag) => (
                   <span
-                    className="rounded-[3px] border border-sky-500/40 px-[7px] py-[5px] font-mono text-[7px] tracking-[0.04em] text-sky-200 uppercase max-[780px]:text-[9px]"
+                    className="rounded-[3px] border border-sky-500/40 px-[7px] py-[5px] font-mono text-[10px] tracking-[0.04em] text-sky-200 uppercase"
                     key={tag}
                   >
                     {tag}
@@ -287,7 +287,7 @@ export default function ProjectGallery({ number = "001" }: { number?: string }) 
                   >
                     <ProjectCardMedia project={project} />
                     <div className={projectBodyClass}>
-                      <div className="flex items-center justify-between gap-2 font-mono text-[8px] tracking-[0.1em] text-orange-600">
+                      <div className="flex items-center justify-between gap-2 font-mono text-[11px] tracking-[0.1em] text-orange-400">
                         <span>PRJ / {project.number}</span>
                         <ProjectStatusBadge status={project.status} />
                       </div>
@@ -296,7 +296,7 @@ export default function ProjectGallery({ number = "001" }: { number?: string }) 
                       <div className={projectTagsClass}>
                         {project.tags.map((tag) => (
                           <span
-                            className="rounded-[3px] border border-sky-500/40 px-[7px] py-[5px] font-mono text-[7px] tracking-[0.04em] text-sky-200 uppercase max-[780px]:text-[9px]"
+                            className="rounded-[3px] border border-sky-500/40 px-[7px] py-[5px] font-mono text-[10px] tracking-[0.04em] text-sky-200 uppercase"
                             key={tag}
                           >
                             {tag}
