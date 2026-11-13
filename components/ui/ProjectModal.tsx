@@ -88,7 +88,7 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
 
   return (
     <div
-      className="modal-backdrop project-modal-backdrop"
+      className="fixed inset-0 z-[100] block overflow-y-auto bg-[rgba(15,23,42,0.88)] px-4 py-10 backdrop-blur-[12px] max-[780px]:px-3 max-[780px]:py-5"
       onClick={(e) => {
         if (e.target === e.currentTarget) onClose();
       }}
@@ -96,9 +96,9 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
       aria-modal="true"
       aria-labelledby="project-modal-title"
     >
-      <div className="modal-container project-modal-container bg-[#131B2E] border border-sky-500/20 rounded-xl max-w-4xl w-[94vw] flex flex-col shadow-2xl">
+      <div className="relative m-0 mx-auto flex w-[min(1000px,94vw)] flex-col overflow-visible rounded-lg border border-[var(--line-strong)] bg-[#1e293b] shadow-[0_25px_60px_rgba(0,0,0,0.6)]">
         {/* Header */}
-        <div className="modal-header project-modal-header flex items-center justify-between border-b border-slate-700/60 bg-[#131B2E]/95 px-6 py-4">
+        <div className="relative top-auto z-auto flex items-center justify-between gap-3 border-b border-[var(--line)] bg-[#1e293b] px-6 py-5 max-[780px]:p-4">
           <div className="flex flex-col gap-1">
             <div className="flex items-center gap-3">
               <span className="font-mono text-xs text-amber-500 tracking-wider uppercase">
@@ -111,7 +111,7 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
               )}
               <ProjectStatusBadge status={project.status} />
             </div>
-            <h2 id="project-modal-title" className="text-xl md:text-2xl font-bold text-white tracking-tight">
+            <h2 id="project-modal-title" className="mt-[7px] text-[clamp(1.25rem,2vw,1.75rem)] font-extrabold tracking-[-0.035em] text-white">
               {title}
             </h2>
           </div>
@@ -119,7 +119,7 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
           <div className="flex items-center gap-3">
             <button
               type="button"
-              className="modal-close-button p-2 text-slate-400 hover:text-white rounded border border-slate-700 bg-slate-800/50 hover:bg-slate-800 transition-colors"
+              className="grid h-9 w-9 place-items-center rounded border border-[var(--line)] bg-[var(--panel-deep)] p-2 text-[var(--muted)] transition-colors hover:border-sky-500 hover:text-white max-[780px]:h-11 max-[780px]:w-11"
               onClick={onClose}
               aria-label="Close modal"
             >
@@ -132,7 +132,7 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
         </div>
 
         {/* Project details */}
-        <div className="modal-body project-modal-body p-6 space-y-6 text-slate-300">
+        <div className="flex-none space-y-6 overflow-visible p-6 text-slate-300 max-[780px]:p-4">
           {/* Tagline / Main Description */}
           <div>
             <p className="text-base text-slate-200 leading-relaxed font-normal">
@@ -143,7 +143,7 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
           {/* Hero Media + Thumbnail Gallery */}
           {mediaList.length > 0 && (
             <div className="space-y-3 bg-slate-900/60 p-4 rounded-lg border border-slate-800">
-              <div className="project-media-viewer relative overflow-hidden rounded-md bg-slate-950 flex items-center justify-center min-h-[220px] max-h-[420px]">
+              <div className="relative flex min-h-[220px] max-h-[420px] items-center justify-center overflow-hidden rounded-md bg-slate-950">
                 {failedMediaUrls.has(currentMedia.url) ? (
                   <p className="p-6 text-center font-mono text-sm text-slate-400" role="status">
                     Project media could not be loaded.
@@ -163,7 +163,7 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
                   <>
                     <button
                       type="button"
-                      className="project-media-arrow project-media-arrow-previous"
+                      className="absolute top-1/2 left-3 z-1 grid h-8 w-8 -translate-y-1/2 place-items-center rounded-full bg-white/10 text-[rgba(255,255,255,0.78)] opacity-50 backdrop-blur-[3px] transition-[background,opacity,color] duration-150 hover:bg-[rgba(255,255,255,0.22)] hover:text-white hover:opacity-90 focus-visible:bg-[rgba(255,255,255,0.22)] focus-visible:text-white focus-visible:opacity-90 max-[780px]:h-11 max-[780px]:w-11"
                       onClick={() =>
                         setSelectedMediaIndex((index) => (index - 1 + mediaList.length) % mediaList.length)
                       }
@@ -175,7 +175,7 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
                     </button>
                     <button
                       type="button"
-                      className="project-media-arrow project-media-arrow-next"
+                      className="absolute top-1/2 right-3 z-1 grid h-8 w-8 -translate-y-1/2 place-items-center rounded-full bg-white/10 text-[rgba(255,255,255,0.78)] opacity-50 backdrop-blur-[3px] transition-[background,opacity,color] duration-150 hover:bg-[rgba(255,255,255,0.22)] hover:text-white hover:opacity-90 focus-visible:bg-[rgba(255,255,255,0.22)] focus-visible:text-white focus-visible:opacity-90 max-[780px]:h-11 max-[780px]:w-11"
                       onClick={() =>
                         setSelectedMediaIndex((index) => (index + 1) % mediaList.length)
                       }

@@ -5,7 +5,7 @@ import SectionHeader from "../ui/SectionHeader";
 
 export default function Skills({ number = "004" }: { number?: string }) {
   return (
-    <Panel className="p-4 sm:p-6 lg:p-10" id="skills">
+    <Panel className="scroll-mt-20 p-4 sm:p-6 lg:p-10" id="skills">
       <SectionHeader eyebrow={`Capabilities / ${number}`} title="TECHNICAL SKILLS" />
 
       <div className="mt-4 grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-6">

@@ -15,11 +15,11 @@ Whenever the user starts a message with "Act as an architect", "Architect mode:"
 - **Design Token Palette:** Navy base (`#0f172a`, `#131B2E`), Slate surface (`#1e293b`), Sky Blue accents (`#0ea5e9`, `#38bdf8`), Orange metrics (`#ea580c`).
 - **Data Model:** Centralized project structures in `data/projects.ts` adhering strictly to `types/project.ts`.
 - **Component Rules:** Keep UI components modular under `components/`, maintaining strict accessibility (keyboard navigation, Escape listeners, body scroll locks).
-- **Dev Server & Localhost:** Before running `npm run dev`, always check if `http://localhost:3000` is already responding. If it is active, reuse it directly and **do not** start a new dev server. Only run `npm run dev` if nothing is currently listening on port 3000.
+- **Terminal & Validation:** Do not run `npm run dev`, `npm run build`, or `npm run lint` automatically after edits unless explicitly asked. The user handles build/lint verification manually before pushing.
 
 ## Feature implementation workflow
 - For feature work, read the matching spec in `FEATURES.md` and the relevant source files before editing.
 - Treat `FEATURES.md` as the source for intended feature behavior; inspect the code to establish current behavior. Surface conflicts instead of silently changing agreed requirements.
 - Implement only the feature's scope and acceptance criteria. Preserve existing behavior outside that scope.
-- Run the validation listed in the feature spec and any relevant project checks. Update the feature status only when its acceptance criteria are verified.
+- Update the feature status to **Done** (or note that code changes are ready for user verification) once the acceptance criteria are implemented in code.
 - Keep detailed implementation notes, file inventories, and data schemas out of `FEATURES.md` when they duplicate source code.

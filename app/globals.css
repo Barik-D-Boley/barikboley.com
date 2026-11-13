@@ -1,24 +1,6 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
 @import "tailwindcss";
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
-
-/* Layout */
-@import "./styles/layout/navbar.css";
-@import "./styles/layout/footer.css";
-
-/* Sections */
-@import "./styles/sections/hero.css";
-@import "./styles/sections/about.css";
-@import "./styles/sections/experience.css";
-@import "./styles/sections/project-gallery.css";
-@import "./styles/sections/contact.css";
-@import "./styles/sections/media-queries.css";
-
-/* UI Elements */
-@import "./styles/ui/panel.css";
-@import "./styles/ui/section-header.css";
-@import "./styles/ui/buttons.css";
 
 @custom-variant dark (&:is(.dark *));
 
@@ -78,7 +60,6 @@
   --blue: #0ea5e9;
   --blue-light: #38bdf8;
   --orange: #ea580c;
-  font-family: 'Inter', sans-serif;
   font-synthesis: none;
   scroll-behavior: smooth;
 
@@ -156,8 +137,6 @@
   }
   body {
     min-height: 100vh;
-    background: var(--bg);
-    color: var(--text);
   }
   html {
     @apply font-sans;
@@ -172,5 +151,16 @@
   ::selection {
     background: var(--blue);
     color: #07111f;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
   }
 }

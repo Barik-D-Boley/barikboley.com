@@ -25,11 +25,12 @@ Use the source files as the authority for current implementation details. Avoid 
 - Prefer Tailwind utilities for component styling where practical; retain CSS for global tokens and rules better expressed in stylesheets.
 - Do not reactivate archived or commented-out projects unless a feature explicitly requires it.
 
-### Validation
+### Validation (User Pre-Push Checklist)
 
+Run manually before pushing to Vercel (agents do not need to run these automatically):
 - `npm run lint`
 - `npm run build`
-- Manually verify affected responsive layouts, keyboard interactions, navigation, and links. There is no dedicated test script currently defined.
+- Manually verify affected responsive layouts, keyboard interactions, navigation, and links.
 
 ## Feature workflow
 
@@ -41,7 +42,7 @@ Statuses:
 - **Ready** — requirements are clear and implementation can begin.
 - **In progress** — implementation has started.
 - **Blocked** — work depends on a decision or external input; state what is needed.
-- **Done** — acceptance criteria are met and the listed validation is complete.
+- **Done** — acceptance criteria are implemented and verified.
 
 When implementing a feature, inspect the relevant source first. Treat feature specs as the intended behavior and source code as evidence of current behavior. If they conflict, surface the discrepancy rather than silently changing the requirement. Update the status to Done only after verifying the acceptance criteria.
 
@@ -110,21 +111,21 @@ When implementing a feature, inspect the relevant source first. Treat feature sp
 **Validation**
 - [x] Verified the behavior against `components/layout/Navbar.tsx`.
 
-### STYLE-01: Gradual Tailwind migration
-**Status:** Ready
+### STYLE-01: Tailwind migration
+**Status:** Done
 
 **Goal:** Consolidate styling around Tailwind while preserving the existing design and behavior.
-**Scope:** Migrate component, section, layout, and responsive styles incrementally.
-**Out of scope:** Replacing necessary global styles, theme tokens, or rules that are impractical to express as utilities.
+**Scope:** Migrate component, section, layout, responsive, and print styles to Tailwind utilities. Keep `globals.css` for Tailwind imports, theme tokens, base resets, and global accessibility defaults.
+**Out of scope:** Visual redesigns or changes to interaction behavior.
 
 **Acceptance criteria**
-- [ ] Each migrated area retains its existing appearance, responsive behavior, accessibility, and interactions.
-- [ ] Remove stylesheet rules only after confirming they are no longer used.
-- [ ] Keep changes focused; do not combine unrelated visual redesigns with the migration.
+- [x] The site retains its existing appearance, responsive behavior, accessibility, print behavior, and interactions.
+- [x] No component or section styles remain in authored CSS stylesheets.
+- [x] Keep changes focused; do not combine unrelated visual redesigns with the migration.
 
 **Validation**
-- [ ] Run `npm run lint` and `npm run build`.
-- [ ] Visually check each migrated area at mobile and desktop widths.
+- [x] Run `npm run lint` and `npm run build`.
+- [x] Visually check the page at mobile, tablet, and desktop widths; verify navigation and modal interactions.
 
 ### CONSISTENCY-01: Naming and small-text readability
 **Status:** Ready

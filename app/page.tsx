@@ -9,19 +9,19 @@ import Footer from "@/components/layout/Footer"
 
 export default function Home() {
   return (
-    <div className="site-shell">
+    <div className="min-h-screen bg-[color:var(--bg)] print:bg-white">
       <Navbar />
 
       <main id="top">
         <Hero />
 
-        <div className="content-grid">
+        <div className="mx-auto my-10 flex w-[min(1180px,92vw)] flex-col gap-7 max-[480px]:my-7 max-[480px]:w-[94vw] print:m-0 print:w-full">
           <ProjectGallery number="001" />
-          <div className="about-timeline-wrapper"> 
-            <div id="about">
+          <div className="grid grid-cols-[1.7fr_1fr] gap-7 max-[1040px]:grid-cols-1">
+            <div id="about" className="scroll-mt-20">
               <About number="002" />
             </div>
-            <div id="experience">
+            <div id="experience" className="scroll-mt-20">
               <Experience number="003" />
             </div>
           </div>
