@@ -49,6 +49,10 @@
   gap: 28px;
 }
 
+.nav-about-experience {
+  display: none;
+}
+
 .nav-links > a {
   position: relative;
   color: #cbd5e1;
@@ -79,6 +83,17 @@
 
 .nav-links > a.active {
   color: var(--blue-light);
+}
+
+@media (min-width: 1041px) {
+  .nav-links > .nav-about-link,
+  .nav-links > .nav-experience-link {
+    display: none;
+  }
+
+  .nav-links > .nav-about-experience {
+    display: block;
+  }
 }
 
 #about,

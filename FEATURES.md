@@ -105,7 +105,7 @@ The status box is hidden at viewport widths of 1040px or less. The resume file i
 
 #### Navigation
 
-`components/layout/Navbar.tsx` renders a sticky header and links to Projects, About, Experience, Contact, and the resume. An `IntersectionObserver` watches the `projects`, `about`, `experience`, and `contact` IDs with `rootMargin: "-20% 0px -35% 0px"` and `threshold: 0.1`. It allows multiple links to be active when multiple sections intersect and clears active links when `window.scrollY < 250`.
+`components/layout/Navbar.tsx` renders a sticky header and links to Projects, About, Experience, Skills, Contact, and the resume. When About and Experience are side-by-side (above 1040px), they share one “About & Experience” link; when the sections stack (1040px and below), their links are separate. The section link nearest the top of the viewport is active when its section is visible; at most one section link is active at a time. Active highlighting clears when `window.scrollY < 250`.
 
 At widths up to 780px, the navigation becomes a menu with a backdrop. The menu closes on backdrop click, Escape, or link activation. Section anchors have `scroll-margin-top: 80px` in `app/styles/layout/navbar.css`; smooth scrolling is enabled in the global styles.
 
@@ -323,7 +323,8 @@ npm run start
 #### Agreed behavior
 
 - Ensure no more than one section link is highlighted at a time.
-- Select the active link from the current scroll position and preserve the existing behavior of clearing the highlight near the top of the page.
+- When multiple sections are visible, select the section nearest the top of the viewport.
+- Preserve the behavior of clearing the highlight near the top of the page (`window.scrollY < 250`).
 
 ### Tailwind migration
 
@@ -349,7 +350,7 @@ npm run start
 
 - [ ] Finalize the recruiter callout copy and implement the static icon visual for desktop and mobile.
 - [ ] Assign and display the agreed status on every active project card in both gallery and catalog views.
-- [ ] Update navigation logic so no more than one section can be active at a time.
+- [x] Update navigation highlighting to select only the visible section nearest the top of the viewport and clear it near the top of the page.
 - [ ] Migrate styling to Tailwind utilities as far as practical, retaining only necessary global/theme CSS.
 - [ ] Complete the repository-wide naming audit and verify renamed assets still load.
 - [ ] Improve small-text readability and check desktop and mobile layouts.
