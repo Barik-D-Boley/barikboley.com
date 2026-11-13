@@ -6,51 +6,43 @@ import Icon from "@/components/Icon"
 
 export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false)
-  const [activeSections, setActiveSections] = useState<string[]>([])
+  const [activeSection, setActiveSection] = useState("")
   const closeMenu = () => setMenuOpen(false)
 
   useEffect(() => {
     const sectionIds = ["projects", "about", "experience", "skills", "contact"]
 
-    const handleScroll = () => {
+    const updateActiveSection = () => {
       if (window.scrollY < 250) {
-        setActiveSections([])
+        setActiveSection("")
+        return
       }
+
+      let nearestSection: { id: string; distance: number } | undefined
+
+      sectionIds.forEach((id) => {
+        const section = document.getElementById(id)
+        if (!section) return
+
+        const rect = section.getBoundingClientRect()
+        if (rect.bottom <= 0 || rect.top >= window.innerHeight) return
+
+        const distance = Math.abs(rect.top)
+        if (!nearestSection || distance < nearestSection.distance) {
+          nearestSection = { id, distance }
+        }
+      })
+
+      setActiveSection(nearestSection?.id ?? "")
     }
 
-    const observer = new IntersectionObserver(
-      (entries) => {
-        setActiveSections((prev) => {
-          let updated = [...prev]
-          entries.forEach((entry) => {
-            if (entry.isIntersecting) {
-              if (!updated.includes(entry.target.id)) updated.push(entry.target.id)
-            } else {
-              updated = updated.filter((id) => id !== entry.target.id)
-            }
-          })
-          return updated
-        })
-      },
-      {
-        rootMargin: "-20% 0px -35% 0px",
-        threshold: 0.1,
-      }
-    )
-
-    sectionIds.forEach((id) => {
-      const el = document.getElementById(id)
-      if (el) observer.observe(el)
-    })
-
-    window.addEventListener("scroll", handleScroll, { passive: true })
+    window.addEventListener("scroll", updateActiveSection, { passive: true })
+    window.addEventListener("resize", updateActiveSection)
+    updateActiveSection()
 
     return () => {
-      sectionIds.forEach((id) => {
-        const el = document.getElementById(id)
-        if (el) observer.unobserve(el)
-      })
-      window.removeEventListener("scroll", handleScroll)
+      window.removeEventListener("scroll", updateActiveSection)
+      window.removeEventListener("resize", updateActiveSection)
     }
   }, [])
 
@@ -105,35 +97,42 @@ export default function Navbar() {
           <a
             href="#projects"
             onClick={closeMenu}
-            className={activeSections.includes("projects") ? "active" : ""}
+            className={activeSection === "projects" ? "active" : ""}
           >
             Projects
           </a>
           <a
             href="#about"
             onClick={closeMenu}
-            className={activeSections.includes("about") ? "active" : ""}
+            className={`nav-about-link${activeSection === "about" ? " active" : ""}`}
           >
             About
           </a>
           <a
             href="#experience"
             onClick={closeMenu}
-            className={activeSections.includes("experience") ? "active" : ""}
+            className={`nav-experience-link${activeSection === "experience" ? " active" : ""}`}
           >
             Experience
           </a>
           <a
+            href="#about"
+            onClick={closeMenu}
+            className={`nav-about-experience${activeSection === "about" || activeSection === "experience" ? " active" : ""}`}
+          >
+            About &amp; Experience
+          </a>
+          <a
             href="#skills"
             onClick={closeMenu}
-            className={activeSections.includes("skills") ? "active" : ""}
+            className={activeSection === "skills" ? "active" : ""}
           >
             Skills
           </a>
           <a
             href="#contact"
             onClick={closeMenu}
-            className={activeSections.includes("contact") ? "active" : ""}
+            className={activeSection === "contact" ? "active" : ""}
           >
             Contact
           </a>
