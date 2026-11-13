@@ -8,6 +8,7 @@ import Panel from '../ui/Panel';
 import SectionHeader from '../ui/SectionHeader';
 import Button from '../ui/Buttons';
 import ProjectModal from '../ui/ProjectModal';
+import ProjectStatusBadge from '../ui/ProjectStatusBadge';
 import Icon from '../Icon';
 
 const filters = [
@@ -158,6 +159,7 @@ export default function ProjectGallery({ number = "001" }: { number?: string }) 
             <div className="project-body">
               <div className="project-index flex items-center justify-between">
                 <span>PRJ / {project.number}</span>
+                <ProjectStatusBadge status={project.status} />
               </div>
               <h3>{project.title}</h3>
               <p>{project.description}</p>
@@ -260,6 +262,7 @@ export default function ProjectGallery({ number = "001" }: { number?: string }) 
                     <div className="project-body">
                       <div className="project-index flex items-center justify-between">
                         <span>PRJ / {project.number}</span>
+                        <ProjectStatusBadge status={project.status} />
                       </div>
                       <h3>{project.title}</h3>
                       <p>{project.description}</p>
