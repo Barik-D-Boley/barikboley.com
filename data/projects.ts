@@ -73,7 +73,7 @@ export const projects: Project[] = [
     category: "Automation & Tools",
     number: "04",
     featured: true,
-    status: "complete",
+    status: "maintenance",
     githubUrl: "https://github.com/Barik-D-Boley/python-utility-belt",
     details: {
       problemStatement: "Provide convenient, focused tools for image and document tasks that can be run locally instead of relying on online converters.",
@@ -199,7 +199,7 @@ export const projects: Project[] = [
     category: "Web & Full-Stack",
     number: "07",
     featured: false,
-    status: "complete",
+    status: "under development",
     githubUrl: "https://github.com/Barik-D-Boley/barikboley.com",
     liveUrl: "https://barikboley.com",
     details: {
