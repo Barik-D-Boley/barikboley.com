@@ -95,13 +95,13 @@ The content grid is a vertical flex layout. The About and Experience panels shar
 
 `components/sections/Hero.tsx` renders:
 
-- The heading “MECHANICAL ENGINEERING & SOFTWARE DEVELOPMENT.”
+- The heading “MECHANICAL ENGINEERING & SOFTWARE DEVELOPMENT” without a trailing period.
 - The subtitle “Bridging physical and digital systems.”
 - BYU-Idaho student status and expected graduation in April 2029.
 - Resume PDF, GitHub, and LinkedIn links.
-- A `SYS.STATUS: AVAILABLE` status box with “Open to opportunities.”
+- A `SYS.STATUS: SEEKING INTERNSHIPS` status box with the subline “Mechanical • Nuclear • Software.”
 
-The status box is hidden at viewport widths of 1040px or less. The resume file is `public/Barik_Boley_Resume.pdf`.
+The hero visual uses `/icon.svg` inside a static circle. At 1040px and below, the status box becomes part of the hero content flow and follows the hero copy and actions; it is not hidden. The mobile-specific alignment and placement described under Active work are still pending. The resume file is `public/Barik_Boley_Resume.pdf`.
 
 #### Navigation
 
@@ -297,10 +297,13 @@ npm run start
 
 #### Agreed behavior
 
-- Retain a compact, recruiter-focused opportunity callout, with final copy still to be approved.
-- The callout should convey interest in mechanical or nuclear engineering internships and openness to software development internships.
-- Keep the callout available at mobile widths rather than hiding it.
-- Replace the CSS rings and diagonal line with the portfolio icon in a static circular treatment. Preserve the circle-only appearance on mobile; do not add an auto-rotating carousel.
+- The final recruiter-focused callout copy is not approved yet. It should communicate interest in mechanical or nuclear engineering internships and openness to software development internships.
+- Keep the `SEEKING INTERNSHIPS` status box visible and place it below the other hero copy and action buttons in the mobile layout.
+- Use the existing portfolio icon inside the circle on mobile, positioned partially in the hero background and aligned beside/behind the heading as shown in the user's mobile reference. Do not substitute a CSS-only compass for the logo.
+- Remove the orange diagonal accent line. Keep the circular visual static; do not add an auto-rotating carousel.
+- Center the mobile hero content column with balanced side margins while retaining left-aligned text, matching the reference. Keep the existing desktop hero composition.
+- Make the mobile logo-circle, centered text column, and below-content status-box layout switch together at the existing 780px mobile breakpoint.
+- The requested mobile refinement is pending; do not treat the current mobile layout as complete until verified against the reference.
 
 ### Project status badges
 
@@ -348,7 +351,8 @@ npm run start
 
 ### Implementation checklist
 
-- [ ] Finalize the recruiter callout copy and implement the static icon visual for desktop and mobile.
+- [ ] Finalize recruiter callout copy to distinguish engineering internship interest from openness to software development internships.
+- [ ] Implement and visually verify the mobile hero reference: logo inside a circle aligned beside/behind the centered text column, no orange diagonal line, and the status box below copy and actions. Keep the desktop composition unchanged.
 - [ ] Assign and display the agreed status on every active project card in both gallery and catalog views.
 - [x] Update navigation highlighting to select only the visible section nearest the top of the viewport and clear it near the top of the page.
 - [ ] Migrate styling to Tailwind utilities as far as practical, retaining only necessary global/theme CSS.
