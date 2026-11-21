@@ -6,15 +6,17 @@ export default function AboutSection({ number = "001" }: { number?: string }) {
     <Panel className="about-panel" id="about">
       <SectionHeader eyebrow={`Profile / ${number}`} title="ABOUT ME" />
       <p className="intro">
-        I’m a mechanical engineering student and software developer who
-        enjoys building systems that move seamlessly between real-world
-        constraints and clean digital logic.
+        I’m a mechanical engineering student at BYU–Idaho working toward{" "}
+        <strong className="about-highlight">a career in nuclear engineering</strong>,
+        with plans to pursue a master’s in nuclear engineering. My independent
+        projects model high-temperature gas-cooled reactor components, taking
+        designs from CAD through meshing and multiphysics simulation.
       </p>
       <p>
-        As an Eagle Scout, I learned to lead with preparation, service,
-        and accountability. I’m bilingual in English and Spanish,
-        bringing clear communication to every team and technical
-        challenge.
+        Outside of engineering, software development is my hobby. I build
+        small tools that automate everyday tasks, and a few are featured
+        above. I’m bilingual in English and Spanish, and as an Eagle Scout I
+        learned to lead with preparation and accountability.
       </p>
       <dl className="profile-facts">
         <div>
@@ -27,7 +29,7 @@ export default function AboutSection({ number = "001" }: { number?: string }) {
         </div>
         <div>
           <dt>Focus</dt>
-          <dd>Design + Automation</dd>
+          <dd>Nuclear Engineering</dd>
         </div>
       </dl>
     </Panel>

@@ -13,8 +13,8 @@ export default function Hero() {
           <span>01</span> Engineer + Developer
         </div>
         <h1 id="hero-title">
-          MECHANICAL ENGINEERING
-          <span>& SOFTWARE DEVELOPMENT</span>
+          MECHANICAL
+          <span>& NUCLEAR ENGINEERING</span>
         </h1>
         <p className="hero-subtitle">
           Bridging physical and digital systems.

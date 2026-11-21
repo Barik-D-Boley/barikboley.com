@@ -19,7 +19,7 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "Barik Boley | Portfolio",
-  description: "Mechanical Engineering & Software Development Portfolio",
+  description: "Mechanical & Nuclear Engineering Portfolio",
 };
 
 export default function RootLayout({

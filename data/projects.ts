@@ -2,119 +2,6 @@ import { Project } from '@/types/project';
 
 export const projects: Project[] = [
   {
-    id: "pele-htgr-moose",
-    slug: "pele",
-    date: "Sept 2026 – Present",
-    title: "Pele HTGR MOOSE Simulation",
-    tagline: "Developing a CAD-to-simulation workflow for an HTGR microreactor unit cell.",
-    description:
-      "A work-in-progress workflow connecting reactor geometry, meshing, neutronics, and thermo-mechanical analysis for a Project Pele HTGR unit cell.",
-    tags: ["OpenMC", "MOOSE Framework", "Python", "Coreform Cubit"],
-    category: "FEA & Simulation",
-    number: "02",
-    featured: true,
-    status: "under development",
-    githubUrl: "https://github.com/Barik-D-Boley/pele-htgr-moose-simulation",
-    details: {
-      problemStatement: "Build a reproducible workflow for exploring how spatially varying fission heating could inform thermal and mechanical analysis of an HTGR fuel unit cell.",
-      keyChallenges: [
-        "Preparing the unit-cell CAD geometry and finite-element mesh for the planned analysis.",
-        "The OpenMC model and MOOSE input are present, but the OpenMC model has not yet been run and the coupled simulation has not been completed.",
-        "Implementing and verifying the data-transfer step; the current MOOSE fuel-wall heat flux is a placeholder rather than an OpenMC-derived input."
-      ],
-      systemArchitecture: "Planned workflow: model the unit cell in CAD, generate a mesh with Coreform Cubit, run OpenMC for spatial power tallies, transfer those data into MOOSE for thermo-mechanical analysis, then inspect outputs in ParaView. The repository currently contains the CAD files, generated mesh, OpenMC model script, and a draft MOOSE input; coupling and post-processing remain to be implemented.",
-      toolsUsed: ["OpenMC", "MOOSE Framework", "Python", "Coreform Cubit", "SolidWorks", "ParaView"],
-      media: []
-    }
-  },
-  {
-    id: "walmart-receipt-parser",
-    slug: "receipt-parser",
-    date: "Aug – Sept 2026",
-    title: "Walmart Receipt Parser",
-    tagline: "A one-click Chrome extension that turns Walmart order pages into formatted Google Sheets records.",
-    description: "Replaced manual receipt entry with a Chrome extension and serverless backend that send itemized Walmart orders to a formatted, duplicate-free Google Sheet in one click.",
-    tags: ["Chrome Extension", "Web Scraping", "Node.js", "Google Sheets"],
-    category: "Web & Full-Stack",
-    number: "03",
-    featured: true,
-    status: "complete",
-    githubUrl: "https://github.com/Barik-D-Boley/walmart-receipt-parser",
-    details: {
-      problemStatement: "Copying itemized grocery receipts into my budget spreadsheet by hand was slow and error-prone, and an existing receipt-parser extension didn't fit my sheet's layout.",
-      keyChallenges: [
-        "Extracting data from a page built for people: the scraper reads item details from Walmart's order-page markup, so site changes can break it.",
-        "Keeping the sheet clean: the backend checks transaction numbers before writing, so the same order is never recorded twice.",
-        "Setup for other users: each user supplies their own Google Cloud service account; a planned version reads the site's network data instead of its markup.",
-      ],
-      systemArchitecture: "A Manifest V3 extension injects a scraper into the order page and posts the data to a Node.js/Express API on Vercel. The API uses the Sheets batchUpdate method to create a tab for each purchase date in chronological order and apply currency formatting, so after a one-time setup each receipt takes one click.",
-      toolsUsed: ["Chrome Extension API (Manifest V3)", "JavaScript", "Node.js", "Express", "Google Sheets API", "Vercel"],
-      media: [
-        {
-          url: "/project-visuals/walmart-receipt-parser/sheets-output.png",
-          type: "image",
-          caption: "Parsed receipt data in Google Sheets",
-          alt: "Google Sheets showing parsed receipt line items",
-          isCover: true,
-        },
-        {
-          url: "/project-visuals/walmart-receipt-parser/extension-demo.gif",
-          type: "gif",
-          caption: "Receipt parser browser extension demonstration",
-          alt: "Animated demonstration of the receipt parser extension",
-        },
-      ]
-    }
-  },
-  {
-    id: "python-utility-belt",
-    slug: "utility-belt",
-    date: "Oct – Nov 2026",
-    title: "Python Utility Belt",
-    tagline: "Six offline Python tools for image and document tasks, launched from one runner.",
-    description: "Replaced online file converters with six local Python tools, including AI background removal and PDF merging, behind one runner that installs only what each tool needs.",
-    tags: ["Python", "CLI", "Image Processing", "PDF Tools"],
-    category: "Automation & Tools",
-    number: "04",
-    featured: true,
-    status: "maintenance",
-    githubUrl: "https://github.com/Barik-D-Boley/python-utility-belt",
-    details: {
-      problemStatement: "Everyday tasks like removing backgrounds from CAD renders, merging or trimming PDFs, and making QR codes meant uploading files to online converters.",
-      keyChallenges: [
-        "Keeping heavy dependencies optional: the runner installs only each tool's own packages, so the ~500 MB AI tool never weighs down the small ones.",
-        "Handling different image types: background removal offers AI models for photos and color keying for CAD renders with flat backgrounds.",
-        "Making the suite easy to extend: a scaffold command creates a new tool's folders, README, and dependency entries and registers it with the runner.",
-      ],
-      systemArchitecture: "A central run.py maps short commands (bg, pdfm, pdft, qr, and more) to standalone tool modules, checks their dependencies against pyproject.toml extras, and launches them. The suite covers background removal, citation cleaning, PDF merging and trimming, PowerPoint merging, and QR-code generation.",
-      metrics: [
-        { label: "Utilities", value: "6" },
-      ],
-      toolsUsed: ["Python", "Pillow", "pypdf", "rembg", "ONNX Runtime"],
-      media: [
-        {
-          url: "/project-visuals/python-utility-belt/runner-menu.png",
-          type: "image",
-          caption: "Central runner listing the available tools",
-          alt: "Terminal output of python run.py listing the six tool shortcuts and the scaffold command",
-        },
-        {
-          url: "/project-visuals/python-utility-belt/qr-generator.png",
-          type: "image",
-          caption: "QR Code Generator creating a code for barikboley.com",
-          alt: "Terminal session of the QR code generator next to the QR code it produced",
-          isCover: true,
-        },
-        {
-          url: "/project-visuals/python-utility-belt/bg-removal-before-after.png",
-          type: "image",
-          caption: "Auto-color keying removing the background from a ParaView render",
-          alt: "Terminal session of the background remover with before and after images of a monolith temperature render",
-        },
-      ]
-    }
-  },
-  {
     id: "mhtgr-fea",
     slug: "mhtgr",
     date: "Sept 2026",
@@ -123,7 +10,7 @@ export const projects: Project[] = [
     description: "Took an IG-110 graphite fuel monolith from CAD through meshing and coupled MOOSE analysis, predicting a ~1.52 MPa peak stress, well below the material's ~25 MPa tensile strength.",
     tags: ["SolidWorks", "Coreform Cubit", "MOOSE", "ParaView"],
     category: "FEA & Simulation",
-    number: "05",
+    number: "01",
     featured: true,
     status: "complete",
     githubUrl: "https://github.com/Barik-D-Boley/mhtgr-thermal-mechanical-fea",
@@ -192,6 +79,119 @@ export const projects: Project[] = [
     }
   },
   {
+    id: "pele-htgr-moose",
+    slug: "pele",
+    date: "Sept 2026 – Present",
+    title: "Pele HTGR MOOSE Simulation",
+    tagline: "Developing a CAD-to-simulation workflow for an HTGR microreactor unit cell.",
+    description:
+      "A work-in-progress workflow connecting reactor geometry, meshing, neutronics, and thermo-mechanical analysis for a Project Pele HTGR unit cell.",
+    tags: ["OpenMC", "MOOSE Framework", "Python", "Coreform Cubit"],
+    category: "FEA & Simulation",
+    number: "02",
+    featured: true,
+    status: "under development",
+    githubUrl: "https://github.com/Barik-D-Boley/pele-htgr-moose-simulation",
+    details: {
+      problemStatement: "Build a reproducible workflow for exploring how spatially varying fission heating could inform thermal and mechanical analysis of an HTGR fuel unit cell.",
+      keyChallenges: [
+        "Preparing the unit-cell CAD geometry and finite-element mesh for the planned analysis.",
+        "The OpenMC model and MOOSE input are present, but the OpenMC model has not yet been run and the coupled simulation has not been completed.",
+        "Implementing and verifying the data-transfer step; the current MOOSE fuel-wall heat flux is a placeholder rather than an OpenMC-derived input."
+      ],
+      systemArchitecture: "Planned workflow: model the unit cell in CAD, generate a mesh with Coreform Cubit, run OpenMC for spatial power tallies, transfer those data into MOOSE for thermo-mechanical analysis, then inspect outputs in ParaView. The repository currently contains the CAD files, generated mesh, OpenMC model script, and a draft MOOSE input; coupling and post-processing remain to be implemented.",
+      toolsUsed: ["OpenMC", "MOOSE Framework", "Python", "Coreform Cubit", "SolidWorks", "ParaView"],
+      media: []
+    }
+  },
+  {
+    id: "python-utility-belt",
+    slug: "utility-belt",
+    date: "Oct – Nov 2026",
+    title: "Python Utility Belt",
+    tagline: "Six offline Python tools for image and document tasks, launched from one runner.",
+    description: "Replaced online file converters with six local Python tools, including AI background removal and PDF merging, behind one runner that installs only what each tool needs.",
+    tags: ["Python", "CLI", "Image Processing", "PDF Tools"],
+    category: "Automation & Tools",
+    number: "03",
+    featured: true,
+    status: "maintenance",
+    githubUrl: "https://github.com/Barik-D-Boley/python-utility-belt",
+    details: {
+      problemStatement: "Everyday tasks like removing backgrounds from CAD renders, merging or trimming PDFs, and making QR codes meant uploading files to online converters.",
+      keyChallenges: [
+        "Keeping heavy dependencies optional: the runner installs only each tool's own packages, so the ~500 MB AI tool never weighs down the small ones.",
+        "Handling different image types: background removal offers AI models for photos and color keying for CAD renders with flat backgrounds.",
+        "Making the suite easy to extend: a scaffold command creates a new tool's folders, README, and dependency entries and registers it with the runner.",
+      ],
+      systemArchitecture: "A central run.py maps short commands (bg, pdfm, pdft, qr, and more) to standalone tool modules, checks their dependencies against pyproject.toml extras, and launches them. The suite covers background removal, citation cleaning, PDF merging and trimming, PowerPoint merging, and QR-code generation.",
+      metrics: [
+        { label: "Utilities", value: "6" },
+      ],
+      toolsUsed: ["Python", "Pillow", "pypdf", "rembg", "ONNX Runtime"],
+      media: [
+        {
+          url: "/project-visuals/python-utility-belt/runner-menu.png",
+          type: "image",
+          caption: "Central runner listing the available tools",
+          alt: "Terminal output of python run.py listing the six tool shortcuts and the scaffold command",
+        },
+        {
+          url: "/project-visuals/python-utility-belt/qr-generator.png",
+          type: "image",
+          caption: "QR Code Generator creating a code for barikboley.com",
+          alt: "Terminal session of the QR code generator next to the QR code it produced",
+          isCover: true,
+        },
+        {
+          url: "/project-visuals/python-utility-belt/bg-removal-before-after.png",
+          type: "image",
+          caption: "Auto-color keying removing the background from a ParaView render",
+          alt: "Terminal session of the background remover with before and after images of a monolith temperature render",
+        },
+      ]
+    }
+  },
+  {
+    id: "walmart-receipt-parser",
+    slug: "receipt-parser",
+    date: "Aug – Sept 2026",
+    title: "Walmart Receipt Parser",
+    tagline: "A one-click Chrome extension that turns Walmart order pages into formatted Google Sheets records.",
+    description: "Replaced manual receipt entry with a Chrome extension and serverless backend that send itemized Walmart orders to a formatted, duplicate-free Google Sheet in one click.",
+    tags: ["Chrome Extension", "Web Scraping", "Node.js", "Google Sheets"],
+    category: "Web & Full-Stack",
+    number: "04",
+    featured: true,
+    status: "complete",
+    githubUrl: "https://github.com/Barik-D-Boley/walmart-receipt-parser",
+    details: {
+      problemStatement: "Copying itemized grocery receipts into my budget spreadsheet by hand was slow and error-prone, and an existing receipt-parser extension didn't fit my sheet's layout.",
+      keyChallenges: [
+        "Extracting data from a page built for people: the scraper reads item details from Walmart's order-page markup, so site changes can break it.",
+        "Keeping the sheet clean: the backend checks transaction numbers before writing, so the same order is never recorded twice.",
+        "Setup for other users: each user supplies their own Google Cloud service account; a planned version reads the site's network data instead of its markup.",
+      ],
+      systemArchitecture: "A Manifest V3 extension injects a scraper into the order page and posts the data to a Node.js/Express API on Vercel. The API uses the Sheets batchUpdate method to create a tab for each purchase date in chronological order and apply currency formatting, so after a one-time setup each receipt takes one click.",
+      toolsUsed: ["Chrome Extension API (Manifest V3)", "JavaScript", "Node.js", "Express", "Google Sheets API", "Vercel"],
+      media: [
+        {
+          url: "/project-visuals/walmart-receipt-parser/sheets-output.png",
+          type: "image",
+          caption: "Parsed receipt data in Google Sheets",
+          alt: "Google Sheets showing parsed receipt line items",
+          isCover: true,
+        },
+        {
+          url: "/project-visuals/walmart-receipt-parser/extension-demo.gif",
+          type: "gif",
+          caption: "Receipt parser browser extension demonstration",
+          alt: "Animated demonstration of the receipt parser extension",
+        },
+      ]
+    }
+  },
+  {
     id: "progressive-overload-analytics",
     slug: "overload-tracker",
     date: "Sept 2026 – Present",
@@ -200,7 +200,7 @@ export const projects: Project[] = [
     description: "Redesigning years of personal strength-training logs into a normalized Google Sheets and Apps Script system, starting with a full feature spec and data-migration plan.",
     tags: ["Google Sheets", "Google Apps Script", "JavaScript", "Fitness Tracking"],
     category: "Automation & Tools",
-    number: "06",
+    number: "05",
     featured: false,
     status: "under development",
     githubUrl: "https://github.com/Barik-D-Boley/sheets-progressive-overload-analytics",
@@ -225,7 +225,7 @@ export const projects: Project[] = [
     description: "Built a responsive portfolio that lets recruiters see engineering and software work without opening GitHub, by directing and reviewing AI coding agents.",
     tags: ["Next.js 16", "React 19", "TypeScript", "Tailwind CSS 4", "GitHub Copilot"],
     category: "Web & Full-Stack",
-    number: "07",
+    number: "06",
     featured: false,
     status: "under development",
     githubUrl: "https://github.com/Barik-D-Boley/barikboley.com",
