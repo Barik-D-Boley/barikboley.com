@@ -10,14 +10,14 @@ export default function Hero() {
       <div className="hero-grid" aria-hidden="true" />
       <div className="hero-content">
         <div className="eyebrow">
-          <span>01</span> Engineer + Developer
+          <span>01</span> Aspiring Nuclear Engineer
         </div>
         <h1 id="hero-title">
           MECHANICAL
           <span>& NUCLEAR ENGINEERING</span>
         </h1>
         <p className="hero-subtitle">
-          Bridging physical and digital systems.
+          Simulating the systems behind advanced reactors.
         </p>
         <p className="student-line">
           <span>Student @ BYU-Idaho</span> <i /> <span>Expected graduation: April 2029</span>
@@ -58,7 +58,7 @@ export default function Hero() {
         <span>SYS.STATUS</span>
         <strong>SEEKING INTERNSHIPS</strong>
         <div className="hero-metric-subline">
-          Mechanical • Nuclear • Software
+          Mechanical • Nuclear
         </div>
       </div>
     </section>
