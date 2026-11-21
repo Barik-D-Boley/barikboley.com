@@ -20,7 +20,7 @@ export default function Hero() {
           Bridging physical and digital systems.
         </p>
         <p className="student-line">
-          Student @ BYU-Idaho <i /> Expected graduation: April 2029
+          <span>Student @ BYU-Idaho</span> <i /> <span>Expected graduation: April 2029</span>
         </p>
         <div className="hero-actions">
           <Button
