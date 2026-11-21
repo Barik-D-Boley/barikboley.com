@@ -3,6 +3,8 @@ import { Project } from '@/types/project';
 export const projects: Project[] = [
   {
     id: "pele-htgr-moose",
+    slug: "pele",
+    date: "Sept 2026 – Present",
     title: "Pele HTGR MOOSE Simulation",
     tagline: "Developing a CAD-to-simulation workflow for an HTGR microreactor unit cell.",
     description:
@@ -27,6 +29,8 @@ export const projects: Project[] = [
   },
   {
     id: "walmart-receipt-parser",
+    slug: "receipt-parser",
+    date: "Aug – Sept 2026",
     title: "Walmart Receipt Parser",
     tagline: "A Chrome extension that scrapes Walmart order pages and sends receipt data to Google Sheets.",
     description:
@@ -65,6 +69,8 @@ export const projects: Project[] = [
   },
   {
     id: "python-utility-belt",
+    slug: "utility-belt",
+    date: "Oct – Nov 2026",
     title: "Python Utility Belt",
     tagline: "Six local Python utilities for common image and document tasks.",
     description:
@@ -112,6 +118,8 @@ export const projects: Project[] = [
   },
   {
     id: "mhtgr-fea",
+    slug: "mhtgr",
+    date: "Sept 2026",
     title: "MHTGR Thermal-Mechanical FEA",
     tagline: "A demonstration CAD-to-simulation workflow for a nuclear graphite fuel monolith.",
     description:
@@ -188,6 +196,8 @@ export const projects: Project[] = [
   },
   {
     id: "progressive-overload-analytics",
+    slug: "overload-tracker",
+    date: "Sept 2026 – Present",
     title: "Progressive Overload Tracker 2.0",
     tagline: "An active rebuild of a personal workout-tracking spreadsheet ecosystem.",
     description:
@@ -212,6 +222,8 @@ export const projects: Project[] = [
   },
   {
     id: "portfolio-v3",
+    slug: "portfolio",
+    date: "Aug 2026 – Present",
     title: "Personal Portfolio",
     tagline: "A project-first portfolio developed with AI coding agents and GitHub Copilot.",
     description: "A portfolio showcasing mechanical engineering and software projects, built through AI-assisted coding with Barik directing and reviewing the migration.",

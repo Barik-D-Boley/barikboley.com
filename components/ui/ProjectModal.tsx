@@ -100,15 +100,18 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
         {/* Header */}
         <div className="modal-header project-modal-header flex items-center justify-between border-b border-slate-700/60 bg-[#131B2E]/95 px-6 py-4">
           <div className="flex flex-col gap-1">
-            <div className="flex items-center gap-3">
-              <span className="font-mono text-xs text-amber-500 tracking-wider uppercase">
+            <div className="flex flex-wrap items-center gap-x-3 gap-y-1.5">
+              <span className="font-mono text-xs text-amber-500 tracking-wider uppercase whitespace-nowrap">
                 PRJ / {number}
               </span>
               {category && (
-                <span className="text-xs text-slate-400 font-mono">
+                <span className="text-xs text-slate-400 font-mono whitespace-nowrap">
                   • {category}
                 </span>
               )}
+              <span className="text-xs text-slate-400 font-mono whitespace-nowrap">
+                • {project.date}
+              </span>
               <ProjectStatusBadge status={project.status} />
             </div>
             <h2 id="project-modal-title" className="text-xl md:text-2xl font-bold text-white tracking-tight">

@@ -17,14 +17,8 @@ export default function Home() {
 
         <div className="content-grid">
           <ProjectGallery number="001" />
-          <div className="about-timeline-wrapper"> 
-            <div id="about">
-              <About number="002" />
-            </div>
-            <div id="experience">
-              <Experience number="003" />
-            </div>
-          </div>
+          <About number="002" />
+          <Experience number="003" />
           <Skills number="004" />
         </div>
 

@@ -172,6 +172,15 @@
   line-height: 1.25;
 }
 
+.project-date {
+  display: block;
+  margin-top: 4px;
+  color: var(--muted);
+  font-family: ui-monospace, monospace;
+  font-size: 10px;
+  letter-spacing: 0.04em;
+}
+
 .project-body p {
   margin-top: 8px;
   color: var(--muted);
@@ -371,10 +380,4 @@
 
 .modal-projects-grid {
   margin-top: 12px;
-}
-
-.about-timeline-wrapper {
-  display: grid;
-  grid-template-columns: 1.7fr 1fr;
-  gap: 28px;
 }

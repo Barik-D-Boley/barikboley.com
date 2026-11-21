@@ -4,6 +4,7 @@ import { useEffect, useMemo, useRef, useState } from "react"
 import { projects } from "@/data/projects"
 import { Project } from "@/types/project"
 import { getProjectCoverMediaIndex } from "@/lib/project-media"
+import { findProjectByHash, getProjectHash } from "@/lib/project-links"
 import Panel from '../ui/Panel';
 import SectionHeader from '../ui/SectionHeader';
 import Button from '../ui/Buttons';
@@ -60,20 +61,34 @@ export default function ProjectGallery({ number = "001" }: { number?: string }) 
 
   useEffect(() => {
     const openProjectFromHash = () => {
-      const projectId = window.location.hash.match(/^#project-(.+)$/)?.[1]
-      if (!projectId) {
+      const project = findProjectByHash(window.location.hash)
+      if (!project) {
         setSelectedProject(null)
         return
       }
 
-      const project = projects.find((item) => item.id === projectId)
-      if (project) setSelectedProject(project)
+      // Rewrite old "#project-<id>" links to the short form
+      const shortHash = getProjectHash(project)
+      if (window.location.hash !== shortHash) {
+        window.history.replaceState(null, "", `${window.location.pathname}${window.location.search}${shortHash}`)
+      }
+      setSelectedProject(project)
     }
 
     openProjectFromHash()
     window.addEventListener("hashchange", openProjectFromHash)
     return () => window.removeEventListener("hashchange", openProjectFromHash)
   }, [])
+
+  // Opening a project puts its direct link (e.g. "#pele") in the address bar.
+  // pushState adds a history entry, so the browser's back button closes it.
+  const openProject = (project: Project) => {
+    const hash = getProjectHash(project)
+    if (window.location.hash !== hash) {
+      window.history.pushState(null, "", `${window.location.pathname}${window.location.search}${hash}`)
+    }
+    setSelectedProject(project)
+  }
 
   const categoryProjects = useMemo(() => {
     if (activeFilter === "Featured") {
@@ -145,13 +160,13 @@ export default function ProjectGallery({ number = "001" }: { number?: string }) 
           <article 
             className="project-card cursor-pointer group hover:border-sky-500/60 transition-all duration-200"
             key={project.title}
-            onClick={() => setSelectedProject(project)}
+            onClick={() => openProject(project)}
             tabIndex={0}
             role="button"
             onKeyDown={(e) => {
               if (e.key === 'Enter' || e.key === ' ') {
                 e.preventDefault();
-                setSelectedProject(project);
+                openProject(project);
               }
             }}
           >
@@ -162,6 +177,7 @@ export default function ProjectGallery({ number = "001" }: { number?: string }) 
                 <ProjectStatusBadge status={project.status} />
               </div>
               <h3>{project.title}</h3>
+              <time className="project-date">{project.date}</time>
               <p>{project.description}</p>
               <div className="tag-list">
                 {project.tags.map((tag) => (
@@ -248,13 +264,13 @@ export default function ProjectGallery({ number = "001" }: { number?: string }) 
                   <article 
                     className="project-card cursor-pointer group hover:border-sky-500/60 transition-all duration-200"
                     key={project.title}
-                    onClick={() => setSelectedProject(project)}
+                    onClick={() => openProject(project)}
                     tabIndex={0}
                     role="button"
                     onKeyDown={(e) => {
                       if (e.key === 'Enter' || e.key === ' ') {
                         e.preventDefault();
-                        setSelectedProject(project);
+                        openProject(project);
                       }
                     }}
                   >
@@ -265,6 +281,7 @@ export default function ProjectGallery({ number = "001" }: { number?: string }) 
                         <ProjectStatusBadge status={project.status} />
                       </div>
                       <h3>{project.title}</h3>
+                      <time className="project-date">{project.date}</time>
                       <p>{project.description}</p>
                       <div className="tag-list">
                         {project.tags.map((tag) => (
@@ -301,7 +318,7 @@ export default function ProjectGallery({ number = "001" }: { number?: string }) 
         project={selectedProject}
         onClose={() => {
           setSelectedProject(null)
-          if (window.location.hash.startsWith("#project-")) {
+          if (findProjectByHash(window.location.hash)) {
             window.history.replaceState(null, "", `${window.location.pathname}${window.location.search}`)
           }
         }}

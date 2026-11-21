@@ -2,11 +2,44 @@
   padding: clamp(22px, 3vw, 38px);
 }
 
+/* Work on the left; Education + Leadership stacked on the right */
+.timeline-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr);
+  margin-top: 28px;
+  gap: clamp(28px, 4vw, 56px);
+}
+
+.timeline-side {
+  display: grid;
+  align-content: start;
+  gap: 36px;
+}
+
+.timeline-group-title {
+  display: flex;
+  margin-bottom: 20px;
+  align-items: center;
+  gap: 12px;
+  color: #fb923c;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.timeline-group-title::after {
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, rgba(234, 88, 12, 0.5), transparent);
+  content: '';
+}
+
 .timeline {
   position: relative;
   display: grid;
-  margin-top: 28px;
-  gap: 30px;
+  gap: 26px;
+  list-style: none;
 }
 
 .timeline::before {
@@ -41,19 +74,18 @@
   box-shadow: 0 0 0 5px var(--panel);
 }
 
-.timeline-item h3 {
-  max-width: 220px;
+.timeline-item h4 {
   color: #f8fafc;
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 700;
   line-height: 1.35;
   text-transform: uppercase;
 }
 
-.timeline-item p {
+.timeline-org {
   margin-top: 4px;
   color: var(--blue-light);
-  font-size: 9px;
+  font-size: 10px;
   font-weight: 700;
   letter-spacing: 0.07em;
   text-transform: uppercase;
@@ -64,5 +96,46 @@
   margin-top: 5px;
   color: var(--muted);
   font-family: ui-monospace, monospace;
-  font-size: 9px;
+  font-size: 10px;
+}
+
+.timeline-details {
+  display: grid;
+  margin-top: 10px;
+  gap: 6px;
+  list-style: none;
+}
+
+.timeline-details li {
+  position: relative;
+  padding-left: 14px;
+  color: #cbd5e1;
+  font-size: 12px;
+  line-height: 1.55;
+}
+
+.timeline-details li::before {
+  position: absolute;
+  top: 0.62em;
+  left: 0;
+  width: 5px;
+  height: 1px;
+  background: var(--blue-light);
+  content: '';
+}
+
+@media (max-width: 1040px) {
+  /* One column; Education first for recruiters */
+  .timeline-layout {
+    grid-template-columns: 1fr;
+    gap: 36px;
+  }
+
+  .timeline-side {
+    display: contents;
+  }
+
+  .timeline-group-education {
+    order: -1;
+  }
 }

@@ -1,5 +1,6 @@
 import { skillGroups } from "@/data/skills";
 import { projects } from "@/data/projects";
+import { getProjectHash } from "@/lib/project-links";
 import Panel from "../ui/Panel";
 import SectionHeader from "../ui/SectionHeader";
 
@@ -51,7 +52,7 @@ export default function Skills({ number = "004" }: { number?: string }) {
                                 <a
                                   aria-label={`View ${project.title} project details`}
                                   className="inline-flex items-center rounded-full border border-sky-400/30 bg-sky-500/5 px-2 py-1 text-[8px] font-bold uppercase tracking-[0.08em] text-sky-300 transition-colors hover:border-sky-300 hover:bg-sky-500/10"
-                                  href={`#project-${project.id}`}
+                                  href={getProjectHash(project)}
                                 >
                                   {relatedProject.label}
                                 </a>

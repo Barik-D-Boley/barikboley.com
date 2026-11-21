@@ -128,16 +128,6 @@
     grid-column: 1 / -1;
   }
 
-  .timeline-item h3 {
-    max-width: none;
-    font-size: 13px;
-  }
-
-  .timeline-item p,
-  .timeline-item time {
-    font-size: 10px;
-  }
-
   .project-body p {
     font-size: 13px;
   }
@@ -323,7 +313,7 @@
   .hero h1 span,
   .panel h2,
   .project-body h3,
-  .timeline-item h3 {
+  .timeline-item h4 {
     color: #0f172a;
   }
 
@@ -338,11 +328,5 @@
     border-color: #cbd5e1;
     background: white;
     box-shadow: none;
-  }
-}
-
-@media (max-width: 1040px) {
-  .about-timeline-wrapper {
-    grid-template-columns: 1fr; /* Stacks them vertically on smaller screens */
   }
 }
