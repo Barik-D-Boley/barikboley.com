@@ -87,7 +87,27 @@ export const projects: Project[] = [
         { label: "Utilities", value: "6" },
       ],
       toolsUsed: ["Python", "Pillow", "pypdf", "rembg", "ONNX Runtime"],
-      media: []
+      media: [
+        {
+          url: "/project-visuals/python-utility-belt/runner-menu.png",
+          type: "image",
+          caption: "Central runner listing the available tools",
+          alt: "Terminal output of python run.py listing the six tool shortcuts and the scaffold command",
+        },
+        {
+          url: "/project-visuals/python-utility-belt/qr-generator.png",
+          type: "image",
+          caption: "QR Code Generator creating a code for barikboley.com",
+          alt: "Terminal session of the QR code generator next to the QR code it produced",
+          isCover: true,
+        },
+        {
+          url: "/project-visuals/python-utility-belt/bg-removal-before-after.png",
+          type: "image",
+          caption: "Auto-color keying removing the background from a ParaView render",
+          alt: "Terminal session of the background remover with before and after images of a monolith temperature render",
+        },
+      ]
     }
   },
   {
@@ -211,7 +231,33 @@ export const projects: Project[] = [
       ],
       systemArchitecture: "A Next.js App Router single-page portfolio built with React and TypeScript. Reusable section and UI components assemble the page, while project content and modal details are maintained as structured data. Styling uses Tailwind CSS alongside section-specific CSS, with Vercel hosting.",
       toolsUsed: ["Next.js 16", "React 19", "TypeScript", "Tailwind CSS 4", "GitHub Copilot", "Vercel"],
-      media: []
+      media: [
+        {
+          url: "/project-visuals/portfolio-v3/desktop-hero.png",
+          type: "image",
+          caption: "Desktop hero section",
+          alt: "Portfolio home page hero on a desktop screen",
+          isCover: true,
+        },
+        {
+          url: "/project-visuals/portfolio-v3/desktop-project-gallery.png",
+          type: "image",
+          caption: "Project gallery with category filters",
+          alt: "Project gallery section showing featured project cards and category filter buttons",
+        },
+        {
+          url: "/project-visuals/portfolio-v3/desktop-project-modal.png",
+          type: "image",
+          caption: "Project detail modal with media viewer",
+          alt: "Project detail modal showing an image carousel with thumbnails and the problem statement",
+        },
+        {
+          url: "/project-visuals/portfolio-v3/mobile-hero.png",
+          type: "image",
+          caption: "Mobile layout",
+          alt: "Portfolio home page hero on a phone-sized screen",
+        },
+      ]
     }
   }
 ];
