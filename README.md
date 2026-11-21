@@ -35,7 +35,7 @@ The site is a single-page portfolio assembled in `app/page.tsx` from reusable la
 - **Next.js 16** with the App Router
 - **React 19** (React 18+ compatible component patterns)
 - **TypeScript**
-- **Tailwind CSS 4** for utility styling, alongside the site's section-specific CSS
+- **Tailwind CSS 4** for all styling, written as utility classes in the components
 - **Vercel** for hosting and deployment
 - **Lucide React** for icons
 - **ESLint** with the Next.js Core Web Vitals and TypeScript configurations
@@ -50,16 +50,11 @@ The installed versions are defined in `package.json`. The project currently uses
 │   ├── layout.tsx                 # Root layout, document and link-preview metadata, and fonts
 │   ├── opengraph-image.png        # Link-preview image (also twitter-image.png)
 │   ├── page.tsx                   # Home page composition and section order
-│   ├── globals.css                # Tailwind imports, theme tokens, and CSS imports
-│   └── styles/
-│       ├── layout/                # Navigation and footer styles
-│       ├── sections/              # Hero, profile, timeline, gallery, contact styles
-│       │   └── project-gallery/   # Gallery layout and project illustration styles
-│       └── ui/                    # Shared panel, button, and section-heading styles
+│   └── globals.css                # Tailwind imports and theme tokens
 ├── components/
 │   ├── layout/                    # Navbar and Footer
-│   ├── sections/                  # Hero, ProjectGallery, About, Experience, Skills, Contact
-│   ├── ui/                        # Buttons, panels, headings, and project modal
+│   ├── sections/                  # Hero, ProjectGallery, AboutSection, ExperienceTimeline, Skills, ContactSection
+│   ├── ui/                        # Button, Panel, SectionHeader, ProjectStatusBadge, and ProjectModal
 │   └── Icon.tsx                   # Shared icon wrapper
 ├── data/
 │   ├── projects.ts                # Portfolio project content and details
