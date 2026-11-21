@@ -17,9 +17,25 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+const siteDescription = "Mechanical & Nuclear Engineering Portfolio";
+
 export const metadata: Metadata = {
+  metadataBase: new URL("https://barikboley.com"),
   title: "Barik Boley | Portfolio",
-  description: "Mechanical & Nuclear Engineering Portfolio",
+  description: siteDescription,
+  // Link previews; the image comes from app/opengraph-image.png and app/twitter-image.png
+  openGraph: {
+    title: "Barik Boley | Portfolio",
+    description: siteDescription,
+    url: "/",
+    siteName: "Barik Boley",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Barik Boley | Portfolio",
+    description: siteDescription,
+  },
 };
 
 export default function RootLayout({

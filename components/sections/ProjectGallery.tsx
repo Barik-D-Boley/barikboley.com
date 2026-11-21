@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useRef, useState } from "react"
 import { projects } from "@/data/projects"
-import { Project } from "@/types/project"
+import { Category, Project } from "@/types/project"
 import { getProjectCoverMediaIndex } from "@/lib/project-media"
 import { findProjectByHash, getProjectHash } from "@/lib/project-links"
 import Panel from '../ui/Panel';
@@ -12,12 +12,17 @@ import ProjectModal from '../ui/ProjectModal';
 import ProjectStatusBadge from '../ui/ProjectStatusBadge';
 import Icon from '../Icon';
 
-const filters = [
-  "Featured",
+const categoryFilters: Category[] = [
   "FEA & Simulation",
   "Automation & Tools",
   "Web & Full-Stack",
   "Hardware & CAD",
+]
+
+// Only show category buttons that have at least one project
+const filters = [
+  "Featured",
+  ...categoryFilters.filter((category) => projects.some((project) => project.category === category)),
 ]
 
 function ProjectCardMedia({ project }: { project: Project }) {
