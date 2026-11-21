@@ -46,3 +46,8 @@
   border: 1px solid var(--line-strong);
   color: var(--blue-light);
 }
+/* Orange accent: section labels above panel and modal headings */
+.section-header .eyebrow,
+.section-kicker {
+  color: var(--orange-light);
+}

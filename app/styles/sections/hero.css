@@ -109,7 +109,7 @@
   right: 5vw;
   bottom: 85px;
   width: 260px;
-  border-top: 1px solid var(--line-strong);
+  border-top: 2px solid var(--orange-light);
   background: rgba(30, 41, 59, 0.72);
   padding: 18px 16px 16px;
   box-shadow: 0 16px 40px rgba(0, 0, 0, 0.2);

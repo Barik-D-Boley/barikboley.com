@@ -18,7 +18,7 @@ export default function Skills({ number = "004" }: { number?: string }) {
               className="rounded-xl border border-slate-400/15 bg-slate-500/5 p-3 sm:p-4"
             >
               <h3
-                className="border-b border-sky-300/20 pb-2 text-[0.68rem] font-bold uppercase tracking-[0.12em] text-sky-300 sm:text-xs"
+                className="border-b border-orange-400/25 pb-2 text-[0.68rem] font-bold uppercase tracking-[0.12em] text-orange-400 sm:text-xs"
                 id={`skill-group-${group.name.toLowerCase().replace(/[^a-z0-9]+/g, "-")}`}
               >
                 {group.name}
