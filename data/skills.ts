@@ -14,6 +14,13 @@ export const skillGroups: SkillGroup[] = [
     name: "Simulation & CAD",
     skills: [
       {
+        name: "Finite Element Analysis (FEA)",
+        relatedProjects: [
+          { id: "mhtgr-fea", label: "MHTGR FEA" },
+          { id: "pele-htgr-moose", label: "Pele HTGR" },
+        ],
+      },
+      {
         name: "MOOSE Framework",
         relatedProjects: [
           { id: "pele-htgr-moose", label: "Pele HTGR" },
@@ -55,7 +62,7 @@ export const skillGroups: SkillGroup[] = [
     name: "Programming & Tools",
     skills: [
       {
-        name: "Python (h5py, SciPy)",
+        name: "Python",
         relatedProjects: [
           { id: "pele-htgr-moose", label: "Pele HTGR" },
           { id: "mhtgr-fea", label: "MHTGR FEA" },
@@ -64,7 +71,11 @@ export const skillGroups: SkillGroup[] = [
       },
       {
         name: "Git",
-        relatedProjects: [],
+        relatedProjects: [
+          { id: "pele-htgr-moose", label: "Pele HTGR" },
+          { id: "python-utility-belt", label: "Python Tools" },
+          { id: "portfolio-v3", label: "Portfolio" },
+        ],
       },
       {
         name: "Agentic Coding (Claude Code, GitHub Copilot)",
