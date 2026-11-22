@@ -5,7 +5,7 @@ const experience = [
   {
     role: "B.S. Mechanical Engineering",
     organization: "Brigham Young University–Idaho",
-    date: "Expected April 2029",
+    date: "Sept 2025 — Apr 2029 (expected)",
   },
   {
     role: "Full-Time Volunteer Representative",

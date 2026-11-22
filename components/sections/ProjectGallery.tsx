@@ -25,6 +25,10 @@ const filters = [
   ...categoryFilters.filter((category) => projects.some((project) => project.category === category)),
 ]
 
+// On narrow screens the filters sit in a 2-column grid. "Featured" spans the
+// full row only when the count is odd, so the grid never ends with an empty slot.
+const featuredSpansRow = filters.length % 2 === 1
+
 const projectCardClass =
   "cursor-pointer overflow-hidden rounded-md border border-slate-400/20 bg-[var(--panel-deep)] shadow-[0_14px_28px_rgba(2,8,23,0.25)] transition-[border-color,transform] duration-[180ms] hover:-translate-y-[3px] hover:border-sky-500/65"
 
@@ -166,7 +170,7 @@ export default function ProjectGallery({ number = "001" }: { number?: string }) 
         {filters.map((filter) => (
           <Button
             variant="filter"
-            className={`${filter === "Featured" ? "max-[780px]:col-span-2" : ""} ${
+            className={`${filter === "Featured" && featuredSpansRow ? "max-[780px]:col-span-2" : ""} ${
               activeFilter === filter ? "border-sky-500 bg-sky-500 text-[#06131f]" : ""
             }`}
             key={filter}
@@ -282,7 +286,7 @@ export default function ProjectGallery({ number = "001" }: { number?: string }) 
                 {filters.map((filter) => (
                   <Button
                     variant="filter"
-                    className={`${filter === "Featured" ? "col-span-full" : ""} ${
+                    className={`${filter === "Featured" && featuredSpansRow ? "col-span-full" : ""} ${
                       activeFilter === filter ? "border-sky-500 bg-sky-500 text-[#06131f]" : ""
                     }`}
                     key={filter}

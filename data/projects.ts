@@ -6,8 +6,9 @@ export const projects: Project[] = [
     slug: "mhtgr",
     date: "Sept 2026",
     title: "MHTGR Thermal-Mechanical FEA",
-    tagline: "Coupled thermal-mechanical FEA of a nuclear graphite fuel monolith, from CAD to stress results.",
-    description: "Took an IG-110 graphite fuel monolith from CAD through meshing and coupled MOOSE analysis, predicting a ~1.52 MPa peak stress, well below the material's ~25 MPa tensile strength.",
+    tagline: "A demonstration CAD-to-simulation workflow for a nuclear graphite fuel monolith.",
+    description:
+      "A CAD, meshing, thermo-mechanical simulation, and visualization workflow for an IG-110 graphite monolith, with outputs presented as demonstration results rather than validated predictions.",
     tags: ["SolidWorks", "Coreform Cubit", "MOOSE", "ParaView"],
     category: "FEA & Simulation",
     number: "01",
@@ -15,13 +16,13 @@ export const projects: Project[] = [
     status: "complete",
     githubUrl: "https://github.com/Barik-D-Boley/mhtgr-thermal-mechanical-fea",
     details: {
-      problemStatement: "Predict the temperature and thermal stress in a graphite fuel block under steady-state heating without adding artificial stress from the way the model is constrained.",
+      problemStatement: "Demonstrate an end-to-end process for taking a graphite fuel-monolith design from CAD through meshing, coupled thermal-mechanical analysis, and result visualization.",
       keyChallenges: [
-        "Resolving gradients around the fuel and coolant channels: built a structured 18,430-element HEX8 mesh in Coreform Cubit with an average scaled Jacobian above 0.81.",
-        "Restraining the part without over-constraining it: applied an isostatic 3-2-1 point constraint that removes all six rigid-body modes without inducing thermal stress.",
-        "Reporting results honestly: the inputs are representative values, so the outputs are demonstration results rather than validated predictions.",
+        "Building a structured hexahedral mesh around the monolith's fuel and coolant channels.",
+        "Transferring the CAD geometry and mesh into a MOOSE simulation with thermal and mechanical boundary conditions.",
+        "Treating the reported outputs as demonstration results: they have not been validated against experimental or other real-world results."
       ],
-      systemArchitecture: "A SolidWorks model is exported to STEP, meshed in Coreform Cubit, and solved in MOOSE with coupled heat conduction (temperature-dependent conductivity, convective channel cooling) and tensor mechanics. ParaView post-processing showed a 662 K peak temperature, 0.603 mm peak displacement, and hydrostatic stress from +0.44 to -0.50 MPa, marking the tensile core as the region most prone to micro-cracking.",
+      systemArchitecture: "A SolidWorks model is exported to STEP, meshed in Coreform Cubit, solved using MOOSE heat-conduction and tensor-mechanics physics, and visualized in ParaView. The repository documents a reproducible CAD-to-simulation workflow.",
       metrics: [
         { label: "Mesh Elements", value: "18,430" },
         { label: "Avg. Scaled Jacobian", value: "> 0.81" },
@@ -109,8 +110,9 @@ export const projects: Project[] = [
     slug: "utility-belt",
     date: "Oct – Nov 2026",
     title: "Python Utility Belt",
-    tagline: "Six offline Python tools for image and document tasks, launched from one runner.",
-    description: "Replaced online file converters with six local Python tools, including AI background removal and PDF merging, behind one runner that installs only what each tool needs.",
+    tagline: "Six local Python utilities for common image and document tasks.",
+    description:
+      "A collection of six standalone utilities launched through one runner, including local image background removal and PDF merging.",
     tags: ["Python", "CLI", "Image Processing", "PDF Tools"],
     category: "Automation & Tools",
     number: "03",
@@ -118,13 +120,13 @@ export const projects: Project[] = [
     status: "maintenance",
     githubUrl: "https://github.com/Barik-D-Boley/python-utility-belt",
     details: {
-      problemStatement: "Everyday tasks like removing backgrounds from CAD renders, merging or trimming PDFs, and making QR codes meant uploading files to online converters.",
+      problemStatement: "Provide convenient, focused tools for image and document tasks that can be run locally instead of relying on online converters.",
       keyChallenges: [
-        "Keeping heavy dependencies optional: the runner installs only each tool's own packages, so the ~500 MB AI tool never weighs down the small ones.",
-        "Handling different image types: background removal offers AI models for photos and color keying for CAD renders with flat backgrounds.",
-        "Making the suite easy to extend: a scaffold command creates a new tool's folders, README, and dependency entries and registers it with the runner.",
+        "Organizing six standalone utilities behind a central runner with short commands and per-tool dependencies.",
+        "Supporting distinct workflows, including AI-based or color-keyed image background removal and merging PDFs with images.",
+        "Documenting setup requirements and dependencies so each utility can be run independently."
       ],
-      systemArchitecture: "A central run.py maps short commands (bg, pdfm, pdft, qr, and more) to standalone tool modules, checks their dependencies against pyproject.toml extras, and launches them. The suite covers background removal, citation cleaning, PDF merging and trimming, PowerPoint merging, and QR-code generation.",
+      systemArchitecture: "A Python runner dispatches commands to separate utility modules and checks or installs each tool's optional dependencies. The suite includes image background removal, citation cleaning, PDF merging, PDF trimming, PowerPoint merging, and QR-code generation.",
       metrics: [
         { label: "Utilities", value: "6" },
       ],
@@ -157,8 +159,9 @@ export const projects: Project[] = [
     slug: "receipt-parser",
     date: "Aug – Sept 2026",
     title: "Walmart Receipt Parser",
-    tagline: "A one-click Chrome extension that turns Walmart order pages into formatted Google Sheets records.",
-    description: "Replaced manual receipt entry with a Chrome extension and serverless backend that send itemized Walmart orders to a formatted, duplicate-free Google Sheet in one click.",
+    tagline: "A Chrome extension that scrapes Walmart order pages and sends receipt data to Google Sheets.",
+    description:
+      "A self-configured browser extension and backend that extracts itemized receipt details from Walmart order pages and records them in a personal Google Sheet.",
     tags: ["Chrome Extension", "Web Scraping", "Node.js", "Google Sheets"],
     category: "Web & Full-Stack",
     number: "04",
@@ -166,13 +169,13 @@ export const projects: Project[] = [
     status: "complete",
     githubUrl: "https://github.com/Barik-D-Boley/walmart-receipt-parser",
     details: {
-      problemStatement: "Copying itemized grocery receipts into my budget spreadsheet by hand was slow and error-prone, and an existing receipt-parser extension didn't fit my sheet's layout.",
+      problemStatement: "An existing receipt-parser extension did not work the way I wanted, so I built a custom tool to automate transferring Walmart receipt details into my spreadsheet.",
       keyChallenges: [
-        "Extracting data from a page built for people: the scraper reads item details from Walmart's order-page markup, so site changes can break it.",
-        "Keeping the sheet clean: the backend checks transaction numbers before writing, so the same order is never recorded twice.",
-        "Setup for other users: each user supplies their own Google Cloud service account; a planned version reads the site's network data instead of its markup.",
+        "The scraper depends on the structure of Walmart's order-page HTML, so changes to the site can break extraction.",
+        "Users must configure their own Google Cloud service-account credentials and share their target spreadsheet with that account.",
+        "A future version is planned to obtain receipt data by intercepting the site's API traffic instead of relying on page markup."
       ],
-      systemArchitecture: "A Manifest V3 extension injects a scraper into the order page and posts the data to a Node.js/Express API on Vercel. The API uses the Sheets batchUpdate method to create a tab for each purchase date in chronological order and apply currency formatting, so after a one-time setup each receipt takes one click.",
+      systemArchitecture: "A Chrome Extension Manifest V3 script extracts order and item details from a Walmart order page, sends the data to a Node.js/Express backend, and writes formatted records to Google Sheets through the Sheets API. After the one-time setup with a user's own credentials and spreadsheet, it is ready for regular use.",
       toolsUsed: ["Chrome Extension API (Manifest V3)", "JavaScript", "Node.js", "Express", "Google Sheets API", "Vercel"],
       media: [
         {
@@ -196,8 +199,9 @@ export const projects: Project[] = [
     slug: "overload-tracker",
     date: "Sept 2026 – Present",
     title: "Progressive Overload Tracker 2.0",
-    tagline: "Rebuilding a personal workout-tracking spreadsheet into a maintainable Apps Script system.",
-    description: "Redesigning years of personal strength-training logs into a normalized Google Sheets and Apps Script system, starting with a full feature spec and data-migration plan.",
+    tagline: "An active rebuild of a personal workout-tracking spreadsheet ecosystem.",
+    description:
+      "A streamlined, data-driven Google Sheets and Apps Script tracker in development, based on personal workout logs and planned for use as an example project.",
     tags: ["Google Sheets", "Google Apps Script", "JavaScript", "Fitness Tracking"],
     category: "Automation & Tools",
     number: "05",
@@ -205,13 +209,13 @@ export const projects: Project[] = [
     status: "under development",
     githubUrl: "https://github.com/Barik-D-Boley/sheets-progressive-overload-analytics",
     details: {
-      problemStatement: "Years of workout logs live in a spreadsheet that grew without a plan, with inconsistent exercise names and no reliable way to track progress over time.",
+      problemStatement: "Build a more streamlined and maintainable version of a personal strength-training tracker, with an example of the system that others can understand and adapt.",
       keyChallenges: [
-        "Designing a schema that survives change: exercises get stable IDs, so renaming one updates history without breaking past records.",
-        "Migrating legacy data safely: the planned one-time import previews and validates every row so nothing is silently lost or duplicated.",
-        "Current scope: the specification and development workflow are complete; logging automation and progression analytics are still future work.",
+        "Establishing a consistent data schema and normalizing historical workout and exercise records.",
+        "Planning a foundation that can support later workout-entry automation and progression analytics.",
+        "The README roadmap describes future work; most of those features have not been implemented yet."
       ],
-      systemArchitecture: "Quarterly log tabs act as the single source of truth, with a read-only compiled view for search and charts and a Master tab for settings. Code is written locally in VS Code and version-controlled with Git, then pushed to Google Apps Script with clasp.",
+      systemArchitecture: "The project is a Google Sheets ecosystem developed locally with Google Apps Script and clasp. Its current focus is the data foundation and migration to a normalized schema; logging automation, progression calculations, dashboards, and other roadmap features remain future work.",
       toolsUsed: ["Google Sheets", "Google Apps Script", "JavaScript", "clasp", "Node.js"],
       media: []
     }
@@ -221,8 +225,8 @@ export const projects: Project[] = [
     slug: "portfolio",
     date: "Aug 2026 – Present",
     title: "Personal Portfolio",
-    tagline: "A project-first portfolio built by directing and reviewing AI coding agents.",
-    description: "Built a responsive portfolio that lets recruiters see engineering and software work without opening GitHub, by directing and reviewing AI coding agents.",
+    tagline: "A project-first portfolio developed with AI coding agents and GitHub Copilot.",
+    description: "A portfolio showcasing mechanical engineering and software projects, built through AI-assisted coding with Barik directing and reviewing the migration.",
     tags: ["Next.js 16", "React 19", "TypeScript", "Tailwind CSS 4", "GitHub Copilot"],
     category: "Web & Full-Stack",
     number: "06",
@@ -231,13 +235,13 @@ export const projects: Project[] = [
     githubUrl: "https://github.com/Barik-D-Boley/barikboley.com",
     liveUrl: "https://barikboley.com",
     details: {
-      problemStatement: "Engineering recruiters rarely open the GitHub links on a resume, so project work needs to be visible and easy to scan on one site, on desktop and phone.",
+      problemStatement: "Create a project-first online portfolio that presents mechanical engineering and software work together in one responsive site.",
       keyChallenges: [
-        "Directing and reviewing AI-generated code so the content, components, and design stay consistent.",
-        "Making each project easy to find and share: category filters, detail windows with image viewers, and a direct link for every project (e.g. /#mhtgr).",
-        "Adapting layouts and interactions for desktop and mobile screens.",
+        "Directing and reviewing an AI-assisted migration while keeping the portfolio's content, components, and design aligned.",
+        "Building a reusable project gallery with category filters, project detail modals, and media viewers.",
+        "Adapting the page layout and interactions across desktop and mobile screens."
       ],
-      systemArchitecture: "A Next.js App Router single-page site built with React and TypeScript. Structured project data drives the gallery, detail windows, and direct links; styling uses Tailwind CSS with section-specific CSS, and the site is hosted on Vercel.",
+      systemArchitecture: "A Next.js App Router single-page portfolio built with React and TypeScript. Reusable section and UI components assemble the page, while project content and modal details are maintained as structured data. Styling uses Tailwind CSS alongside section-specific CSS, with Vercel hosting.",
       toolsUsed: ["Next.js 16", "React 19", "TypeScript", "Tailwind CSS 4", "GitHub Copilot", "Claude Code", "Vercel"],
       media: [
         {
