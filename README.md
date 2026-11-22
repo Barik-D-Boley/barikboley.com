@@ -190,6 +190,14 @@ Place local assets in `public/` and reference them with a URL from the public ro
 
 Add the entry to the `projects` array in `data/projects.ts`. Keep required fields populated, use only the declared category/status values, and use unique project identifiers, slugs, and display numbers.
 
+## Weekly project sync
+
+A scheduled Claude Code task runs every Sunday evening (Mountain time). It checks the public repositories of the GitHub user in `data/project-sync.json` and, when something changed, opens a pull request with proposed updates to `data/projects.ts` for review. Nothing changes on the site until that pull request is merged.
+
+- **New repositories** created on or after `onlyReposCreatedOnOrAfter` that aren't on the site or in `skipRepos` get a drafted project entry.
+- **Existing projects** whose repositories had significant changes since `lastSync` get their text, status, or images updated to match.
+- To stop a repository from being proposed, add its name to `skipRepos`, or leave a comment on the sync pull request asking to skip it.
+
 ## Roadmap and verification
 
 Use this checklist when developing or preparing a change for release:

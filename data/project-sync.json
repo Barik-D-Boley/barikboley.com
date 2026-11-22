@@ -1,0 +1,13 @@
+{
+  "_about": "Settings for the weekly project-sync agent. It proposes portfolio updates as a pull request; nothing changes until you merge it.",
+  "githubUser": "Barik-D-Boley",
+  "lastSync": "2026-11-22",
+  "onlyReposCreatedOnOrAfter": "2025-01-01",
+  "skipRepos": [
+    "Barik-D-Boley",
+    "linkedin-post-brainstormer",
+    "me-142-projects",
+    "personal-python-projects",
+    "silent-disco-website"
+  ]
+}
