@@ -14,8 +14,8 @@ export default function ContactSection({ number }: { number: string }) {
           Hiring for a nuclear or mechanical engineering internship? I’d love to hear about it.
         </p>
       </div>
-      <div className="flex shrink-0 flex-col gap-3">
-        <Button variant="contact" href={`mailto:${EMAIL}`}>
+      <div className="flex w-[252px] shrink-0 gap-2 max-[780px]:w-full">
+        <Button className="min-w-0 flex-1 justify-center gap-2 px-3" variant="contact" href={`mailto:${EMAIL}`}>
           <Icon name="mail" />
           Start a conversation
           <Icon name="arrow" />
