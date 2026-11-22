@@ -16,10 +16,10 @@ export const projects: Project[] = [
     status: "complete",
     githubUrl: "https://github.com/Barik-D-Boley/mhtgr-thermal-mechanical-fea",
     details: {
-      problemStatement: "Demonstrate an end-to-end process for taking a graphite fuel-monolith design from CAD through meshing, coupled thermal-mechanical analysis, and result visualization.",
+      problemStatement: "Learn the MOOSE Framework, Coreform Cubit, and ParaView by taking a graphite fuel-monolith design from CAD through meshing, coupled thermal-mechanical analysis, and result visualization.",
       keyChallenges: [
         "Building a structured hexahedral mesh around the monolith's fuel and coolant channels.",
-        "Transferring the CAD geometry and mesh into a MOOSE simulation with thermal and mechanical boundary conditions.",
+        "Debugging the MOOSE input until it produced physically realistic results; the first successful run predicted temperatures on the order of a million kelvin.",
         "Treating the reported outputs as demonstration results: they have not been validated against experimental or other real-world results."
       ],
       systemArchitecture: "A SolidWorks model is exported to STEP, meshed in Coreform Cubit, solved using MOOSE heat-conduction and tensor-mechanics physics, and visualized in ParaView. The repository documents a reproducible CAD-to-simulation workflow.",
@@ -112,7 +112,7 @@ export const projects: Project[] = [
     title: "Python Utility Belt",
     tagline: "Six local Python utilities for common image and document tasks.",
     description:
-      "A collection of six standalone utilities launched through one runner, including local image background removal and PDF merging.",
+      "A collection of six standalone utilities launched through one runner, from trimming textbook PDFs to merging PowerPoints and removing image backgrounds.",
     tags: ["Python", "CLI", "Image Processing", "PDF Tools"],
     category: "Automation & Tools",
     number: "03",
@@ -120,7 +120,7 @@ export const projects: Project[] = [
     status: "maintenance",
     githubUrl: "https://github.com/Barik-D-Boley/python-utility-belt",
     details: {
-      problemStatement: "Provide convenient, focused tools for image and document tasks that can be run locally instead of relying on online converters.",
+      problemStatement: "Give the small tools I built for school and everyday tasks, each solving its own problem, one place to live instead of scattering them across separate repositories. The PDF trimmer, for example, pulls specific pages from a 500-page textbook so I can summarize only what I need.",
       keyChallenges: [
         "Organizing six standalone utilities behind a central runner with short commands and per-tool dependencies.",
         "Supporting distinct workflows, including AI-based or color-keyed image background removal and merging PDFs with images.",
@@ -169,13 +169,13 @@ export const projects: Project[] = [
     status: "complete",
     githubUrl: "https://github.com/Barik-D-Boley/walmart-receipt-parser",
     details: {
-      problemStatement: "An existing receipt-parser extension did not work the way I wanted, so I built a custom tool to automate transferring Walmart receipt details into my spreadsheet.",
+      problemStatement: "An existing receipt-parser extension did not work the way I wanted, so I built a custom tool to automate transferring Walmart receipt details into my budgeting spreadsheet.",
       keyChallenges: [
         "The scraper depends on the structure of Walmart's order-page HTML, so changes to the site can break extraction.",
         "Users must configure their own Google Cloud service-account credentials and share their target spreadsheet with that account.",
         "A future version is planned to obtain receipt data by intercepting the site's API traffic instead of relying on page markup."
       ],
-      systemArchitecture: "A Chrome Extension Manifest V3 script extracts order and item details from a Walmart order page, sends the data to a Node.js/Express backend, and writes formatted records to Google Sheets through the Sheets API. After the one-time setup with a user's own credentials and spreadsheet, it is ready for regular use.",
+      systemArchitecture: "A Chrome Extension Manifest V3 script extracts order and item details from a Walmart order page, sends the data to a Node.js/Express backend, and writes formatted records to Google Sheets through the Sheets API. After the one-time setup with a user's own credentials and spreadsheet, it is ready for regular use. It has processed more than a dozen receipts so far.",
       toolsUsed: ["Chrome Extension API (Manifest V3)", "JavaScript", "Node.js", "Express", "Google Sheets API", "Vercel"],
       media: [
         {
@@ -209,7 +209,7 @@ export const projects: Project[] = [
     status: "under development",
     githubUrl: "https://github.com/Barik-D-Boley/sheets-progressive-overload-analytics",
     details: {
-      problemStatement: "Build a more streamlined and maintainable version of a personal strength-training tracker, with an example of the system that others can understand and adapt.",
+      problemStatement: "Version 1 grew one feature at a time without a plan, so finding what I need means switching between three slow tabs. Version 2 is planned up front to put all of that information in one place.",
       keyChallenges: [
         "Establishing a consistent data schema and normalizing historical workout and exercise records.",
         "Planning a foundation that can support later workout-entry automation and progression analytics.",
@@ -226,7 +226,7 @@ export const projects: Project[] = [
     date: "Aug 2026 – Present",
     title: "Personal Portfolio",
     tagline: "A project-first portfolio developed with AI coding agents and GitHub Copilot.",
-    description: "A portfolio showcasing mechanical engineering and software projects, built through AI-assisted coding with Barik directing and reviewing the migration.",
+    description: "A portfolio showcasing my engineering and software projects, which I defined, designed, and refined while AI coding agents wrote the code.",
     tags: ["Next.js 16", "React 19", "TypeScript", "Tailwind CSS 4", "GitHub Copilot"],
     category: "Web & Full-Stack",
     number: "06",
@@ -237,7 +237,7 @@ export const projects: Project[] = [
     details: {
       problemStatement: "Create a project-first online portfolio that presents mechanical engineering and software work together in one responsive site.",
       keyChallenges: [
-        "Directing and reviewing an AI-assisted migration while keeping the portfolio's content, components, and design aligned.",
+        "Turning an idea into a design: an AI-generated concept image became an AI-built mockup, which coding agents then converted to Next.js and Tailwind CSS.",
         "Building a reusable project gallery with category filters, project detail modals, and media viewers.",
         "Adapting the page layout and interactions across desktop and mobile screens."
       ],
