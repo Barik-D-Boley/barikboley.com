@@ -1,5 +1,13 @@
+export interface Certification {
+  /** Full certification title, used for the link's accessible name. */
+  name: string;
+  /** Path to the certificate PDF in /public. */
+  url: string;
+}
+
 export interface Skill {
   name: string;
+  certification?: Certification;
   relatedProjects: { id: string; label: string }[];
 }
 
@@ -40,6 +48,10 @@ export const skillGroups: SkillGroup[] = [
       },
       {
         name: "SolidWorks (CSWA)",
+        certification: {
+          name: "Certified SOLIDWORKS Associate (CSWA)",
+          url: "/certifications/solidworks-cswa.pdf",
+        },
         relatedProjects: [
           { id: "pele-htgr-moose", label: "Pele HTGR" },
           { id: "mhtgr-fea", label: "MHTGR FEA" },
@@ -54,6 +66,10 @@ export const skillGroups: SkillGroup[] = [
       },
       {
         name: "Autodesk Inventor",
+        certification: {
+          name: "Autodesk Certified User: Inventor",
+          url: "/certifications/autodesk-certified-user-inventor.pdf",
+        },
         relatedProjects: [],
       },
     ],
@@ -90,6 +106,10 @@ export const skillGroups: SkillGroup[] = [
       },
       {
         name: "JavaScript",
+        certification: {
+          name: "CIW JavaScript Specialist",
+          url: "/certifications/ciw-javascript-specialist.pdf",
+        },
         relatedProjects: [
           { id: "walmart-receipt-parser", label: "Receipt Parser" },
           { id: "progressive-overload-analytics", label: "Progressive Overload" },
@@ -97,6 +117,10 @@ export const skillGroups: SkillGroup[] = [
       },
       {
         name: "HTML/CSS",
+        certification: {
+          name: "Microsoft Technology Associate: HTML5 Application Development Fundamentals",
+          url: "/certifications/mta-html5-app-development.pdf",
+        },
         relatedProjects: [
           { id: "portfolio-v3", label: "Portfolio" },
           { id: "progressive-overload-analytics", label: "Progressive Overload" },

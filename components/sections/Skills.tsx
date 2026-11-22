@@ -1,3 +1,4 @@
+import { Award } from "lucide-react";
 import { skillGroups } from "@/data/skills";
 import { projects } from "@/data/projects";
 import { getProjectHash } from "@/lib/project-links";
@@ -33,8 +34,21 @@ export default function Skills({ number = "004" }: { number?: string }) {
                       <span className="min-w-0 text-sm font-medium leading-5 text-slate-100 break-words">
                         {skill.name}
                       </span>
-                      {skill.relatedProjects.length > 0 && (
+                      {(skill.certification || skill.relatedProjects.length > 0) && (
                         <div className="flex shrink-0 flex-wrap items-center justify-start gap-1.5 sm:justify-end">
+                          {skill.certification && (
+                            <a
+                              aria-label={`View ${skill.certification.name} certificate (PDF, opens in a new tab)`}
+                              className="inline-flex items-center gap-1 rounded-full border border-orange-400/40 bg-orange-500/5 px-2 py-1 text-[10px] font-bold uppercase tracking-[0.08em] text-orange-300 transition-colors hover:border-orange-300 hover:bg-orange-500/10"
+                              href={skill.certification.url}
+                              rel="noopener noreferrer"
+                              target="_blank"
+                              title={skill.certification.name}
+                            >
+                              <Award aria-hidden="true" size={11} strokeWidth={2.2} />
+                              Certified
+                            </a>
+                          )}
                           {skill.relatedProjects.map((relatedProject, index) => {
                             const project = projects.find(
                               (item) => item.id === relatedProject.id,
@@ -44,7 +58,7 @@ export default function Skills({ number = "004" }: { number?: string }) {
 
                             return (
                               <span className="inline-flex items-center gap-1.5" key={relatedProject.id}>
-                                {index > 0 && (
+                                {(index > 0 || skill.certification) && (
                                   <span aria-hidden="true" className="text-sm font-bold leading-none text-sky-300/80">
                                     ·
                                   </span>
