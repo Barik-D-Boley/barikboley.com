@@ -8,6 +8,7 @@ export interface SkillGroup {
   skills: Skill[];
 }
 
+// Skills within each group are ordered from most to least relevant.
 export const skillGroups: SkillGroup[] = [
   {
     name: "Simulation & CAD",
@@ -31,15 +32,18 @@ export const skillGroups: SkillGroup[] = [
         ],
       },
       {
-        name: "ParaView",
+        name: "SolidWorks (CSWA)",
         relatedProjects: [
           { id: "pele-htgr-moose", label: "Pele HTGR" },
           { id: "mhtgr-fea", label: "MHTGR FEA" },
         ],
       },
       {
-        name: "SolidWorks (CSWA)",
-        relatedProjects: [],
+        name: "ParaView",
+        relatedProjects: [
+          { id: "pele-htgr-moose", label: "Pele HTGR" },
+          { id: "mhtgr-fea", label: "MHTGR FEA" },
+        ],
       },
       {
         name: "Autodesk Inventor",
@@ -63,8 +67,20 @@ export const skillGroups: SkillGroup[] = [
         relatedProjects: [],
       },
       {
+        name: "Agentic Coding (Claude Code, GitHub Copilot)",
+        relatedProjects: [{ id: "portfolio-v3", label: "Portfolio" }],
+      },
+      {
+        name: "Excel & Google Sheets (Data Modeling)",
+        relatedProjects: [
+          { id: "walmart-receipt-parser", label: "Receipt Parser" },
+          { id: "progressive-overload-analytics", label: "Progressive Overload" },
+        ],
+      },
+      {
         name: "JavaScript",
         relatedProjects: [
+          { id: "walmart-receipt-parser", label: "Receipt Parser" },
           { id: "progressive-overload-analytics", label: "Progressive Overload" },
         ],
       },
@@ -74,10 +90,6 @@ export const skillGroups: SkillGroup[] = [
           { id: "portfolio-v3", label: "Portfolio" },
           { id: "progressive-overload-analytics", label: "Progressive Overload" },
         ],
-      },
-      {
-        name: "Excel & Google Sheets (Data Modeling)",
-        relatedProjects: [{ id: "walmart-receipt-parser", label: "Receipt Parser" }],
       },
     ],
   },

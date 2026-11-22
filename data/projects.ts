@@ -223,7 +223,7 @@ export const projects: Project[] = [
   {
     id: "portfolio-v3",
     slug: "portfolio",
-    date: "Aug 2026 – Present",
+    date: "Aug – Nov 2026",
     title: "Personal Portfolio",
     tagline: "A project-first portfolio developed with AI coding agents and GitHub Copilot.",
     description: "A portfolio showcasing my engineering and software projects, which I defined, designed, and refined while AI coding agents wrote the code.",
@@ -231,7 +231,7 @@ export const projects: Project[] = [
     category: "Web & Full-Stack",
     number: "06",
     featured: false,
-    status: "under development",
+    status: "complete",
     githubUrl: "https://github.com/Barik-D-Boley/barikboley.com",
     liveUrl: "https://barikboley.com",
     details: {
