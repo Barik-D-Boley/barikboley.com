@@ -45,6 +45,13 @@ export default function Footer() {
           >
             LinkedIn
           </a>
+          <span className="text-slate-400">/</span>
+          <a
+            className="inline-flex min-h-10 items-center px-1 text-slate-400 no-underline transition-colors duration-150 hover:text-sky-400 max-[780px]:min-h-11"
+            href="mailto:barik.boley@gmail.com"
+          >
+            barik.boley@gmail.com
+          </a>
         </nav>
       </div>
     </footer>

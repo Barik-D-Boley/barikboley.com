@@ -1,7 +1,10 @@
+import type { ReactNode } from "react";
+import { Award } from "lucide-react";
 import { skillGroups } from "@/data/skills";
 import { projects } from "@/data/projects";
 import { getProjectHash } from "@/lib/project-links";
 import Panel from "@/components/ui/Panel";
+import PillList from "@/components/ui/PillList";
 import SectionHeader from "@/components/ui/SectionHeader";
 
 export default function Skills({ number = "004" }: { number?: string }) {
@@ -33,34 +36,48 @@ export default function Skills({ number = "004" }: { number?: string }) {
                       <span className="min-w-0 text-sm font-medium leading-5 text-slate-100 break-words">
                         {skill.name}
                       </span>
-                      {skill.relatedProjects.length > 0 && (
-                        <div className="flex shrink-0 flex-wrap items-center justify-start gap-1.5 sm:justify-end">
-                          {skill.relatedProjects.map((relatedProject, index) => {
-                            const project = projects.find(
-                              (item) => item.id === relatedProject.id,
-                            );
+                      {(() => {
+                        const pills: { key: string; node: ReactNode }[] = [];
 
-                            if (!project) return null;
+                        if (skill.certification) {
+                          pills.push({
+                            key: "certification",
+                            node: (
+                              <a
+                                aria-label={`View ${skill.certification.name} certificate (PDF, opens in a new tab)`}
+                                className="inline-flex items-center gap-1 rounded-full border border-orange-400/40 bg-orange-500/5 px-2 py-1 text-[10px] font-bold uppercase tracking-[0.08em] text-orange-300 transition-colors hover:border-orange-300 hover:bg-orange-500/10"
+                                href={skill.certification.url}
+                                rel="noopener noreferrer"
+                                target="_blank"
+                                title={skill.certification.name}
+                              >
+                                <Award aria-hidden="true" size={11} strokeWidth={2.2} />
+                                Certified
+                              </a>
+                            ),
+                          });
+                        }
 
-                            return (
-                              <span className="inline-flex items-center gap-1.5" key={relatedProject.id}>
-                                {index > 0 && (
-                                  <span aria-hidden="true" className="text-sm font-bold leading-none text-sky-300/80">
-                                    ·
-                                  </span>
-                                )}
-                                <a
-                                  aria-label={`View ${project.title} project details`}
-                                  className="inline-flex items-center rounded-full border border-sky-400/30 bg-sky-500/5 px-2 py-1 text-[10px] font-bold uppercase tracking-[0.08em] text-sky-300 transition-colors hover:border-sky-300 hover:bg-sky-500/10"
-                                  href={getProjectHash(project)}
-                                >
-                                  {relatedProject.label}
-                                </a>
-                              </span>
-                            );
-                          })}
-                        </div>
-                      )}
+                        for (const relatedProject of skill.relatedProjects) {
+                          const project = projects.find((item) => item.id === relatedProject.id);
+                          if (!project) continue;
+
+                          pills.push({
+                            key: relatedProject.id,
+                            node: (
+                              <a
+                                aria-label={`View ${project.title} project details`}
+                                className="inline-flex items-center rounded-full border border-sky-400/30 bg-sky-500/5 px-2 py-1 text-[10px] font-bold uppercase tracking-[0.08em] text-sky-300 transition-colors hover:border-sky-300 hover:bg-sky-500/10"
+                                href={getProjectHash(project)}
+                              >
+                                {relatedProject.label}
+                              </a>
+                            ),
+                          });
+                        }
+
+                        return pills.length > 0 ? <PillList items={pills} /> : null;
+                      })()}
                     </li>
                   );
                 })}
