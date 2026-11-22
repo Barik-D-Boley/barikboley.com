@@ -1,5 +1,8 @@
 import Icon from "@/components/Icon"
 import Button from "@/components/ui/Button"
+import CopyEmailButton from "@/components/ui/CopyEmailButton"
+
+const EMAIL = "barik.boley@gmail.com"
 
 export default function ContactSection({ number }: { number: string }) {
   return (
@@ -11,11 +14,14 @@ export default function ContactSection({ number }: { number: string }) {
           Hiring for a nuclear or mechanical engineering internship? I’d love to hear about it.
         </p>
       </div>
-      <Button variant="contact" href="mailto:barik.boley@gmail.com">
-        <Icon name="mail" />
-        Start a conversation
-        <Icon name="arrow" />
-      </Button>
+      <div className="flex shrink-0 flex-col gap-3">
+        <Button variant="contact" href={`mailto:${EMAIL}`}>
+          <Icon name="mail" />
+          Start a conversation
+          <Icon name="arrow" />
+        </Button>
+        <CopyEmailButton email={EMAIL} />
+      </div>
     </section>
   )
 }
