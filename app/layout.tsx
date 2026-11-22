@@ -17,9 +17,25 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+const siteDescription = "Mechanical & Nuclear Engineering Portfolio";
+
 export const metadata: Metadata = {
+  metadataBase: new URL("https://barikboley.com"),
   title: "Barik Boley | Portfolio",
-  description: "Mechanical Engineering & Software Development Portfolio",
+  description: siteDescription,
+  // Link previews; the image comes from app/opengraph-image.png and app/twitter-image.png
+  openGraph: {
+    title: "Barik Boley | Portfolio",
+    description: siteDescription,
+    url: "/",
+    siteName: "Barik Boley",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Barik Boley | Portfolio",
+    description: siteDescription,
+  },
 };
 
 export default function RootLayout({
@@ -32,7 +48,7 @@ export default function RootLayout({
       lang="en"
       className={cn("h-full", "antialiased", geistSans.variable, geistMono.variable, "font-sans", geist.variable, playfairDisplayHeading.variable)}
     >
-      <body className="min-h-full flex flex-col">
+      <body className="flex min-h-full flex-col bg-[var(--bg)] text-white print:bg-white print:text-[#0f172a]">
         {children}
       </body>
     </html>

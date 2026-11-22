@@ -25,12 +25,6 @@ Use the source files as the authority for current implementation details. Avoid 
 - Prefer Tailwind utilities for component styling where practical; retain CSS for global tokens and rules better expressed in stylesheets.
 - Do not reactivate archived or commented-out projects unless a feature explicitly requires it.
 
-### Validation
-
-- `npm run lint`
-- `npm run build`
-- Manually verify affected responsive layouts, keyboard interactions, navigation, and links. There is no dedicated test script currently defined.
-
 ## Feature workflow
 
 Give each feature a stable ID so it can be referenced without relying on list position. Keep one status per feature; do not maintain a second checklist elsewhere in this document.
@@ -41,7 +35,7 @@ Statuses:
 - **Ready** — requirements are clear and implementation can begin.
 - **In progress** — implementation has started.
 - **Blocked** — work depends on a decision or external input; state what is needed.
-- **Done** — acceptance criteria are met and the listed validation is complete.
+- **Done** — acceptance criteria are implemented and verified.
 
 When implementing a feature, inspect the relevant source first. Treat feature specs as the intended behavior and source code as evidence of current behavior. If they conflict, surface the discrepancy rather than silently changing the requirement. Update the status to Done only after verifying the acceptance criteria.
 
@@ -90,12 +84,12 @@ When implementing a feature, inspect the relevant source first. Treat feature sp
 **Out of scope:** Reactivating the commented-out Anti-Theft project.
 
 **Acceptance criteria**
-- [ ] Every active project has the agreed lifecycle status, using the values in `types/project.ts`.
-- [ ] Every project card displays its status in both the main gallery and catalog.
-- [ ] The `maintenance` status displays as **Ongoing**.
+- [x] Every active project has the agreed lifecycle status, using the values in `types/project.ts`.
+- [x] Every project card displays its status in both the main gallery and catalog.
+- [x] The `maintenance` status displays as **Ongoing**.
 
 **Validation**
-- [ ] Check each active project in both gallery and catalog views.
+- [x] Check each active project in both gallery and catalog views.
 
 ### NAV-01: Single active section highlight
 **Status:** Done
@@ -110,32 +104,32 @@ When implementing a feature, inspect the relevant source first. Treat feature sp
 **Validation**
 - [x] Verified the behavior against `components/layout/Navbar.tsx`.
 
-### STYLE-01: Gradual Tailwind migration
-**Status:** Ready
+### STYLE-01: Tailwind migration
+**Status:** Done
 
 **Goal:** Consolidate styling around Tailwind while preserving the existing design and behavior.
-**Scope:** Migrate component, section, layout, and responsive styles incrementally.
-**Out of scope:** Replacing necessary global styles, theme tokens, or rules that are impractical to express as utilities.
+**Scope:** Migrate component, section, layout, responsive, and print styles to Tailwind utilities. Keep `globals.css` for Tailwind imports, theme tokens, base resets, and global accessibility defaults.
+**Out of scope:** Visual redesigns or changes to interaction behavior.
 
 **Acceptance criteria**
-- [ ] Each migrated area retains its existing appearance, responsive behavior, accessibility, and interactions.
-- [ ] Remove stylesheet rules only after confirming they are no longer used.
-- [ ] Keep changes focused; do not combine unrelated visual redesigns with the migration.
+- [x] The site retains its existing appearance, responsive behavior, accessibility, print behavior, and interactions.
+- [x] No component or section styles remain in authored CSS stylesheets.
+- [x] Keep changes focused; do not combine unrelated visual redesigns with the migration.
 
 **Validation**
-- [ ] Run `npm run lint` and `npm run build`.
-- [ ] Visually check each migrated area at mobile and desktop widths.
+- [x] Run `npm run lint` and `npm run build`.
+- [x] Visually check the page at mobile, tablet, and desktop widths; verify navigation and modal interactions.
 
 ### CONSISTENCY-01: Naming and small-text readability
-**Status:** Ready
+**Status:** In progress
 
 **Goal:** Improve naming consistency and legibility without broad, unnecessary renames.
 **Scope:** Audit source, styles, assets, imports, and user-facing small text.
 
 **Acceptance criteria**
-- [ ] Fix the `htgr-monlith` asset-folder spelling and update every reference.
-- [ ] Rename other items only when the inconsistency is clear and all references can be updated safely.
-- [ ] Improve small-text size or contrast where needed while preserving hierarchy and responsive layouts.
+- [x] Use the correctly spelled `htgr-monolith` asset-folder name and update every reference.
+- [x] Rename other items only when the inconsistency is clear and all references can be updated safely.
+- [x] Improve small-text size or contrast where needed while preserving hierarchy and responsive layouts.
 
 **Validation**
-- [ ] Verify renamed assets load and check affected text at phone and desktop widths.
+- [x] Verify renamed assets load and check affected text at phone and desktop widths.

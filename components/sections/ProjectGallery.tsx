@@ -2,22 +2,49 @@
 
 import { useEffect, useMemo, useRef, useState } from "react"
 import { projects } from "@/data/projects"
-import { Project } from "@/types/project"
+import { Category, Project } from "@/types/project"
 import { getProjectCoverMediaIndex } from "@/lib/project-media"
-import Panel from '../ui/Panel';
-import SectionHeader from '../ui/SectionHeader';
-import Button from '../ui/Buttons';
-import ProjectModal from '../ui/ProjectModal';
-import ProjectStatusBadge from '../ui/ProjectStatusBadge';
-import Icon from '../Icon';
+import { findProjectByHash, getProjectHash } from "@/lib/project-links"
+import Panel from "@/components/ui/Panel"
+import SectionHeader from "@/components/ui/SectionHeader"
+import Button from "@/components/ui/Button"
+import ProjectModal from "@/components/ui/ProjectModal"
+import ProjectStatusBadge from "@/components/ui/ProjectStatusBadge"
+import Icon from "@/components/Icon"
 
-const filters = [
-  "Featured",
+const categoryFilters: Category[] = [
   "FEA & Simulation",
   "Automation & Tools",
   "Web & Full-Stack",
   "Hardware & CAD",
 ]
+
+// Only show category buttons that have at least one project
+const filters = [
+  "Featured",
+  ...categoryFilters.filter((category) => projects.some((project) => project.category === category)),
+]
+
+// On narrow screens the filters sit in a 2-column grid. "Featured" spans the
+// full row only when the count is odd, so the grid never ends with an empty slot.
+const featuredSpansRow = filters.length % 2 === 1
+
+const projectCardClass =
+  "cursor-pointer overflow-hidden rounded-md border border-slate-400/20 bg-[var(--panel-deep)] shadow-[0_14px_28px_rgba(2,8,23,0.25)] transition-[border-color,transform] duration-[180ms] hover:-translate-y-[3px] hover:border-sky-500/65"
+
+const projectBodyClass = "p-[18px]"
+
+const projectTitleClass =
+  "mt-[7px] text-base leading-[1.25] font-bold tracking-[-0.02em] text-white"
+
+const projectDateClass =
+  "mt-1 block font-mono text-[11px] tracking-[0.04em] text-[var(--muted)]"
+
+const projectDescriptionClass =
+  "mt-2 text-[13px] leading-[1.55] text-[var(--muted)]"
+
+const projectTagsClass =
+  "mt-4 flex flex-wrap gap-1.5"
 
 function ProjectCardMedia({ project }: { project: Project }) {
   const mediaList = project.details?.media
@@ -27,19 +54,23 @@ function ProjectCardMedia({ project }: { project: Project }) {
 
   if (!media || media.type !== "image" || failedUrl === media.url) {
     return (
-      <div className="project-visual project-visual-fallback" aria-hidden="true">
+      <div
+        className="grid h-[190px] place-items-center content-center gap-2 overflow-hidden border-b border-[var(--line)] bg-[image:linear-gradient(rgba(56,189,248,0.035)_1px,transparent_1px),linear-gradient(90deg,rgba(56,189,248,0.035)_1px,transparent_1px)] bg-[color:#0d1829] bg-size-[24px_24px] font-mono text-[8px] tracking-[0.12em] text-slate-500"
+        aria-hidden="true"
+      >
         <span>PROJECT VISUAL</span>
-        <strong>{failedUrl === media?.url ? "IMAGE UNAVAILABLE" : "COMING SOON"}</strong>
+        <strong className="text-[10px] text-slate-400">{failedUrl === media?.url ? "IMAGE UNAVAILABLE" : "COMING SOON"}</strong>
       </div>
     )
   }
 
   return (
-    <div className="project-visual">
+    <div className="relative grid h-[190px] place-items-center overflow-hidden border-b border-[var(--line)] bg-[#0d1829]">
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
         src={media.url}
         alt={media.alt || media.caption || project.title}
+        className="h-full w-full object-cover"
         loading="lazy"
         decoding="async"
         onError={() => setFailedUrl(media.url)}
@@ -60,20 +91,34 @@ export default function ProjectGallery({ number = "001" }: { number?: string }) 
 
   useEffect(() => {
     const openProjectFromHash = () => {
-      const projectId = window.location.hash.match(/^#project-(.+)$/)?.[1]
-      if (!projectId) {
+      const project = findProjectByHash(window.location.hash)
+      if (!project) {
         setSelectedProject(null)
         return
       }
 
-      const project = projects.find((item) => item.id === projectId)
-      if (project) setSelectedProject(project)
+      // Rewrite old "#project-<id>" links to the short form
+      const shortHash = getProjectHash(project)
+      if (window.location.hash !== shortHash) {
+        window.history.replaceState(null, "", `${window.location.pathname}${window.location.search}${shortHash}`)
+      }
+      setSelectedProject(project)
     }
 
     openProjectFromHash()
     window.addEventListener("hashchange", openProjectFromHash)
     return () => window.removeEventListener("hashchange", openProjectFromHash)
   }, [])
+
+  // Opening a project puts its direct link (e.g. "#pele") in the address bar.
+  // pushState adds a history entry, so the browser's back button closes it.
+  const openProject = (project: Project) => {
+    const hash = getProjectHash(project)
+    if (window.location.hash !== hash) {
+      window.history.pushState(null, "", `${window.location.pathname}${window.location.search}${hash}`)
+    }
+    setSelectedProject(project)
+  }
 
   const categoryProjects = useMemo(() => {
     if (activeFilter === "Featured") {
@@ -114,18 +159,20 @@ export default function ProjectGallery({ number = "001" }: { number?: string }) 
   }, [isCatalogModalOpen])
 
   return (
-    <Panel className="projects-panel" id="projects">
+    <Panel className="scroll-mt-20 p-[clamp(22px,3vw,38px)] print:break-inside-avoid print:border-slate-300 print:bg-white print:shadow-none" id="projects">
       <SectionHeader eyebrow={`Selected work / ${number}`} title="PROJECT GALLERY">
-        <span className="project-count">
+        <span className="font-mono text-[11px] tracking-[0.1em] text-[var(--muted)]">
           {categoryProjects.length.toString().padStart(2, "0")} SHOWING
         </span>
       </SectionHeader>
 
-      <div className="filter-row" role="group" aria-label="Filter projects">
+      <div className="mt-7 flex flex-wrap gap-[7px] max-[780px]:grid max-[780px]:grid-cols-2 max-[780px]:gap-2 print:hidden" role="group" aria-label="Filter projects">
         {filters.map((filter) => (
           <Button
             variant="filter"
-            className={activeFilter === filter ? "active" : ""}
+            className={`${filter === "Featured" && featuredSpansRow ? "max-[780px]:col-span-2" : ""} ${
+              activeFilter === filter ? "border-sky-500 bg-sky-500 text-[#06131f]" : ""
+            }`}
             key={filter}
             onClick={() => setActiveFilter(filter)}
             aria-pressed={activeFilter === filter}
@@ -135,37 +182,43 @@ export default function ProjectGallery({ number = "001" }: { number?: string }) 
         ))}
       </div>
 
-      <div className="featured-label">
+      <div className="mt-7 mb-[13px] flex items-center gap-[14px] text-[10px] font-extrabold tracking-[0.11em] text-orange-400 uppercase">
         <span>{activeFilter === "Featured" ? "Top Builds" : `${activeFilter} Projects`}</span>
-        <i />
+        <i className="h-px flex-1 bg-[linear-gradient(90deg,rgba(234,88,12,0.5),transparent)]" />
       </div>
 
-      <div className="projects-grid">
+      <div className="grid grid-cols-2 gap-[14px] max-[780px]:grid-cols-1">
         {visibleProjects.map((project) => (
           <article 
-            className="project-card cursor-pointer group hover:border-sky-500/60 transition-all duration-200"
+            className={projectCardClass}
             key={project.title}
-            onClick={() => setSelectedProject(project)}
+            onClick={() => openProject(project)}
             tabIndex={0}
             role="button"
             onKeyDown={(e) => {
               if (e.key === 'Enter' || e.key === ' ') {
                 e.preventDefault();
-                setSelectedProject(project);
+                openProject(project);
               }
             }}
           >
             <ProjectCardMedia project={project} />
-            <div className="project-body">
-              <div className="project-index flex items-center justify-between">
+            <div className={projectBodyClass}>
+              <div className="flex items-center justify-between gap-2 font-mono text-[11px] tracking-[0.1em] text-orange-400">
                 <span>PRJ / {project.number}</span>
                 <ProjectStatusBadge status={project.status} />
               </div>
-              <h3>{project.title}</h3>
-              <p>{project.description}</p>
-              <div className="tag-list">
+              <h3 className={projectTitleClass}>{project.title}</h3>
+              <time className={projectDateClass}>{project.date}</time>
+              <p className={projectDescriptionClass}>{project.description}</p>
+              <div className={projectTagsClass}>
                 {project.tags.map((tag) => (
-                  <span key={tag}>{tag}</span>
+                  <span
+                    className="rounded-[3px] border border-sky-500/40 px-[7px] py-[5px] font-mono text-[10px] tracking-[0.04em] text-sky-200 uppercase"
+                    key={tag}
+                  >
+                    {tag}
+                  </span>
                 ))}
               </div>
 
@@ -189,7 +242,7 @@ export default function ProjectGallery({ number = "001" }: { number?: string }) 
       </div>
 
       {showSeeMore && (
-        <div className="see-more-row">
+        <div className="mt-6 flex justify-center">
           <Button variant="see-more" onClick={() => setIsCatalogModalOpen(true)}>
             {seeMoreLabel}
           </Button>
@@ -199,7 +252,7 @@ export default function ProjectGallery({ number = "001" }: { number?: string }) 
       {/* Catalog Modal */}
       {isCatalogModalOpen && (
         <div
-          className="modal-backdrop"
+          className="fixed inset-0 z-[100] flex justify-center overflow-y-auto bg-[rgba(15,23,42,0.88)] px-4 py-10 backdrop-blur-[12px] max-[780px]:px-3 max-[780px]:py-5"
           onClick={(e) => {
             if (e.target === e.currentTarget) setIsCatalogModalOpen(false)
           }}
@@ -207,17 +260,17 @@ export default function ProjectGallery({ number = "001" }: { number?: string }) 
           aria-modal="true"
           aria-labelledby="modal-title"
         >
-          <div className="modal-container">
-            <div className="modal-header">
+          <div className="relative m-auto flex w-[min(1000px,94vw)] flex-col overflow-hidden rounded-lg border border-[var(--line-strong)] bg-[#1e293b] shadow-[0_25px_60px_rgba(0,0,0,0.6)]">
+            <div className="sticky top-0 z-30 flex items-center justify-between gap-3 border-b border-[var(--line)] bg-[#1e293b] px-6 py-5 max-[780px]:p-4">
               <div>
-                <div className="section-kicker">Catalog / Full View</div>
-                <h2 id="modal-title">
+                <div className="text-[10px] font-extrabold tracking-[0.16em] text-sky-400 uppercase">Catalog / Full View</div>
+                <h2 className="mt-[7px] text-[clamp(1.25rem,2vw,1.75rem)] font-extrabold tracking-[-0.035em]" id="modal-title">
                   {activeFilter === "Featured" ? "ALL PROJECTS CATALOG" : `${activeFilter.toUpperCase()} PROJECTS`}
                 </h2>
               </div>
               <button
                 type="button"
-                className="modal-close-button"
+                className="grid h-9 w-9 place-items-center rounded border border-[var(--line)] bg-[var(--panel-deep)] text-[var(--muted)] transition-colors duration-150 hover:border-sky-500 hover:text-white max-[780px]:h-11 max-[780px]:w-11"
                 onClick={() => setIsCatalogModalOpen(false)}
                 aria-label="Close modal"
               >
@@ -228,12 +281,14 @@ export default function ProjectGallery({ number = "001" }: { number?: string }) 
               </button>
             </div>
 
-            <div className="modal-body">
-              <div className="filter-row modal-filter-row" role="group">
+            <div className="p-6 max-[780px]:p-4">
+              <div className="mb-5 mt-0 grid grid-cols-2 gap-2 min-[781px]:flex min-[781px]:flex-wrap min-[781px]:gap-[7px] print:hidden" role="group">
                 {filters.map((filter) => (
                   <Button
                     variant="filter"
-                    className={activeFilter === filter ? "active" : ""}
+                    className={`${filter === "Featured" && featuredSpansRow ? "col-span-full" : ""} ${
+                      activeFilter === filter ? "border-sky-500 bg-sky-500 text-[#06131f]" : ""
+                    }`}
                     key={filter}
                     onClick={() => setActiveFilter(filter)}
                     aria-pressed={activeFilter === filter}
@@ -243,32 +298,38 @@ export default function ProjectGallery({ number = "001" }: { number?: string }) 
                 ))}
               </div>
 
-              <div className="projects-grid modal-projects-grid">
+              <div className="mt-3 grid grid-cols-2 gap-[14px] max-[780px]:grid-cols-1">
                 {modalProjects.map((project) => (
                   <article 
-                    className="project-card cursor-pointer group hover:border-sky-500/60 transition-all duration-200"
+                    className={projectCardClass}
                     key={project.title}
-                    onClick={() => setSelectedProject(project)}
+                    onClick={() => openProject(project)}
                     tabIndex={0}
                     role="button"
                     onKeyDown={(e) => {
                       if (e.key === 'Enter' || e.key === ' ') {
                         e.preventDefault();
-                        setSelectedProject(project);
+                        openProject(project);
                       }
                     }}
                   >
                     <ProjectCardMedia project={project} />
-                    <div className="project-body">
-                      <div className="project-index flex items-center justify-between">
+                    <div className={projectBodyClass}>
+                      <div className="flex items-center justify-between gap-2 font-mono text-[11px] tracking-[0.1em] text-orange-400">
                         <span>PRJ / {project.number}</span>
                         <ProjectStatusBadge status={project.status} />
                       </div>
-                      <h3>{project.title}</h3>
-                      <p>{project.description}</p>
-                      <div className="tag-list">
+                      <h3 className={projectTitleClass}>{project.title}</h3>
+                      <time className={projectDateClass}>{project.date}</time>
+                      <p className={projectDescriptionClass}>{project.description}</p>
+                      <div className={projectTagsClass}>
                         {project.tags.map((tag) => (
-                          <span key={tag}>{tag}</span>
+                          <span
+                            className="rounded-[3px] border border-sky-500/40 px-[7px] py-[5px] font-mono text-[10px] tracking-[0.04em] text-sky-200 uppercase"
+                            key={tag}
+                          >
+                            {tag}
+                          </span>
                         ))}
                       </div>
 
@@ -301,7 +362,7 @@ export default function ProjectGallery({ number = "001" }: { number?: string }) 
         project={selectedProject}
         onClose={() => {
           setSelectedProject(null)
-          if (window.location.hash.startsWith("#project-")) {
+          if (findProjectByHash(window.location.hash)) {
             window.history.replaceState(null, "", `${window.location.pathname}${window.location.search}`)
           }
         }}

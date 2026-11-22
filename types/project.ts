@@ -28,6 +28,10 @@ export interface ProjectDetails {
 
 export interface Project {
   id?: string;
+  /** Short URL hash used for direct links, e.g. "pele" -> barikboley.com/#pele */
+  slug: string;
+  /** Display date range, e.g. "Sept 2026 – Present" */
+  date: string;
   title: string;
   tagline?: string;
   description: string;

@@ -6,7 +6,7 @@
 ![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-4.0-38BDF8?style=flat-square&logo=tailwindcss)
 ![Deployed on Vercel](https://img.shields.io/badge/Vercel-Deployment-000000?style=flat-square&logo=vercel)
 
-A project-first portfolio presenting my dual focus in **Mechanical Engineering and Software Development**. It connects physical engineering work—CAD, simulation, and prototyping—with software projects in automation and web development. I am a student at **BYU-Idaho**, expected to graduate in **April 2029**.
+A project-first portfolio for my path toward **nuclear engineering**. It leads with reactor-focused CAD and multiphysics simulation work, and also shows the software tools I build as a hobby. I am a mechanical engineering student at **BYU-Idaho**, expected to graduate in **April 2029**.
 
 ## Live links and contact
 
@@ -20,20 +20,22 @@ A project-first portfolio presenting my dual focus in **Mechanical Engineering a
 
 The site is a single-page portfolio assembled in `app/page.tsx` from reusable layout, section, and UI components.
 
-- **Hero and status box:** Introduces the Mechanical Engineering and Software Development focus, BYU-Idaho graduation date, resume and social calls to action, and availability status.
-- **Project gallery:** Shows featured work first, with filters for **FEA & Simulation**, **Automation & Tools**, **Web & Full-Stack**, and **Hardware & CAD**. The featured view and category views show up to four cards at a time; the catalog modal provides access to the full list.
+- **Hero and status box:** Introduces the Mechanical & Nuclear Engineering focus, BYU-Idaho graduation date, resume and social calls to action, and internship availability.
+- **Project gallery:** Shows featured work first, with category filters. A category button only appears when at least one project uses that category. The featured view and category views show up to four cards at a time; the catalog modal provides access to the full list. Each card shows the project's date range.
+- **Direct project links:** Every project has a short link such as `barikboley.com/#mhtgr`. Opening a project puts its link in the address bar, the browser's back button closes it, and older `#project-<id>` links still work.
 - **Project popout modal:** Selecting a card opens project information, available GitHub/demo links, and a hero-media viewer with thumbnails to switch between images or GIFs. The four narrative sections—**Problem Statement**, **Key Challenges**, **System Architecture**, and **Key Metrics**—are rendered when their data is present. Tools and technologies are also listed when available.
-- **About and experience:** The About profile and numbered experience timeline sit together in a side-by-side content layout on wider screens and adapt for smaller screens.
+- **About and experience:** The About profile and a compact numbered timeline (education, key roles, Eagle Scout) sit side by side on wider screens and stack on smaller screens.
 - **Technical skills:** A compact skills section groups Simulation & CAD and Programming & Tools, with supported skills linking to related project details on the portfolio.
 - **Legacy portfolios:** The footer links to v1 and v2 at `/legacy/v1/` and `/legacy/v2/`; original source is kept in `archive/`, outside the public directory.
 - **Contact and footer:** Provides an email call to action, social links, and archive links to earlier portfolio versions.
+- **Link previews:** `app/opengraph-image.png` and `app/twitter-image.png` (1200×630) are the images shown when the site is shared on social media or in messages.
 
 ## Tech stack and tooling
 
 - **Next.js 16** with the App Router
 - **React 19** (React 18+ compatible component patterns)
 - **TypeScript**
-- **Tailwind CSS 4** for utility styling, alongside the site's section-specific CSS
+- **Tailwind CSS 4** for all styling, written as utility classes in the components
 - **Vercel** for hosting and deployment
 - **Lucide React** for icons
 - **ESLint** with the Next.js Core Web Vitals and TypeScript configurations
@@ -45,18 +47,14 @@ The installed versions are defined in `package.json`. The project currently uses
 ```text
 .
 ├── app/
-│   ├── layout.tsx                 # Root layout, document metadata, and fonts
+│   ├── layout.tsx                 # Root layout, document and link-preview metadata, and fonts
+│   ├── opengraph-image.png        # Link-preview image (also twitter-image.png)
 │   ├── page.tsx                   # Home page composition and section order
-│   ├── globals.css                # Tailwind imports, theme tokens, and CSS imports
-│   └── styles/
-│       ├── layout/                # Navigation and footer styles
-│       ├── sections/              # Hero, profile, timeline, gallery, contact styles
-│       │   └── project-gallery/   # Gallery layout and project illustration styles
-│       └── ui/                    # Shared panel, button, and section-heading styles
+│   └── globals.css                # Tailwind imports and theme tokens
 ├── components/
 │   ├── layout/                    # Navbar and Footer
-│   ├── sections/                  # Hero, ProjectGallery, About, Experience, Skills, Contact
-│   ├── ui/                        # Buttons, panels, headings, and project modal
+│   ├── sections/                  # Hero, ProjectGallery, AboutSection, ExperienceTimeline, Skills, ContactSection
+│   ├── ui/                        # Button, Panel, SectionHeader, ProjectStatusBadge, and ProjectModal
 │   └── Icon.tsx                   # Shared icon wrapper
 ├── data/
 │   ├── projects.ts                # Portfolio project content and details
@@ -64,6 +62,8 @@ The installed versions are defined in `package.json`. The project currently uses
 ├── types/
 │   └── project.ts                 # Category, Project, ProjectDetails, and media types
 ├── lib/
+│   ├── project-links.ts           # Short project links (#slug) and legacy #project-<id> lookup
+│   ├── project-media.ts           # Cover-image selection for project cards
 │   └── utils.ts                   # Shared utility helpers
 ├── archive/                       # Original legacy portfolio source trees
 ├── public/
@@ -117,12 +117,13 @@ Project content lives in `data/projects.ts` as an exported `Project[]`, with its
 | Field | Required | Description |
 | --- | --- | --- |
 | `id` | No | Optional stable project identifier. |
+| `slug` | Yes | Short direct-link name, e.g. `"mhtgr"` for `barikboley.com/#mhtgr`. Must be unique and must not match a section id (`projects`, `about`, `experience`, `skills`, `contact`). |
+| `date` | Yes | Display date range, e.g. `"Sept 2026 – Present"`. |
 | `title` | Yes | Project name. |
 | `tagline` | No | Short summary used in project detail views; falls back to `description`. |
 | `description` | Yes | Card description and fallback project summary. |
 | `tags` | Yes | Short labels shown on project cards and used as a fallback technology list. |
 | `category` | Yes | One of the `Category` values below; drives category filtering. |
-| `art` | Yes | Card illustration variant: `"cad"`, `"data"`, `"hardware"`, or `"web"`. |
 | `number` | Yes | Display index, typically a zero-padded string such as `"01"`. |
 | `featured` | No | Set to `true` to include the project in the default Featured view. |
 | `status` | No | `"planned"`, `"under development"`, `"maintenance"`, or `"complete"`. |
@@ -150,7 +151,7 @@ type Category =
 - `systemArchitecture`: a concise explanation of the system or workflow.
 - `metrics`: optional array of `{ label, value }` objects for measurable results.
 - `toolsUsed`: technologies and tools used; when present, these populate the modal's tools section instead of the card tags.
-- `media`: an array of `{ url, type, caption? }` objects. `type` is `"image"` or `"gif"`. The first item is initially displayed; additional items appear as selectable thumbnails.
+- `media`: an array of `{ url, type, caption?, alt?, isCover? }` objects. `type` is `"image"` or `"gif"`. The item marked `isCover` (or the first image) is the card image and is shown first in the modal; additional items appear as selectable thumbnails.
 
 Place local assets in `public/` and reference them with a URL from the public root, such as `"/images/projects/example.png"`. The modal omits empty optional detail sections. Keep content accurate and ensure each local media URL resolves to an existing asset.
 
@@ -159,13 +160,14 @@ Place local assets in `public/` and reference them with a URL from the public ro
 ```ts
 {
   id: "sample-project",
+  slug: "sample",
+  date: "Jan – Mar 2027",
   title: "Sample Project",
   tagline: "A one-line summary of the work.",
   description: "What the project does and why it matters.",
   tags: ["TypeScript", "Automation"],
   category: "Automation & Tools",
-  art: "data",
-  number: "05",
+  number: "07",
   featured: false,
   status: "complete",
   githubUrl: "https://github.com/your-account/sample-project",
@@ -186,7 +188,15 @@ Place local assets in `public/` and reference them with a URL from the public ro
 }
 ```
 
-Add the entry to the `projects` array in `data/projects.ts`. Keep required fields populated, use only the declared category/art/status values, and use unique project identifiers and display numbers where practical.
+Add the entry to the `projects` array in `data/projects.ts`. Keep required fields populated, use only the declared category/status values, and use unique project identifiers, slugs, and display numbers.
+
+## Weekly project sync
+
+A scheduled Claude Code task runs every Sunday evening (Mountain time). It checks the public repositories of the GitHub user in `data/project-sync.json` and, when something changed, opens a pull request with proposed updates to `data/projects.ts` for review. Nothing changes on the site until that pull request is merged.
+
+- **New repositories** created on or after `onlyReposCreatedOnOrAfter` that aren't on the site or in `skipRepos` get a drafted project entry.
+- **Existing projects** whose repositories had significant changes since `lastSync` get their text, status, or images updated to match.
+- To stop a repository from being proposed, add its name to `skipRepos`, or leave a comment on the sync pull request asking to skip it.
 
 ## Roadmap and verification
 
